@@ -1,6 +1,6 @@
 # Mapeo Shell App
 
-This mobile app is designed for user testing new proposed UI/UX changes for[Mapeo Mobile](https://github.com/digidem/mapeo-mobile).
+This mobile app is designed for user testing new proposed UI/UX changes for [Mapeo Mobile](https://github.com/digidem/mapeo-mobile).
 
 These two design changes are:
 
@@ -9,12 +9,12 @@ These two design changes are:
 
 ## Table of Contents
 
-[Install](#Install)
-[Usage](#usage)
-[Maintainers](#maintainers)
-[Contributing](#contributing)
-[Contributors](#contributors)
-[License](#license)
+- [Install](#Install)
+- [Usage](#usage)
+- [Maintainers](#maintainers)
+- [Contributing](#contributing)
+- [Contributors](#contributors)
+- [License](#license)
 
 ## Install
 
