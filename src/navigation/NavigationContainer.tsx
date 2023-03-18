@@ -2,11 +2,22 @@ import {
   NavigationContainer as NativeNavContainer,
   NavigatorScreenParams,
 } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerScreenProps,
+} from "@react-navigation/drawer";
+import { HeaderButtonProps } from "@react-navigation/native-stack/lib/typescript/src/types";
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationOptions,
+} from "@react-navigation/native-stack";
+
 import { Home } from "../screens/Home";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Bar } from "../screens/sync/Bar";
 import { ProjectCoordinator } from "../screens/projectInvite/ProjectCoordinator";
+import { WHITE } from "../lib/styles";
+import { CustomHeaderLeft } from "../components/CustomHeaderLeft";
+import { CustomHeaderRight } from "../components/CustomHeaderRight";
 
 export type Drawers = {
   Home: undefined;
@@ -22,13 +33,36 @@ export type ProjectInviteScreens = {
   ProjectCoordinator: undefined;
 };
 
+export const StackNavigationOptions = (
+  goBack: () => void,
+  toggleDrawer: () => void
+): NativeStackNavigationOptions => ({
+  presentation: "card",
+  contentStyle: { backgroundColor: WHITE },
+  headerStyle: { backgroundColor: WHITE },
+  headerLeft: (props: HeaderButtonProps) => (
+    <CustomHeaderLeft headerBackButtonProps={props} goBack={goBack} />
+  ),
+  // This only hides the DEFAULT back button. We render a custom one in headerLeft, so the default one should always be hidden.
+  // This **might** cause a problem for IOS
+  headerBackVisible: false,
+  headerRight: () => <CustomHeaderRight toggleDrawer={toggleDrawer} />,
+});
+
 const Drawer = createDrawerNavigator<Drawers>();
 
 export const NavigationContainer = () => {
   return (
     <NativeNavContainer>
-      <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Navigator
+        screenOptions={{ headerShown: false }}
+        initialRouteName="Home"
+      >
+        <Drawer.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: true }}
+        />
         <Drawer.Screen
           name="Sync"
           component={SyncScreensStack}
@@ -45,9 +79,13 @@ export const NavigationContainer = () => {
 
 const SyncStack = createNativeStackNavigator<SyncScreens>();
 
-const SyncScreensStack = () => {
+const SyncScreensStack = ({
+  navigation: { goBack, toggleDrawer },
+}: DrawerScreenProps<Drawers, "Sync">) => {
   return (
-    <SyncStack.Navigator>
+    <SyncStack.Navigator
+      screenOptions={() => StackNavigationOptions(goBack, toggleDrawer)}
+    >
       <SyncStack.Screen name="Bar" component={Bar} />
     </SyncStack.Navigator>
   );
@@ -55,9 +93,13 @@ const SyncScreensStack = () => {
 
 const ProjectInviteStack = createNativeStackNavigator<ProjectInviteScreens>();
 
-const ProjectInviteScreensStack = () => {
+const ProjectInviteScreensStack = ({
+  navigation: { goBack, toggleDrawer },
+}: DrawerScreenProps<Drawers, "ProjectInvite">) => {
   return (
-    <ProjectInviteStack.Navigator>
+    <ProjectInviteStack.Navigator
+      screenOptions={() => StackNavigationOptions(goBack, toggleDrawer)}
+    >
       <ProjectInviteStack.Screen
         name="ProjectCoordinator"
         component={ProjectCoordinator}
