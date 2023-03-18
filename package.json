@@ -7,16 +7,19 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "extract-messages": "formatjs extract 'src/*.{ts,tsx}' --out-file ./messages/en.json"
   },
   "dependencies": {
     "expo": "~48.0.6",
     "expo-status-bar": "~1.4.4",
-    "react": "18.2.0",
+    "react": "^18.2.0",
+    "react-intl": "^6.3.0",
     "react-native": "0.71.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@formatjs/cli": "^6.0.4",
     "@types/react": "~18.0.14",
     "husky": "^8.0.0",
     "prettier": "^2.8.4",
