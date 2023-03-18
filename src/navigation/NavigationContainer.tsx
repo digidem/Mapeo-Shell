@@ -1,4 +1,7 @@
-import { NavigationContainer as NativeNavContainer } from "@react-navigation/native";
+import {
+  NavigationContainer as NativeNavContainer,
+  NavigatorScreenParams,
+} from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Home } from "../screens/Home";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -7,8 +10,8 @@ import { ProjectCoordinator } from "../screens/projectInvite/ProjectCoordinator"
 
 export type Drawers = {
   Home: undefined;
-  Sync: undefined;
-  ProjectInvite: undefined;
+  Sync: NavigatorScreenParams<SyncScreens>;
+  ProjectInvite: NavigatorScreenParams<ProjectInviteScreens>;
 };
 
 export type SyncScreens = {
