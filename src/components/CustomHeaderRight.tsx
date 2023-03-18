@@ -1,5 +1,6 @@
 import { TouchableOpacity } from "react-native-gesture-handler";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
+
 import { BLACK } from "../lib/styles";
 
 export const CustomHeaderRight = ({

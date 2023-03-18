@@ -1,4 +1,5 @@
 import { registerRootComponent } from "expo";
+
 import { NavigationContainer } from "./navigation/NavigationContainer";
 import "react-native-gesture-handler";
 

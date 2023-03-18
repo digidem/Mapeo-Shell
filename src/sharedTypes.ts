@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MessageDescriptor } from "react-intl";
+
 import {
   ProjectInviteScreens,
   SyncScreens,
