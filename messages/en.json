@@ -1,6 +1,6 @@
 {
   "app.firstMessage": {
-    "defaultMessage": "This is a test",
-    "description": "Used as a tester"
+    "description": "Used as a tester",
+    "message": "This is a test"
   }
 }
