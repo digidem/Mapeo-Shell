@@ -14,34 +14,81 @@ type ActiveSync = {
 
 type AllSyncs = Record<string, ActiveSync>;
 
+type UploadOrDownload =
+  | { upload: Progress; download?: Progress }
+  | { upload?: Progress; download: Progress };
+
 type SyncStore = {
   allSyncs: AllSyncs;
-  setIndivdualSync: (
-    deviceId: string,
-    upload?: Progress,
-    download?: Progress
-  ) => void;
+  setIndivdualSync: (deviceId: string, progress?: UploadOrDownload) => void;
   resetSyncStore: () => void;
 };
 
+const emptyProgress: Progress = {
+  completed: 0,
+  total: 0,
+};
+
+// make upload and download optional
 const useSyncStore = create<SyncStore>()((set) => ({
   allSyncs: {},
-  setIndivdualSync: (deviceId, upload, download) =>
-    set((state) => ({
-      ...state,
-      allSyncs: {
-        ...state.allSyncs,
-        [deviceId]: {
-          isCompleted:
-            !upload || !download
-              ? false
-              : upload.completed === upload.total &&
-                download.completed === download.total,
-          upload: upload || { completed: 0, total: 0 },
-          download: download || { completed: 0, total: 0 },
+  setIndivdualSync: (deviceId, progress) =>
+    set((state) => {
+      if (!progress) {
+        return {
+          ...state,
+          allSyncs: {
+            ...state.allSyncs,
+            [deviceId]: {
+              isCompleted: state.allSyncs[deviceId].isCompleted || false,
+              upload: state.allSyncs[deviceId].upload || emptyProgress,
+              download: state.allSyncs[deviceId].download || emptyProgress,
+            },
+          },
+        };
+      }
+
+      const isCompleted = (
+        sync?: ActiveSync,
+        download?: Progress,
+        upload?: Progress
+      ): boolean => {
+        if (!sync) {
+          return false;
+        }
+
+        if (!download || !upload) {
+          return sync.isCompleted || false;
+        }
+
+        return (
+          download.completed === download.total &&
+          upload.completed === upload.total
+        );
+      };
+
+      return {
+        ...state,
+        allSyncs: {
+          ...state.allSyncs,
+          [deviceId]: {
+            isCompleted: isCompleted(
+              state.allSyncs[deviceId],
+              progress.download,
+              progress.upload
+            ),
+            upload:
+              progress.upload ||
+              state.allSyncs[deviceId].upload ||
+              emptyProgress,
+            download:
+              progress.download ||
+              state.allSyncs[deviceId].download ||
+              emptyProgress,
+          },
         },
-      },
-    })),
+      };
+    }),
   resetSyncStore: () =>
     set((state) => ({
       ...state,
@@ -74,8 +121,8 @@ export function useIndividualSync(deviceId: string) {
     () =>
       [
         thisSync,
-        (upload: Progress, download: Progress) =>
-          setIndivdualSync(deviceId, upload, download),
+        (uploadOrDownload: UploadOrDownload) =>
+          setIndivdualSync(deviceId, uploadOrDownload),
       ] as const,
     [thisSync, setIndivdualSync, deviceId]
   );
@@ -85,5 +132,5 @@ export function useIndividualSync(deviceId: string) {
  * @description calling this function will reset sync store. Should be used in cleanup when unmounting the sync screen
  */
 export function useResetSyncStore() {
-  useSyncStore((store) => store.resetSyncStore)();
+  return useSyncStore((store) => store.resetSyncStore);
 }
