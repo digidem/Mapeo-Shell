@@ -55,7 +55,7 @@ export function useIncompleteSyncs() {
  * @param deviceId
  * @returns an array with [sync, setSync]
  */
-export function useSetIndividualSync(deviceId: string) {
+export function useIndividualSync(deviceId: string) {
   const allSyncs = useSyncStore((state) => state.allSyncs);
   const setIndivdualSync = useSyncStore((store) => store.setIndivdualSync);
 
