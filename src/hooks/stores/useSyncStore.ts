@@ -7,20 +7,15 @@ type Progress = {
 };
 
 type ActiveSync = {
-  upload: Progress;
-  download: Progress;
-  isCompleted: boolean;
+  progress: Progress;
+  syncIsFinished: boolean;
 };
 
 type AllSyncs = Record<string, ActiveSync>;
 
-type UploadOrDownload =
-  | { upload: Progress; download?: Progress }
-  | { upload?: Progress; download: Progress };
-
 type SyncStore = {
   allSyncs: AllSyncs;
-  setIndivdualSync: (deviceId: string, progress?: UploadOrDownload) => void;
+  setIndivdualSync: (deviceId: string, progress?: Progress) => void;
   resetSyncStore: () => void;
 };
 
@@ -40,51 +35,20 @@ const useSyncStore = create<SyncStore>()((set) => ({
           allSyncs: {
             ...state.allSyncs,
             [deviceId]: {
-              isCompleted: state.allSyncs[deviceId].isCompleted || false,
-              upload: state.allSyncs[deviceId].upload || emptyProgress,
-              download: state.allSyncs[deviceId].download || emptyProgress,
+              syncIsFinished: state.allSyncs[deviceId].syncIsFinished || false,
+              progress: state.allSyncs[deviceId].progress || emptyProgress,
             },
           },
         };
       }
-
-      const isCompleted = (
-        sync?: ActiveSync,
-        download?: Progress,
-        upload?: Progress
-      ): boolean => {
-        if (!sync) {
-          return false;
-        }
-
-        if (!download || !upload) {
-          return sync.isCompleted || false;
-        }
-
-        return (
-          download.completed === download.total &&
-          upload.completed === upload.total
-        );
-      };
 
       return {
         ...state,
         allSyncs: {
           ...state.allSyncs,
           [deviceId]: {
-            isCompleted: isCompleted(
-              state.allSyncs[deviceId],
-              progress.download,
-              progress.upload
-            ),
-            upload:
-              progress.upload ||
-              state.allSyncs[deviceId].upload ||
-              emptyProgress,
-            download:
-              progress.download ||
-              state.allSyncs[deviceId].download ||
-              emptyProgress,
+            progress,
+            syncIsFinished: progress.completed === progress.total,
           },
         },
       };
@@ -98,9 +62,13 @@ const useSyncStore = create<SyncStore>()((set) => ({
 
 export function useIncompleteSyncs() {
   const allSyncs = useSyncStore((state) => state.allSyncs);
-  return Object.entries(allSyncs)
-    .filter(([, values]) => !values.isCompleted)
-    .map(([key]) => allSyncs[key]);
+  return useMemo(
+    () =>
+      Object.entries(allSyncs)
+        .filter(([, values]) => !values.syncIsFinished)
+        .map(([key]) => allSyncs[key]),
+    [allSyncs]
+  );
 }
 
 /**
@@ -121,8 +89,7 @@ export function useIndividualSync(deviceId: string) {
     () =>
       [
         thisSync,
-        (uploadOrDownload: UploadOrDownload) =>
-          setIndivdualSync(deviceId, uploadOrDownload),
+        (progress: Progress) => setIndivdualSync(deviceId, progress),
       ] as const,
     [thisSync, setIndivdualSync, deviceId]
   );
