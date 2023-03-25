@@ -71,6 +71,6 @@ export function useSetIndividualSync(deviceId: string) {
         (upload: Progress, download: Progress) =>
           setIndivdualSync(deviceId, upload, download),
       ] as const,
-    [thisSync, setIndivdualSync(deviceId)]
+    [thisSync, setIndivdualSync, deviceId]
   );
 }
