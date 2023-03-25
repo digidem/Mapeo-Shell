@@ -21,6 +21,7 @@ type SyncStore = {
     upload?: Progress,
     download?: Progress
   ) => void;
+  resetSyncStore: () => void;
 };
 
 const useSyncStore = create<SyncStore>()((set) => ({
@@ -40,6 +41,11 @@ const useSyncStore = create<SyncStore>()((set) => ({
           download: download || { completed: 0, total: 0 },
         },
       },
+    })),
+  resetSyncStore: () =>
+    set((state) => ({
+      ...state,
+      allSyncs: {},
     })),
 }));
 
@@ -73,4 +79,11 @@ export function useIndividualSync(deviceId: string) {
       ] as const,
     [thisSync, setIndivdualSync, deviceId]
   );
+}
+
+/**
+ * @description calling this function will reset sync store. Should be used in cleanup when unmounting the sync screen
+ */
+export function useResetSyncStore() {
+  useSyncStore((store) => store.resetSyncStore)();
 }
