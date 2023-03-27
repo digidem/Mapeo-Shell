@@ -24,7 +24,6 @@ const emptyProgress: Progress = {
   total: 0,
 };
 
-// make upload and download optional
 const useSyncStore = create<SyncStore>()((set) => ({
   allSyncs: {},
   setIndivdualSync: (deviceId, progress) =>
