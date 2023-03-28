@@ -16,7 +16,7 @@ type AllSyncs = Record<string, ActiveSync>;
 type SyncStore = {
   allSyncs: AllSyncs;
   actions: {
-    setIndividualSync: (deviceId: string, progress?: Progress) => void;
+    setIndividualSync: (deviceId: string, progress: Progress) => void;
     resetSyncStore: () => void;
   };
 };
@@ -31,19 +31,6 @@ const useSyncStore = create<SyncStore>()((set) => ({
   actions: {
     setIndividualSync: (deviceId, progress) =>
       set((state) => {
-        if (!progress) {
-          return {
-            allSyncs: {
-              ...state.allSyncs,
-              [deviceId]: {
-                syncIsFinished:
-                  state.allSyncs[deviceId].syncIsFinished || false,
-                progress: state.allSyncs[deviceId].progress || emptyProgress,
-              },
-            },
-          };
-        }
-
         return {
           allSyncs: {
             ...state.allSyncs,
@@ -90,7 +77,8 @@ export function useIndividualSync(deviceId: string) {
   const setIndividualSync = useSyncAction().setIndividualSync;
 
   if (!thisSync) {
-    setIndividualSync(deviceId);
+    const total = getRandomNumberMax30();
+    setIndividualSync(deviceId, { total, completed: 0 });
   }
 
   return useMemo(
@@ -108,4 +96,8 @@ export function useIndividualSync(deviceId: string) {
  */
 export function useResetSyncStore() {
   return useSyncAction().resetSyncStore;
+}
+
+function getRandomNumberMax30() {
+  return Math.floor(Math.random() * (30 - 1) + 1);
 }
