@@ -6,9 +6,12 @@ type Progress = {
   total: number;
 };
 
+type SyncGroup = "local" | "online";
+
 type ActiveSync = {
   progress: Progress;
   syncIsFinished: boolean;
+  syncGroup: SyncGroup;
 };
 
 type AllSyncs = Record<string, ActiveSync>;
@@ -16,7 +19,11 @@ type AllSyncs = Record<string, ActiveSync>;
 type SyncStore = {
   allSyncs: AllSyncs;
   actions: {
-    setIndividualSync: (deviceId: string, progress: Progress) => void;
+    setIndividualSync: (
+      deviceId: string,
+      progress: Progress,
+      syncGroup: SyncGroup
+    ) => void;
     resetSyncStore: () => void;
   };
 };
@@ -29,7 +36,7 @@ const emptyProgress: Progress = {
 const useSyncStore = create<SyncStore>()((set) => ({
   allSyncs: {},
   actions: {
-    setIndividualSync: (deviceId, progress) =>
+    setIndividualSync: (deviceId, progress, syncGroup) =>
       set((state) => {
         return {
           allSyncs: {
@@ -37,6 +44,7 @@ const useSyncStore = create<SyncStore>()((set) => ({
             [deviceId]: {
               progress,
               syncIsFinished: progress.completed === progress.total,
+              syncGroup,
             },
           },
         };
@@ -70,25 +78,34 @@ export function useIncompleteSyncs() {
 /**
  *
  * @param deviceId
- * @returns an array with [sync, setSync]
+ * @returns an array with [sync, setSync(completed:number)]
  */
-export function useIndividualSync(deviceId: string) {
+export function useIndividualSync(
+  deviceId: string,
+  syncGroup: SyncGroup
+): readonly [ActiveSync | undefined, () => void] {
   const thisSync = useSyncs()[deviceId];
   const setIndividualSync = useSyncAction().setIndividualSync;
 
   if (!thisSync) {
     const total = getRandomNumberMax30();
-    setIndividualSync(deviceId, { total, completed: 0 });
+    setIndividualSync(deviceId, { total, completed: 0 }, syncGroup);
   }
 
-  return useMemo(
+  console.log(thisSync);
+
+  return [
+    thisSync,
     () =>
-      [
-        thisSync,
-        (progress: Progress) => setIndividualSync(deviceId, progress),
-      ] as const,
-    [thisSync, setIndividualSync, deviceId]
-  );
+      setIndividualSync(
+        deviceId,
+        {
+          total: thisSync.progress.total,
+          completed: thisSync.progress.completed + 1,
+        },
+        syncGroup
+      ),
+  ] as const;
 }
 
 /**
