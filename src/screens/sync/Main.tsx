@@ -235,7 +235,7 @@ const DevicesList = () => {
       setStatus("loading");
       setTimeout(() => {
         setStatus("idle");
-      }, 2000);
+      }, 10000);
     }, [])
   );
 
@@ -243,7 +243,7 @@ const DevicesList = () => {
     <View style={devicesListStyles.container}>
       {status === "loading" ? (
         <View>
-          <Text size="large" textAlign="center">
+          <Text size="large" bold textAlign="center">
             {t(m.searching)}
           </Text>
         </View>
