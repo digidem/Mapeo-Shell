@@ -18,6 +18,7 @@ import { ProjectCoordinator } from "../screens/projectInvite/ProjectCoordinator"
 import { WHITE } from "../lib/styles";
 import { CustomHeaderLeft } from "../components/CustomHeaderLeft";
 import { CustomHeaderRight } from "../components/CustomHeaderRight";
+import { Main } from "../screens/sync/Main";
 
 export type Drawers = {
   Home: undefined;
@@ -26,6 +27,7 @@ export type Drawers = {
 };
 
 export type SyncScreens = {
+  Main: undefined;
   Bar: undefined;
 };
 
@@ -86,6 +88,7 @@ const SyncScreensStack = ({
     <SyncStack.Navigator
       screenOptions={() => StackNavigationOptions(goBack, toggleDrawer)}
     >
+      <SyncStack.Screen name="Main" component={Main} />
       <SyncStack.Screen name="Bar" component={Bar} />
     </SyncStack.Navigator>
   );
