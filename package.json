@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "prepare": "husky install",
-    "extract-messages": "formatjs extract 'src/*.{ts,tsx}' --format crowdin --out-file ./messages/en.json",
+    "extract-messages": "formatjs extract 'src/**/*.{ts,tsx}' --format crowdin --out-file ./messages/en.json",
     "build:translations": "node ./scripts/compile.js "
   },
   "dependencies": {
