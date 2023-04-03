@@ -6,30 +6,22 @@ import {
   createDrawerNavigator,
   DrawerScreenProps,
 } from "@react-navigation/drawer";
-import { HeaderButtonProps } from "@react-navigation/native-stack/lib/typescript/src/types";
 import {
   createNativeStackNavigator,
   NativeStackNavigationOptions,
 } from "@react-navigation/native-stack";
 import { useIntl } from "react-intl";
 
-import { Bar } from "../screens/sync/Bar";
 import { colors } from "../lib/styles";
-import { CustomHeaderLeft } from "../components/CustomHeaderLeft";
 import { CustomHeaderRight } from "../components/CustomHeaderRight";
-import { Main } from "../screens/sync/Main";
+import { SyncScreen } from "../screens/sync";
 
 export type Drawers = {
   Sync: NavigatorScreenParams<SyncScreens>;
 };
 
 export type SyncScreens = {
-  Main: undefined;
-  Bar: undefined;
-};
-
-export type ProjectInviteScreens = {
-  ProjectCoordinator: undefined;
+  Sync: undefined;
 };
 
 // The drawer navigation is hidden in the UI. Currently the user only see the Sync Nav (Native Stack).
@@ -79,11 +71,10 @@ const SyncScreensStack = ({
   return (
     <SyncStack.Navigator screenOptions={screenOptions}>
       <SyncStack.Screen
-        name="Main"
-        component={Main}
-        options={{ headerTitle: t(Main.navTitle) }}
+        name="Sync"
+        component={SyncScreen}
+        options={{ headerTitle: t(SyncScreen.navTitle) }}
       />
-      <SyncStack.Screen name="Bar" component={Bar} />
     </SyncStack.Navigator>
   );
 };
