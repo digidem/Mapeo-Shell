@@ -1,7 +1,7 @@
 import { TouchableOpacity } from "react-native-gesture-handler";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 
-import { BLACK } from "../lib/styles";
+import { colors } from "../lib/styles";
 
 export const CustomHeaderRight = ({
   onPress,
@@ -12,7 +12,7 @@ export const CustomHeaderRight = ({
 }) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <MaterialIcon name={iconName} color={BLACK} size={30} />
+      <MaterialIcon name={iconName} color={colors.BLACK} size={30} />
     </TouchableOpacity>
   );
 };

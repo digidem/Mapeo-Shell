@@ -14,7 +14,7 @@ import {
 import { useIntl } from "react-intl";
 
 import { Bar } from "../screens/sync/Bar";
-import { WHITE } from "../lib/styles";
+import { colors } from "../lib/styles";
 import { CustomHeaderLeft } from "../components/CustomHeaderLeft";
 import { CustomHeaderRight } from "../components/CustomHeaderRight";
 import { Main } from "../screens/sync/Main";
@@ -39,8 +39,8 @@ export const createBaseStackNavigationOptions = (
   goBack: () => void
 ): NativeStackNavigationOptions => ({
   presentation: "card",
-  contentStyle: { backgroundColor: WHITE },
-  headerStyle: { backgroundColor: WHITE },
+  contentStyle: { backgroundColor: colors.WHITE },
+  headerStyle: { backgroundColor: colors.WHITE },
   // headerLeft: (props: HeaderButtonProps) => (
   //   <CustomHeaderLeft headerBackButtonProps={props} goBack={goBack} />
   // ),
