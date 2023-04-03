@@ -235,7 +235,7 @@ const DevicesList = () => {
       setStatus("loading");
       setTimeout(() => {
         setStatus("idle");
-      }, 10000);
+      }, 3000);
     }, [])
   );
 
