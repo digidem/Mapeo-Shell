@@ -123,7 +123,7 @@ const viewSwitchStyles = StyleSheet.create({
     flex: 1,
     borderRadius: 6,
     padding: spacing.small / 2,
-    backgroundColor: colors.DARK_GRAY,
+    backgroundColor: colors.GRAY,
   },
   innerContainer: {
     flexDirection: "row",

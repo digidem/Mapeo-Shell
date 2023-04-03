@@ -12,7 +12,7 @@ export const CustomHeaderRight = ({
 }) => {
   return (
     <TouchableOpacity onPress={onPress}>
-      <MaterialIcon name={iconName} color={colors.BLACK} size={30} />
+      <MaterialIcon name={iconName} color={colors.DARK_GRAY} size={30} />
     </TouchableOpacity>
   );
 };
