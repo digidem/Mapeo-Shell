@@ -6,6 +6,7 @@ export function useWifiInfo() {
   const net = useNetInfo({ shouldFetchWiFiSSID: true });
   return {
     permissionEnabled,
-    ssid: net.type === "wifi" && net.isConnected ? net.details.ssid : null,
+    wifiConnected: net.type === "wifi" && net.isConnected,
+    ssid: net.type === "wifi" ? net.details.ssid : null,
   };
 }

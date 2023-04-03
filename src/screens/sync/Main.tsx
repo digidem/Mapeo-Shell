@@ -23,9 +23,9 @@ const m = defineMessages({
     id: "screen.sync.main.noConnection",
     defaultMessage: "No connection",
   },
-  permissionDenied: {
-    id: "screen.sync.main.permissionDenied",
-    defaultMessage: "Permission denied",
+  connectedNoNetworkName: {
+    id: "screen.sync.main.connectedNoNetworkName",
+    defaultMessage: "Connected (no network name)",
   },
 });
 
@@ -179,14 +179,14 @@ const ProjectInfoCard = ({
   toggleViewMode: () => void;
 }) => {
   const { formatMessage: t } = useIntl();
-  const { permissionEnabled, ssid } = useWifiInfo();
+  const { permissionEnabled, ssid, wifiConnected } = useWifiInfo();
 
   return (
     <View style={projectInfoCardStyles.container}>
       <View style={projectInfoCardStyles.titleContainer}>
         <View style={projectInfoCardStyles.connectionInfoContainer}>
           <View style={projectInfoCardStyles.wifiIconContainer}>
-            <WifiIcon active={!!ssid} />
+            <WifiIcon active={wifiConnected} />
           </View>
           <View style={projectInfoCardStyles.ssidContainer}>
             <TouchableWithoutFeedback
@@ -195,9 +195,9 @@ const ProjectInfoCard = ({
               }
             >
               <Text size="small" bold numberOfLines={1}>
-                {permissionEnabled
-                  ? ssid || t(m.noConnection)
-                  : t(m.permissionDenied)}
+                {wifiConnected
+                  ? ssid || t(m.connectedNoNetworkName)
+                  : t(m.noConnection)}
               </Text>
             </TouchableWithoutFeedback>
           </View>

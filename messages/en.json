@@ -6,14 +6,14 @@
   "screen.sync.bar": {
     "message": "Bar Sync"
   },
+  "screen.sync.main.connectedNoNetworkName": {
+    "message": "Connected (no network name)"
+  },
   "screen.sync.main.navTitle": {
     "message": "Synchronize"
   },
   "screen.sync.main.noConnection": {
     "message": "No connection"
-  },
-  "screen.sync.main.permissionDenied": {
-    "message": "Permission denied"
   },
   "screen.sync.main.searching": {
     "message": "Searching for devices..."
