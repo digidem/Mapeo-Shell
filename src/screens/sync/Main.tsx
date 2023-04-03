@@ -179,9 +179,11 @@ const ViewSwitch = ({
 };
 
 const ProjectInfoCard = ({
+  name,
   viewMode,
   toggleViewMode,
 }: {
+  name: string;
   viewMode: "list" | "bubbles";
   toggleViewMode: () => void;
 }) => {
@@ -220,7 +222,7 @@ const ProjectInfoCard = ({
           />
         </View>
         <Text size="medium" bold>
-          Project Catapult
+          {name}
         </Text>
       </View>
     </View>
@@ -334,6 +336,7 @@ export const Main: SyncScreenComponent<"Main"> = () => {
       contentContainerStyle={screenStyles.scrollContentContainer}
     >
       <ProjectInfoCard
+        name="Project Catapult"
         viewMode={viewMode}
         toggleViewMode={() => {
           setViewMode((prev) => (prev === "list" ? "bubbles" : "list"));
