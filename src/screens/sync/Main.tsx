@@ -1,11 +1,18 @@
 import * as React from "react";
 import { defineMessages, useIntl } from "react-intl";
-import { Image, Linking, View, StyleSheet, ScrollView } from "react-native";
+import {
+  Animated,
+  Image,
+  Linking,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
-import { Text } from "../../components/Text";
+import { Text, styles as textStyles } from "../../components/Text";
 import { useWifiInfo } from "../../hooks/useWifiInfo";
 import { colors, spacing } from "../../lib/styles";
 import { SyncScreenComponent } from "../../sharedTypes";
@@ -17,7 +24,7 @@ const m = defineMessages({
   },
   searching: {
     id: "screen.sync.main.searching",
-    defaultMessage: "Searching for devices...",
+    defaultMessage: "Searching for devices",
   },
   noConnection: {
     id: "screen.sync.main.noConnection",
@@ -220,6 +227,71 @@ const ProjectInfoCard = ({
   );
 };
 
+const animatedEllipsisStyles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    alignItems: "baseline",
+  },
+  text: {
+    fontSize: textStyles.large.fontSize,
+    fontWeight: textStyles.bold.fontWeight,
+    // Hacky way of getting ellipsis to vertically align at bottom
+    marginBottom: -(textStyles.large.fontSize / 2),
+  },
+});
+
+const AnimatedEllipsis = () => {
+  const dots = React.useRef([
+    new Animated.Value(0),
+    new Animated.Value(0),
+    new Animated.Value(0),
+  ]).current;
+
+  React.useEffect(() => {
+    let mounted = true;
+
+    function animateDot(position: number) {
+      if (!mounted) return;
+
+      const targetDot = dots[position];
+      const nextDotPosition = (position + 1) % 3;
+
+      Animated.timing(targetDot, {
+        toValue: 1,
+        useNativeDriver: true,
+        duration: 350,
+      }).start(({ finished }) => {
+        if (finished && nextDotPosition === 0) {
+          dots.forEach((d) => {
+            d.setValue(0);
+          });
+        }
+        animateDot(nextDotPosition);
+      });
+    }
+
+    animateDot(0);
+
+    return () => {
+      mounted = false;
+      dots.forEach((d) => d.stopAnimation());
+    };
+  }, []);
+
+  return (
+    <View style={animatedEllipsisStyles.container}>
+      {dots.map((opacity, index) => (
+        <Animated.Text
+          key={index}
+          style={[animatedEllipsisStyles.text, { opacity }]}
+        >
+          .
+        </Animated.Text>
+      ))}
+    </View>
+  );
+};
+
 const devicesListStyles = StyleSheet.create({
   container: {
     paddingVertical: spacing.large,
@@ -245,6 +317,7 @@ const DevicesList = () => {
         <View>
           <Text size="large" bold textAlign="center">
             {t(m.searching)}
+            <AnimatedEllipsis />
           </Text>
         </View>
       ) : null}

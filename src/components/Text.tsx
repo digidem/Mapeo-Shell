@@ -7,16 +7,11 @@ interface Props extends React.PropsWithChildren<Omit<TextProps, "style">> {
   textAlign?: TextStyle["textAlign"];
 }
 
-const styles = StyleSheet.create({
-  small: {
-    fontSize: 14,
-  },
-  medium: {
-    fontSize: 20,
-  },
-  large: {
-    fontSize: 24,
-  },
+export const styles = StyleSheet.create({
+  small: { fontSize: 14 },
+  medium: { fontSize: 20 },
+  large: { fontSize: 24 },
+  bold: { fontWeight: "500" },
 });
 
 export const Text = ({
@@ -35,7 +30,7 @@ export const Text = ({
         {
           textAlign,
           color,
-          fontWeight: bold ? "500" : undefined,
+          fontWeight: bold ? styles.bold.fontWeight : undefined,
         },
       ]}
     >
