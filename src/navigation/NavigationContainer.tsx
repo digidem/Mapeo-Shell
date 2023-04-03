@@ -19,6 +19,7 @@ import { WHITE } from "../lib/styles";
 import { CustomHeaderLeft } from "../components/CustomHeaderLeft";
 import { CustomHeaderRight } from "../components/CustomHeaderRight";
 import { Main } from "../screens/sync/Main";
+import { useIntl } from "react-intl";
 
 export type Drawers = {
   Home: undefined;
@@ -84,11 +85,16 @@ const SyncStack = createNativeStackNavigator<SyncScreens>();
 const SyncScreensStack = ({
   navigation: { goBack, toggleDrawer },
 }: DrawerScreenProps<Drawers, "Sync">) => {
+  const { formatMessage: t } = useIntl();
   return (
     <SyncStack.Navigator
       screenOptions={() => StackNavigationOptions(goBack, toggleDrawer)}
     >
-      <SyncStack.Screen name="Main" component={Main} />
+      <SyncStack.Screen
+        name="Main"
+        component={Main}
+        options={{ headerTitle: t(Main.navTitle) }}
+      />
       <SyncStack.Screen name="Bar" component={Bar} />
     </SyncStack.Navigator>
   );
