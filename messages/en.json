@@ -3,9 +3,6 @@
     "description": "Used as a tester",
     "message": "This is a test"
   },
-  "screen.sync.bar": {
-    "message": "Bar Sync"
-  },
   "screen.sync.main.connectedNoNetworkName": {
     "message": "Connected (no network name)"
   },
