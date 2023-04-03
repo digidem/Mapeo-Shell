@@ -36,9 +36,8 @@ export type ProjectInviteScreens = {
   ProjectCoordinator: undefined;
 };
 
-export const StackNavigationOptions = (
-  goBack: () => void,
-  toggleDrawer: () => void
+export const createBaseStackNavigationOptions = (
+  goBack: () => void
 ): NativeStackNavigationOptions => ({
   presentation: "card",
   contentStyle: { backgroundColor: WHITE },
@@ -49,7 +48,6 @@ export const StackNavigationOptions = (
   // This only hides the DEFAULT back button. We render a custom one in headerLeft, so the default one should always be hidden.
   // This **might** cause a problem for IOS
   headerBackVisible: false,
-  headerRight: () => <CustomHeaderRight toggleDrawer={toggleDrawer} />,
 });
 
 const Drawer = createDrawerNavigator<Drawers>();
@@ -83,13 +81,17 @@ export const NavigationContainer = () => {
 const SyncStack = createNativeStackNavigator<SyncScreens>();
 
 const SyncScreensStack = ({
-  navigation: { goBack, toggleDrawer },
+  navigation: { goBack },
 }: DrawerScreenProps<Drawers, "Sync">) => {
   const { formatMessage: t } = useIntl();
+
+  const screenOptions = {
+    ...createBaseStackNavigationOptions(goBack),
+    headerRight: () => <CustomHeaderRight iconName={"settings"} />,
+  };
+
   return (
-    <SyncStack.Navigator
-      screenOptions={() => StackNavigationOptions(goBack, toggleDrawer)}
-    >
+    <SyncStack.Navigator screenOptions={screenOptions}>
       <SyncStack.Screen
         name="Main"
         component={Main}
@@ -105,10 +107,15 @@ const ProjectInviteStack = createNativeStackNavigator<ProjectInviteScreens>();
 const ProjectInviteScreensStack = ({
   navigation: { goBack, toggleDrawer },
 }: DrawerScreenProps<Drawers, "ProjectInvite">) => {
+  const screenOptions = {
+    ...createBaseStackNavigationOptions(goBack),
+    headerRight: () => (
+      <CustomHeaderRight iconName="menu" onPress={toggleDrawer} />
+    ),
+  };
+
   return (
-    <ProjectInviteStack.Navigator
-      screenOptions={() => StackNavigationOptions(goBack, toggleDrawer)}
-    >
+    <ProjectInviteStack.Navigator screenOptions={screenOptions}>
       <ProjectInviteStack.Screen
         name="ProjectCoordinator"
         component={ProjectCoordinator}
