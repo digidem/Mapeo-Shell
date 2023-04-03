@@ -52,7 +52,7 @@ const projectInfoCardStyles = StyleSheet.create({
   },
 
   wifiIconContainer: {
-    marginRight: spacing.small,
+    marginRight: spacing.medium,
   },
 
   ssidContainer: { flex: 1 },
