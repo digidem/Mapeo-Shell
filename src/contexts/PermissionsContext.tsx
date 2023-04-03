@@ -18,7 +18,7 @@ export const PermissionsProvider = ({
 
   return (
     <PermissionsContext.Provider value={response}>
-      {children}
+      {response ? children : null}
     </PermissionsContext.Provider>
   );
 };
