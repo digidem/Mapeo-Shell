@@ -119,15 +119,16 @@ const WifiIcon = ({ active }: { active?: boolean }) => {
 const TAB_SIZE = 36;
 
 const viewSwitchStyles = StyleSheet.create({
-  touchable: {
+  container: {
     flex: 1,
-    flexDirection: "row",
     borderRadius: 6,
     padding: spacing.small / 2,
     backgroundColor: colors.DARK_GRAY,
   },
-
-  tab: {
+  innerContainer: {
+    flexDirection: "row",
+  },
+  baseTab: {
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 4,
@@ -146,33 +147,40 @@ const ViewSwitch = ({
   return (
     <TouchableWithoutFeedback
       onPress={toggle}
-      style={viewSwitchStyles.touchable}
+      style={viewSwitchStyles.container}
     >
-      <View
-        style={[
-          viewSwitchStyles.tab,
-          {
-            elevation: value === "list" ? 5 : undefined,
-            backgroundColor: value === "list" ? colors.WHITE : undefined,
-          },
-        ]}
-      >
-        <MaterialIcon
-          name="format-list-bulleted-square"
-          size={TAB_SIZE / 1.5}
-        />
-      </View>
-      <View style={{ width: spacing.small }}></View>
-      <View
-        style={[
-          viewSwitchStyles.tab,
-          {
-            elevation: value === "bubbles" ? 5 : undefined,
-            backgroundColor: value === "bubbles" ? colors.WHITE : undefined,
-          },
-        ]}
-      >
-        <MaterialIcon name="graphql" size={TAB_SIZE / 1.5} />
+      <View style={viewSwitchStyles.innerContainer}>
+        <View
+          style={[
+            viewSwitchStyles.baseTab,
+
+            value === "list"
+              ? {
+                  elevation: 5,
+                  backgroundColor: colors.WHITE,
+                }
+              : undefined,
+          ]}
+        >
+          <MaterialIcon
+            name="format-list-bulleted-square"
+            size={TAB_SIZE / 1.5}
+          />
+        </View>
+        <View style={{ width: spacing.small }}></View>
+        <View
+          style={[
+            viewSwitchStyles.baseTab,
+            value === "bubbles"
+              ? {
+                  elevation: 5,
+                  backgroundColor: colors.WHITE,
+                }
+              : undefined,
+          ]}
+        >
+          <MaterialIcon name="graphql" size={TAB_SIZE / 1.5} />
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
