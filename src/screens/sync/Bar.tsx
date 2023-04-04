@@ -14,7 +14,9 @@ export const Bar: SyncScreenComponent<"Bar"> = () => {
   return (
     <View>
       <Text>Bar Sync</Text>
-      <ProgressBar />
+      {[1, 2, 3, 4, 5, 6, 23, 25, 26, 71, 324, 234].map((val) => (
+        <ProgressBar key={val} deviceId={val.toString()} />
+      ))}
     </View>
   );
 };

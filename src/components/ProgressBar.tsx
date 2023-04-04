@@ -10,24 +10,14 @@ type ProgressBarProps = {
   shouldSync: boolean;
 };
 
-export const ProgressBar = () => {
-  const [thisSync, setThisSync] = useIndividualSync("deviceId", "local");
-  const [progress, setProgress] = useState(0);
-  // const interval = useRef<NodeJS.Timer>()
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setThisSync();
-    }, 10);
-
-    return () => clearInterval(interval);
-  }, [thisSync]);
+export const ProgressBar = ({ deviceId }: { deviceId: string }) => {
+  const [thisSync, setThisSync] = useIndividualSync(deviceId, "local");
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={setThisSync}>
       <Progress.Bar
         color="rgba(0, 102, 255, 0.1)"
-        progress={progress / 100}
+        progress={thisSync ? thisSync.completed / thisSync.total : 0}
         width={null}
         height={80}
       >
