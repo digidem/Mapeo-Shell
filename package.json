@@ -16,6 +16,8 @@
     "@react-navigation/drawer": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
+    "@shopify/react-native-skia": "^0.1.182",
+    "d3": "^7.8.4",
     "expo": "~48.0.6",
     "expo-location": "~15.1.1",
     "expo-status-bar": "~1.4.4",
@@ -32,6 +34,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@formatjs/cli": "^6.0.4",
+    "@types/d3": "^7.4.0",
     "@types/react": "~18.0.14",
     "@types/react-native-vector-icons": "^6.4.13",
     "glob": "^9.3.0",

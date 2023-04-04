@@ -8,6 +8,7 @@ import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Spacer } from "../../components/Spacer";
 import { Text, styles as textStyles } from "../../components/Text";
 import { colors, spacing } from "../../lib/styles";
+import { Bubbles } from "./Bubbles";
 import { ViewMode } from ".";
 
 const m = defineMessages({
@@ -203,7 +204,9 @@ export const Devices = ({ mode }: { mode: ViewMode }) => {
         </View>
       ) : mode === "list" ? (
         <DeviceList />
-      ) : null}
+      ) : (
+        <Bubbles />
+      )}
     </View>
   );
 };
