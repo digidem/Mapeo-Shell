@@ -104,7 +104,7 @@ const ViewSwitch = ({
   );
 };
 
-const projectInfoCardStyles = StyleSheet.create({
+const projectInfoStyles = StyleSheet.create({
   container: {
     borderRadius: 4,
     backgroundColor: colors.WHITE,
@@ -157,13 +157,13 @@ export const ProjectInfo = ({
   const { permissionEnabled, ssid, wifiConnected } = useWifiInfo();
 
   return (
-    <View style={projectInfoCardStyles.container}>
-      <View style={projectInfoCardStyles.titleContainer}>
-        <View style={projectInfoCardStyles.connectionInfoContainer}>
-          <View style={projectInfoCardStyles.wifiIconContainer}>
+    <View style={projectInfoStyles.container}>
+      <View style={projectInfoStyles.titleContainer}>
+        <View style={projectInfoStyles.connectionInfoContainer}>
+          <View style={projectInfoStyles.wifiIconContainer}>
             <WifiIcon active={wifiConnected} />
           </View>
-          <View style={projectInfoCardStyles.ssidContainer}>
+          <View style={projectInfoStyles.ssidContainer}>
             <TouchableWithoutFeedback
               onPress={
                 permissionEnabled ? undefined : () => Linking.openSettings()
@@ -179,11 +179,11 @@ export const ProjectInfo = ({
         </View>
         <ViewSwitch value={viewMode} toggle={toggleViewMode} />
       </View>
-      <View style={projectInfoCardStyles.bodyContainer}>
-        <View style={projectInfoCardStyles.logoImageContainer}>
+      <View style={projectInfoStyles.bodyContainer}>
+        <View style={projectInfoStyles.logoImageContainer}>
           <Image
             source={require("../../../assets/cards.png")}
-            style={projectInfoCardStyles.logoImage}
+            style={projectInfoStyles.logoImage}
           />
         </View>
         <Text size="medium" bold>
