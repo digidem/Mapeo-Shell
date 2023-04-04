@@ -3,16 +3,16 @@
     "description": "Used as a tester",
     "message": "This is a test"
   },
-  "screen.sync.main.connectedNoNetworkName": {
+  "screen.sync.DevicesList.searching": {
+    "message": "Searching for devices"
+  },
+  "screen.sync.ProjectInfo.connectedNoNetworkName": {
     "message": "Connected (no network name)"
   },
-  "screen.sync.main.navTitle": {
-    "message": "Synchronize"
-  },
-  "screen.sync.main.noConnection": {
+  "screen.sync.ProjectInfo.noConnection": {
     "message": "No connection"
   },
-  "screen.sync.main.searching": {
-    "message": "Searching for devices"
+  "screen.sync.index.navTitle": {
+    "message": "Synchronize"
   }
 }
