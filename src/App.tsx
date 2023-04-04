@@ -1,6 +1,12 @@
+import "react-native-gesture-handler";
+
+import * as React from "react";
 import { registerRootComponent } from "expo";
-import { IntlProvider } from "./contexts/IntlContext";
 import { defineMessages } from "react-intl";
+
+import { IntlProvider } from "./contexts/IntlContext";
+import { PermissionsProvider } from "./contexts/PermissionsContext";
+import { NavigationContainer } from "./navigation/NavigationContainer";
 
 const m = defineMessages({
   firstMessage: {
@@ -10,14 +16,13 @@ const m = defineMessages({
   },
 });
 
-import { NavigationContainer } from "./navigation/NavigationContainer";
-import "react-native-gesture-handler";
-
 export default function App() {
   return (
-    <IntlProvider>
-      <NavigationContainer />
-    </IntlProvider>
+    <PermissionsProvider>
+      <IntlProvider>
+        <NavigationContainer />
+      </IntlProvider>
+    </PermissionsProvider>
   );
 }
 

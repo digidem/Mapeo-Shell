@@ -2,5 +2,17 @@
   "app.firstMessage": {
     "description": "Used as a tester",
     "message": "This is a test"
+  },
+  "screen.sync.DevicesList.searching": {
+    "message": "Searching for devices"
+  },
+  "screen.sync.ProjectInfo.connectedNoNetworkName": {
+    "message": "Connected (no network name)"
+  },
+  "screen.sync.ProjectInfo.noConnection": {
+    "message": "No connection"
+  },
+  "screen.sync.index.navTitle": {
+    "message": "Synchronize"
   }
 }
