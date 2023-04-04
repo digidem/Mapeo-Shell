@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const SyncScreen: SyncScreenComponent<"Sync"> = () => {
+export const SyncScreen: SyncScreenComponent<"SyncMain"> = () => {
   const [viewMode, setViewMode] = React.useState<"list" | "bubbles">("list");
 
   return (

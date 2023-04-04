@@ -21,7 +21,7 @@ export type Drawers = {
 };
 
 export type SyncScreens = {
-  Sync: undefined;
+  SyncMain: undefined;
 };
 
 // The drawer navigation is hidden in the UI. Currently the user only see the Sync Nav (Native Stack).
@@ -71,7 +71,7 @@ const SyncScreensStack = ({
   return (
     <SyncStack.Navigator screenOptions={screenOptions}>
       <SyncStack.Screen
-        name="Sync"
+        name="SyncMain"
         component={SyncScreen}
         options={{ headerTitle: t(SyncScreen.navTitle) }}
       />
