@@ -8,7 +8,6 @@ import { Text } from "../../components/Text";
 import { useWifiInfo } from "../../hooks/useWifiInfo";
 import { colors, spacing } from "../../lib/styles";
 
-const LOGO_RADIUS = 50;
 const TAB_SIZE = 36;
 
 const m = defineMessages({
@@ -132,16 +131,10 @@ const projectInfoCardStyles = StyleSheet.create({
   ssidContainer: { flex: 1 },
 
   logoImageContainer: {
-    justifyContent: "center",
-    alignItems: "center",
     marginBottom: spacing.large,
-    backgroundColor: colors.LIGHT_BLUE,
-    borderRadius: LOGO_RADIUS * 2,
-    width: LOGO_RADIUS * 2,
-    height: LOGO_RADIUS * 2,
   },
 
-  logoImage: { padding: 20 },
+  logoImage: { width: 100, height: 100 },
 
   bodyContainer: {
     alignItems: "center",
@@ -189,7 +182,6 @@ export const ProjectInfo = ({
       <View style={projectInfoCardStyles.bodyContainer}>
         <View style={projectInfoCardStyles.logoImageContainer}>
           <Image
-            // TODO: Use better res asset
             source={require("../../../assets/cards.png")}
             style={projectInfoCardStyles.logoImage}
           />
