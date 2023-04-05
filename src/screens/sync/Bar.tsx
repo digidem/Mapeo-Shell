@@ -2,6 +2,7 @@ import { defineMessages } from "react-intl";
 import { View, Text } from "react-native";
 import { ProgressBar } from "../../components/ProgressBar";
 import { SyncScreenComponent } from "../../sharedTypes";
+import { SyncProvider } from "../../contexts/SyncContext";
 
 const m = defineMessages({
   title: {
@@ -12,12 +13,21 @@ const m = defineMessages({
 
 export const Bar: SyncScreenComponent<"Bar"> = () => {
   return (
-    <View>
-      <Text>Bar Sync</Text>
-      {[1, 2, 3, 4, 5, 6, 23, 25, 26, 71, 324, 234].map((val) => (
-        <ProgressBar key={val} deviceId={val.toString()} />
-      ))}
-    </View>
+    <SyncProvider>
+      <View>
+        <Text>Bar Sync</Text>
+        {[1, 2, 3, 4, 5, 6, 23, 25, 26, 71, 324, 234].map((val) => (
+          <ProgressBar
+            key={val}
+            deviceId={val.toString()}
+            deviceType={val % 2 == 0 ? "desktop" : "mobile"}
+            deviceName={`Device #${val}`}
+            date="Feb 12, 2023"
+            shouldSync={false}
+          />
+        ))}
+      </View>
+    </SyncProvider>
   );
 };
 
