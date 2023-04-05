@@ -10,20 +10,14 @@ import {
 } from "@shopify/react-native-skia";
 import * as d3 from "d3";
 
-import { colors } from "../../lib/styles";
-import { styles as textStyles } from "../../components/Text";
+import { colors, spacing } from "../../lib/styles";
+import { Text, styles as textStyles } from "../../components/Text";
+import { Peer } from "./Devices";
 
 type Me = {
   id: "me";
   has: null;
   wants: null;
-};
-
-type Peer = {
-  id: string;
-  name: string | null;
-  has: number;
-  wants: number;
 };
 
 interface MeNode extends d3.SimulationNodeDatum, Me {
@@ -36,21 +30,26 @@ interface PeerNode extends d3.SimulationNodeDatum, Peer {
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-function randomInteger(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 function isTargetNode(node: Peer | Me): node is Me {
   return node.id === "me";
 }
 
-const MAX_RADIUS = 40;
+const MAX_RADIUS = 50;
 
 const MIN_RADIUS = 20;
 
 function createNodes(peers: Peer[]): [MeNode, ...PeerNode[]] {
   return [
-    { id: "me", has: null, wants: null, index: 0, radius: MAX_RADIUS },
+    {
+      id: "me",
+      has: null,
+      wants: null,
+      index: 0,
+      radius: MAX_RADIUS,
+      // Fix the position of this node
+      fx: (SCREEN_WIDTH - 24) / 2,
+      fy: MAX_RADIUS,
+    },
     ...peers.map((p) => {
       const { has, wants } = p;
       const syncedRatio = has / wants;
@@ -114,44 +113,57 @@ function createSimulation(peers: Peer[]) {
       .forceSimulation<(typeof nodes)[number], (typeof links)[number]>(nodes)
       .force("link", forceLink)
       .force("charge", forceNode)
-      // 24 accounts for wrapping view padding
       // TODO: Adjust y so that me node is at top
-      .force("center", d3.forceCenter((SCREEN_WIDTH - 24) / 2, 100))
-      // .force("position", d3.forceY(0.5))
+      .force("positionY", d3.forceY(Math.max(MAX_RADIUS * 4)).strength(0.5))
+      // 24 accounts for wrapping view padding
+      .force("positionX", d3.forceX((SCREEN_WIDTH - 24) / 2).strength(0.5))
       .force("collide", forceCollide)
       .stop()
   );
 }
 
 function useSimulationEffect(peers: Peer[]) {
+  const [status, setStatus] = React.useState<"idle" | "done" | "loading">(
+    "idle"
+  );
   const [nodes, setNodes] = React.useState<(MeNode | PeerNode)[]>([]);
 
   React.useEffect(() => {
     const sim = createSimulation(peers);
 
-    sim.restart().on("tick", () => {
-      setNodes([...sim.nodes()]);
-    });
+    setStatus("loading");
+
+    sim
+      .restart()
+      .on("tick", () => {
+        const [meNode, ...peerNodes] = sim.nodes();
+
+        // Adjust the x, y for peer nodes so they fall within the boundaries of the canvas
+        for (const node of peerNodes) {
+          if (node.y && node.x) {
+            const adjustedY = Math.max(node.y, MAX_RADIUS * 3);
+            const adjustedX = Math.max(
+              node.radius * 2,
+              Math.min(SCREEN_WIDTH - 24 - 2 * node.radius, node.x)
+            );
+            // TODO: Should handle a max y here too
+            node.y = adjustedY;
+            node.x = adjustedX;
+          }
+        }
+        setNodes([meNode, ...peerNodes]);
+      })
+      .on("end", () => {
+        setStatus("done");
+      });
 
     return () => {
       sim.stop();
+      setStatus("idle");
     };
   }, [peers]);
 
-  return nodes;
-}
-
-function generatePeers(size: number): Peer[] {
-  return new Array(size).fill(null).map((_, index) => {
-    const wants = randomInteger(1, 100);
-    const has = randomInteger(0, wants);
-    return {
-      id: `peer-${index + 1}`,
-      name: `Android Device ${index + 1}`,
-      has,
-      wants,
-    };
-  });
+  return { nodes, status };
 }
 
 // https://stackoverflow.com/a/481150
@@ -287,11 +299,10 @@ const CircleText = ({
   return <SkiaText {...skiaTextProps} font={font} />;
 };
 
-export const Bubbles = () => {
-  const [peers] = React.useState<Peer[]>(generatePeers(10));
+export const Bubbles = ({ peers }: { peers: Peer[] }) => {
   const [activeNode, setActiveNode] = React.useState<PeerNode | null>(null);
 
-  const nodes = useSimulationEffect(peers);
+  const { nodes } = useSimulationEffect(peers);
 
   const onTouch = useTouchHandler(
     {
@@ -329,11 +340,12 @@ export const Bubbles = () => {
   }, [activeNode]);
 
   return (
-    <View style={{ borderWidth: 1, borderColor: "yellow" }}>
+    <View style={{ flex: 1 }}>
       <Canvas
         style={{
-          width: SCREEN_WIDTH,
-          height: 400,
+          height: 500,
+          borderWidth: 1,
+          borderColor: "yellow",
         }}
         onTouch={onTouch}
       >

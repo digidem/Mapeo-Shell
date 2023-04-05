@@ -11,6 +11,30 @@ import { colors, spacing } from "../../lib/styles";
 import { Bubbles } from "./Bubbles";
 import { ViewMode } from ".";
 
+export type Peer = {
+  id: string;
+  name: string | null;
+  has: number;
+  wants: number;
+};
+
+function randomInteger(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function generatePeers(size: number): Peer[] {
+  return new Array(size).fill(null).map((_, index) => {
+    const wants = randomInteger(1, 100);
+    const has = randomInteger(0, wants);
+    return {
+      id: `peer-${index + 1}`,
+      name: `Android Device ${index + 1}`,
+      has,
+      wants,
+    };
+  });
+}
+
 const m = defineMessages({
   searching: {
     id: "screen.sync.Devices.searching",
@@ -205,7 +229,7 @@ export const Devices = ({ mode }: { mode: ViewMode }) => {
       ) : mode === "list" ? (
         <DeviceList />
       ) : (
-        <Bubbles />
+        <Bubbles peers={generatePeers(15)} />
       )}
     </View>
   );
