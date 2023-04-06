@@ -6,6 +6,7 @@ import { colors, spacing } from "../../lib/styles";
 import { SyncScreenComponent } from "../../sharedTypes";
 import { Devices } from "./Devices";
 import { ProjectInfo } from "./ProjectInfo";
+import { ProgressBar } from "../../components/ProgressBar";
 
 export type ViewMode = "list" | "bubbles";
 
@@ -41,6 +42,13 @@ export const SyncScreen: SyncScreenComponent<"SyncMain"> = () => {
         }}
       />
       <Devices mode={viewMode} />
+      <ProgressBar
+        deviceId={"example"}
+        deviceType={"desktop"}
+        deviceName={"Example"}
+        date="Feb 12, 2023"
+        shouldSync={false}
+      />
     </ScrollView>
   );
 };
