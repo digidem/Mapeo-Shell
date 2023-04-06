@@ -8,6 +8,7 @@ import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Spacer } from "../../components/Spacer";
 import { Text, styles as textStyles } from "../../components/Text";
 import { colors, spacing } from "../../lib/styles";
+import { ViewMode } from ".";
 
 const m = defineMessages({
   searching: {
@@ -178,7 +179,7 @@ const DeviceList = () => {
   );
 };
 
-export const Devices = ({ mode }: { mode: "list" | "bubbles" }) => {
+export const Devices = ({ mode }: { mode: ViewMode }) => {
   const { formatMessage: t } = useIntl();
   const [status, setStatus] = React.useState<"loading" | "idle">("loading");
 

@@ -7,6 +7,8 @@ import { SyncScreenComponent } from "../../sharedTypes";
 import { Devices } from "./Devices";
 import { ProjectInfo } from "./ProjectInfo";
 
+export type ViewMode = "list" | "bubbles";
+
 const m = defineMessages({
   navTitle: {
     id: "screen.sync.index.navTitle",
@@ -24,7 +26,7 @@ const styles = StyleSheet.create({
 });
 
 export const SyncScreen: SyncScreenComponent<"SyncMain"> = () => {
-  const [viewMode, setViewMode] = React.useState<"list" | "bubbles">("list");
+  const [viewMode, setViewMode] = React.useState<ViewMode>("list");
 
   return (
     <ScrollView
