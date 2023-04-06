@@ -8,6 +8,7 @@ import { Devices } from "./Devices";
 import { ProjectInfo } from "./ProjectInfo";
 
 export type ViewMode = "list" | "bubbles";
+export type Role = "coordinator" | "participant";
 
 const m = defineMessages({
   navTitle: {
