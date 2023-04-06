@@ -70,7 +70,7 @@ const NavButton = ({
         </Text>
       </View>
       <View style={navButtonStyles.rightContainer}>
-        <Text size="medium" textAlign="center" bold numberOfLines={1}>
+        <Text size="medium" bold textAlign="center" numberOfLines={2}>
           {rightText}
         </Text>
       </View>
