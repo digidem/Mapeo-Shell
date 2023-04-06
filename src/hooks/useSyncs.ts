@@ -53,6 +53,22 @@ export function useSync(deviceId: string, syncGroup: SyncGroup) {
   );
 }
 
+/**
+ *
+ * @param syncGroup
+ * @returns an array of all active syncs
+ */
+export function useActiveSync(syncGroup: SyncGroup) {
+  const { allSyncs } = useContext(SyncContext);
+
+  return Object.values(allSyncs).filter(
+    (val) =>
+      val.syncGroup === syncGroup &&
+      val.progress.completed > 0 &&
+      val.progress.completed < val.progress.total
+  );
+}
+
 function getRandomNumberMax30() {
   return Math.floor(Math.random() * (30 - 1) + 1);
 }
