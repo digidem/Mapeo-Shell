@@ -4,8 +4,10 @@ import { defineMessages } from "react-intl";
 
 import { colors, spacing } from "../../lib/styles";
 import { SyncScreenComponent } from "../../sharedTypes";
-import { DevicesList } from "./DevicesList";
+import { Devices } from "./Devices";
 import { ProjectInfo } from "./ProjectInfo";
+
+export type ViewMode = "list" | "bubbles";
 
 const m = defineMessages({
   navTitle: {
@@ -24,7 +26,7 @@ const styles = StyleSheet.create({
 });
 
 export const SyncScreen: SyncScreenComponent<"SyncMain"> = () => {
-  const [viewMode, setViewMode] = React.useState<"list" | "bubbles">("list");
+  const [viewMode, setViewMode] = React.useState<ViewMode>("list");
 
   return (
     <ScrollView
@@ -38,7 +40,7 @@ export const SyncScreen: SyncScreenComponent<"SyncMain"> = () => {
           setViewMode((prev) => (prev === "list" ? "bubbles" : "list"));
         }}
       />
-      <DevicesList />
+      <Devices mode={viewMode} />
     </ScrollView>
   );
 };

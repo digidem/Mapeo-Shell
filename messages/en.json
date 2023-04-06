@@ -3,7 +3,7 @@
     "description": "Used as a tester",
     "message": "This is a test"
   },
-  "screen.sync.DevicesList.searching": {
+  "screen.sync.Devices.searching": {
     "message": "Searching for devices"
   },
   "screen.sync.ProjectInfo.connectedNoNetworkName": {
@@ -14,5 +14,17 @@
   },
   "screen.sync.index.navTitle": {
     "message": "Synchronize"
+  },
+  "screen.sync.main.deviceName": {
+    "message": "Device Name"
+  },
+  "screen.sync.main.lastSynced": {
+    "message": "Last Synced"
+  },
+  "screen.sync.main.localDevices": {
+    "message": "Local Devices"
+  },
+  "screen.sync.main.sync": {
+    "message": "Sync"
   }
 }
