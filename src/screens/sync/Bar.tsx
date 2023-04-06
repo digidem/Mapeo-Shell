@@ -2,8 +2,6 @@ import { defineMessages } from "react-intl";
 import { View, Text } from "react-native";
 import { ProgressBar } from "../../components/ProgressBar";
 import { SyncScreenComponent } from "../../sharedTypes";
-import { SyncProvider } from "../../contexts/SyncContext";
-import { useActiveSync } from "../../hooks/useSyncs";
 
 const m = defineMessages({
   title: {
