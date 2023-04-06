@@ -1,9 +1,14 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MessageDescriptor } from "react-intl";
 
-import { SyncScreens } from "./navigation/NavigationContainer";
+import { Screens } from "./navigation/NavigationContainer";
 
-export type SyncScreenComponent<ScreenName extends keyof SyncScreens> =
-  React.FC<NativeStackScreenProps<SyncScreens, ScreenName>> & {
-    navTitle: MessageDescriptor;
-  };
+export type ScreenComponent<ScreenName extends keyof Screens> = React.FC<
+  NativeStackScreenProps<Screens, ScreenName>
+> &
+  // Home screen doesn't have a nav header
+  (ScreenName extends "Home"
+    ? {}
+    : {
+        navTitle: MessageDescriptor;
+      });

@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet } from "react-native";
 import { defineMessages } from "react-intl";
 
 import { colors, spacing } from "../../lib/styles";
-import { SyncScreenComponent } from "../../sharedTypes";
+import { ScreenComponent } from "../../sharedTypes";
 import { Devices } from "./Devices";
 import { ProjectInfo } from "./ProjectInfo";
 
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const SyncScreen: SyncScreenComponent<"SyncMain"> = () => {
+export const SyncScreen: ScreenComponent<"Sync"> = ({ route }) => {
   const [viewMode, setViewMode] = React.useState<ViewMode>("list");
 
   return (

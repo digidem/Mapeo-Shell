@@ -1,80 +1,54 @@
-import {
-  NavigationContainer as NativeNavContainer,
-  NavigatorScreenParams,
-} from "@react-navigation/native";
-import {
-  createDrawerNavigator,
-  DrawerScreenProps,
-} from "@react-navigation/drawer";
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationOptions,
-} from "@react-navigation/native-stack";
+import { NavigationContainer as NativeNavContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useIntl } from "react-intl";
 
 import { colors } from "../lib/styles";
+import { CustomHeaderLeft } from "../components/CustomHeaderLeft";
 import { CustomHeaderRight } from "../components/CustomHeaderRight";
-import { SyncScreen } from "../screens/sync";
+import { Role, SyncScreen } from "../screens/sync";
+import { HomeScreen } from "../screens/Home";
 
-export type Drawers = {
-  Sync: NavigatorScreenParams<SyncScreens>;
+export type Screens = {
+  Home: undefined;
+  Sync: { role: Role };
 };
 
-export type SyncScreens = {
-  SyncMain: undefined;
-};
-
-// The drawer navigation is hidden in the UI. Currently the user only see the Sync Nav (Native Stack).
-// And the drawer is inaccessible to the user.
-// Im leaving the drawer navigation in because it is undecided whether we will be using it in the future.
-export const createBaseStackNavigationOptions = (
-  goBack: () => void
-): NativeStackNavigationOptions => ({
-  presentation: "card",
-  contentStyle: { backgroundColor: colors.WHITE },
-  headerStyle: { backgroundColor: colors.WHITE },
-  // headerLeft: (props: HeaderButtonProps) => (
-  //   <CustomHeaderLeft headerBackButtonProps={props} goBack={goBack} />
-  // ),
-  // This only hides the DEFAULT back button. We render a custom one in headerLeft, so the default one should always be hidden.
-  // This **might** cause a problem for IOS
-  headerBackVisible: false,
-});
-
-const Drawer = createDrawerNavigator<Drawers>();
+const Stack = createNativeStackNavigator<Screens>();
 
 export const NavigationContainer = () => {
+  const { formatMessage: t } = useIntl();
   return (
     <NativeNavContainer>
-      <Drawer.Navigator
-        screenOptions={{ headerShown: false, swipeEnabled: false }}
-        initialRouteName="Sync"
-      >
-        <Drawer.Screen name="Sync" component={SyncScreensStack} />
-      </Drawer.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            headerShown: false,
+            contentStyle: { backgroundColor: colors.MAPEO_DARK_BLUE },
+          }}
+        />
+        <Stack.Screen
+          name="Sync"
+          component={SyncScreen}
+          options={({ navigation }) => ({
+            presentation: "card",
+            headerTitle: t(SyncScreen.navTitle),
+            contentStyle: { backgroundColor: colors.WHITE },
+            headerStyle: { backgroundColor: colors.WHITE },
+            headerLeft: (props) => (
+              <CustomHeaderLeft
+                headerBackButtonProps={props}
+                goBack={navigation.goBack}
+              />
+            ),
+            headerRight: () => <CustomHeaderRight iconName="settings" />,
+            // This only hides the DEFAULT back button. We render a custom one in headerLeft, so the default one should always be hidden.
+            // This **might** cause a problem for IOS
+            // headerBackVisible: false,
+          })}
+        />
+      </Stack.Navigator>
     </NativeNavContainer>
-  );
-};
-
-const SyncStack = createNativeStackNavigator<SyncScreens>();
-
-const SyncScreensStack = ({
-  navigation: { goBack },
-}: DrawerScreenProps<Drawers, "Sync">) => {
-  const { formatMessage: t } = useIntl();
-
-  const screenOptions = {
-    ...createBaseStackNavigationOptions(goBack),
-    headerRight: () => <CustomHeaderRight iconName={"settings"} />,
-  };
-
-  return (
-    <SyncStack.Navigator screenOptions={screenOptions}>
-      <SyncStack.Screen
-        name="SyncMain"
-        component={SyncScreen}
-        options={{ headerTitle: t(SyncScreen.navTitle) }}
-      />
-    </SyncStack.Navigator>
   );
 };
