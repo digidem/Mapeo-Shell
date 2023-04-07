@@ -54,7 +54,7 @@ export function useSync(deviceId: string, syncGroup: SyncGroup) {
   return useMemo(
     () =>
       [
-        thisSync.progress.completed / thisSync.progress.completed,
+        thisSync.progress.completed / thisSync.progress.completed || 0,
         () => {
           setStatus("active");
         },
@@ -65,7 +65,19 @@ export function useSync(deviceId: string, syncGroup: SyncGroup) {
 
 const useStatus = (deviceId: string, syncGroup: SyncGroup) => {
   const [status, setStatus] = useState<SyncStatus>("idle");
-  const [, setAllSyncs] = useContext(SyncContext);
+  const [allSyncs, setAllSyncs] = useContext(SyncContext);
+
+  useEffect(() => {
+    if (!allSyncs[syncGroup][deviceId]) {
+      setAllSyncs((val) => ({
+        ...val,
+        [syncGroup]: {
+          ...val[syncGroup],
+          [deviceId]: status,
+        },
+      }));
+    }
+  }, [syncGroup, deviceId, status, allSyncs]);
 
   const updateAllSyncsOnStatusUpdate = useCallback(
     (syncStatus: SyncStatus) => {

@@ -1,8 +1,8 @@
 import {
   ReactNode,
   createContext,
-  useCallback,
-  useMemo,
+  Dispatch,
+  SetStateAction,
   useState,
 } from "react";
 
@@ -14,7 +14,7 @@ export type AllSyncs = Record<SyncGroup, Record<string, SyncStatus>>;
 
 type SyncContextType = [
   allSyncs: AllSyncs,
-  setAllSyncs: React.Dispatch<React.SetStateAction<AllSyncs>>
+  setAllSyncs: Dispatch<SetStateAction<AllSyncs>>
 ];
 
 export const SyncContext = createContext<SyncContextType>([
