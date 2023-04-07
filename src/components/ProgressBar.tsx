@@ -3,25 +3,26 @@ import { StyleSheet, Text, View, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSync } from "../hooks/useSync";
 import { SyncGroup } from "../contexts/SyncContext";
+import { forwardRef, useImperativeHandle } from "react";
 
 type ProgressBarProps = {
   deviceId: string;
   deviceName: string;
   deviceType: "desktop" | "mobile";
   date: string;
-  shouldSync: boolean;
   syncGroup: SyncGroup;
+  shouldStart: boolean;
 };
 
 export const ProgressBar = ({
   deviceId,
   deviceName,
   date,
-  shouldSync,
   deviceType,
   syncGroup,
+  shouldStart,
 }: ProgressBarProps) => {
-  const [progress, incrementProgress] = useSync(deviceId, syncGroup);
+  const progress = useSync(deviceId, syncGroup, shouldStart);
 
   const icon =
     deviceType === "desktop"
@@ -29,7 +30,7 @@ export const ProgressBar = ({
       : require("../../assets/mobile.png");
 
   return (
-    <TouchableOpacity onPress={incrementProgress}>
+    <TouchableOpacity onPress={() => {}}>
       <Progress.Bar
         color="rgba(0, 102, 255, 0.1)"
         progress={progress}

@@ -18,13 +18,21 @@ type ActiveSync = {
   syncGroup: SyncGroup;
 };
 
-export function useSync(deviceId: string, syncGroup: SyncGroup) {
+export function useSync(
+  deviceId: string,
+  syncGroup: SyncGroup,
+  shouldStart: boolean
+) {
   const [thisSync, setThisSync] = useState<ActiveSync>({
     progress: { total: getRandomNumberMax30(), completed: 0 },
     syncGroup,
   });
   const interval = useRef<NodeJS.Timer>();
   const [status, setStatus] = useStatus(deviceId, syncGroup);
+
+  if (shouldStart && status === "idle") {
+    setStatus("active");
+  }
 
   useEffect(() => {
     if (status !== "active") return;
@@ -44,7 +52,7 @@ export function useSync(deviceId: string, syncGroup: SyncGroup) {
           },
         };
       });
-    }, 100);
+    }, 1000);
 
     return () => {
       clearInterval(interval.current);
@@ -52,14 +60,8 @@ export function useSync(deviceId: string, syncGroup: SyncGroup) {
   }, [status, thisSync]);
 
   return useMemo(
-    () =>
-      [
-        thisSync.progress.completed / thisSync.progress.completed || 0,
-        () => {
-          setStatus("active");
-        },
-      ] as const,
-    [thisSync, deviceId, status]
+    () => thisSync.progress.completed / thisSync.progress.completed || 0,
+    [thisSync]
   );
 }
 
