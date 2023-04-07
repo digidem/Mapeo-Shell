@@ -1,39 +1,49 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { SyncGroup, SyncContext } from "../contexts/SyncContext";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { SyncGroup, SyncContext, SyncStatus } from "../contexts/SyncContext";
+
+type Progress = {
+  completed: number;
+  total: number;
+};
+
+type ActiveSync = {
+  progress: Progress;
+  syncGroup: SyncGroup;
+};
 
 export function useSync(deviceId: string, syncGroup: SyncGroup) {
-  const { allSyncs, setIndividualSync, incrementSync } =
-    useContext(SyncContext);
-  const thisSync = allSyncs[deviceId];
+  const [thisSync, setThisSync] = useState<ActiveSync>({
+    progress: { total: getRandomNumberMax30(), completed: 0 },
+    syncGroup,
+  });
   const interval = useRef<NodeJS.Timer>();
-  const [status, setStatus] = useState<"active" | "stopped" | "idle">(
-    thisSync && thisSync.progress.completed > 0 ? "active" : "idle"
-  );
+  const [status, setStatus] = useStatus(deviceId, syncGroup);
 
   useEffect(() => {
-    if (!thisSync) {
-      const total = getRandomNumberMax30();
-      setIndividualSync(deviceId, { total, completed: 0 }, syncGroup);
-    }
-  }, [thisSync]);
-
-  if (
-    thisSync &&
-    thisSync.progress.completed >= thisSync.progress.total &&
-    status === "active"
-  ) {
-    setStatus("stopped");
-    clearInterval(interval.current);
-  }
-
-  useEffect(() => {
-    if (status !== "active" || !thisSync) {
-      clearInterval(interval.current);
-      return;
-    }
+    if (status !== "active") return;
 
     interval.current = setInterval(() => {
-      incrementSync(deviceId);
+      setThisSync((val) => {
+        const incrementedCompleted = val.progress.completed + 1;
+        if (incrementedCompleted >= val.progress.total) {
+          clearInterval(interval.current);
+          setStatus("stopped");
+        }
+        return {
+          ...val,
+          progress: {
+            ...val.progress,
+            completed: incrementedCompleted,
+          },
+        };
+      });
     }, 100);
 
     return () => {
@@ -44,30 +54,40 @@ export function useSync(deviceId: string, syncGroup: SyncGroup) {
   return useMemo(
     () =>
       [
-        !thisSync ? undefined : thisSync.progress,
+        thisSync.progress.completed / thisSync.progress.completed,
         () => {
           setStatus("active");
         },
       ] as const,
-    [thisSync, deviceId]
+    [thisSync, deviceId, status]
   );
 }
 
-/**
- *
- * @param syncGroup
- * @returns an array of all active syncs
- */
-export function useActiveSync(syncGroup: SyncGroup) {
-  const { allSyncs } = useContext(SyncContext);
+const useStatus = (deviceId: string, syncGroup: SyncGroup) => {
+  const [status, setStatus] = useState<SyncStatus>("idle");
+  const [, setAllSyncs] = useContext(SyncContext);
 
-  return Object.values(allSyncs).filter(
-    (val) =>
-      val.syncGroup === syncGroup &&
-      val.progress.completed > 0 &&
-      val.progress.completed < val.progress.total
+  const updateAllSyncsOnStatusUpdate = useCallback(
+    (syncStatus: SyncStatus) => {
+      setStatus(syncStatus);
+      setAllSyncs((val) => {
+        if (val[syncGroup][deviceId] && val[syncGroup][deviceId] === status) {
+          return val;
+        }
+        return {
+          ...val,
+          [syncGroup]: {
+            ...val[syncGroup],
+            [deviceId]: syncStatus,
+          },
+        };
+      });
+    },
+    [deviceId, syncGroup]
   );
-}
+
+  return [status, updateAllSyncsOnStatusUpdate] as const;
+};
 
 function getRandomNumberMax30() {
   return Math.floor(Math.random() * (30 - 1) + 1);

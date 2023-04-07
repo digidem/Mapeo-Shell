@@ -48,6 +48,7 @@ export const SyncScreen: SyncScreenComponent<"SyncMain"> = () => {
         deviceName={"Example"}
         date="Feb 12, 2023"
         shouldSync={false}
+        syncGroup="local"
       />
     </ScrollView>
   );
