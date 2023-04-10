@@ -35,8 +35,6 @@ export const SyncScreen: ScreenComponent<"Sync"> = ({ route }) => {
   const ref = React.useRef<BottomSheetRef>(null);
 
   function openRef() {
-    console.log("This is being pressed");
-    console.log(ref.current);
     ref.current?.snapToIndex(1);
   }
 

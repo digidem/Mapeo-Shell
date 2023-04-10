@@ -48,7 +48,7 @@ const animatedEllipsisStyles = StyleSheet.create({
   },
 });
 
-export const AnimatedEllipsis = () => {
+const AnimatedEllipsis = () => {
   const dots = React.useRef([
     new Animated.Value(0),
     new Animated.Value(0),
@@ -212,14 +212,14 @@ export const Devices = ({ children }: { children: React.ReactNode }) => {
     ref.current?.snapToIndex(1);
   }
 
-  useFocusEffect(
-    React.useCallback(() => {
-      setStatus("loading");
-      setTimeout(() => {
-        setStatus("idle");
-      }, 3000);
-    }, [])
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     setStatus("loading");
+  //     setTimeout(() => {
+  //       setStatus("idle");
+  //     }, 3000);
+  //   }, [])
+  // );
 
   return (
     <React.Fragment>
