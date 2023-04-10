@@ -186,6 +186,7 @@ const DeviceList = () => {
           date="Feb 12, 2023"
           syncGroup="local"
           shouldStart={shouldStart}
+          style={{ marginTop: 10 }}
         />
       ))}
     </View>

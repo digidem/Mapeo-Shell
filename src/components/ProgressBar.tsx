@@ -1,8 +1,11 @@
 import * as Progress from "react-native-progress";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, View, Image, StyleProp, ViewStyle } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSync } from "../hooks/useSync";
 import { SyncGroup } from "../contexts/SyncContext";
+import { Text } from "./Text";
+import { colors, spacing } from "../lib/styles";
+import { Spacer } from "./Spacer";
 
 type ProgressBarProps = {
   deviceId: string;
@@ -11,6 +14,7 @@ type ProgressBarProps = {
   date: string;
   syncGroup: SyncGroup;
   shouldStart: boolean;
+  style?: StyleProp<ViewStyle>;
 };
 
 export const ProgressBar = ({
@@ -20,6 +24,7 @@ export const ProgressBar = ({
   deviceType,
   syncGroup,
   shouldStart,
+  style,
 }: ProgressBarProps) => {
   const progress = useSync(deviceId, syncGroup, shouldStart);
 
@@ -29,7 +34,7 @@ export const ProgressBar = ({
       : require("../../assets/mobile.png");
 
   return (
-    <TouchableOpacity onPress={() => {}}>
+    <TouchableOpacity style={style} onPress={() => {}}>
       <Progress.Bar
         color="rgba(0, 102, 255, 0.1)"
         progress={progress}
@@ -42,9 +47,14 @@ export const ProgressBar = ({
               style={{ height: 80, width: 80, resizeMode: "contain" }}
               source={icon}
             />
-            <Text style={{ margin: 10 }}>{deviceName}</Text>
+            <Spacer direction="horizontal" size={spacing.medium} />
+            <Text size="small" bold>
+              {deviceName}
+            </Text>
           </View>
-          <Text style={{ fontSize: 12 }}>{date}</Text>
+          <Text size="small" color={colors.DARK_GRAY}>
+            {date}
+          </Text>
         </View>
       </Progress.Bar>
     </TouchableOpacity>
