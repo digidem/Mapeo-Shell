@@ -1,11 +1,4 @@
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { SyncGroup, SyncContext, SyncStatus } from "../contexts/SyncContext";
 
 type Progress = {
@@ -27,7 +20,6 @@ export function useSync(
     progress: { total: getRandomNumberMax30(), completed: 0 },
     syncGroup,
   });
-  const interval = useRef<NodeJS.Timer>();
   const [status, setStatus] = useStatus(deviceId, syncGroup);
 
   if (shouldStart && status === "idle") {
@@ -37,11 +29,11 @@ export function useSync(
   useEffect(() => {
     if (status !== "active") return;
 
-    interval.current = setInterval(() => {
+    const interval = setInterval(() => {
       setThisSync((val) => {
         const incrementedCompleted = val.progress.completed + 1;
         if (incrementedCompleted >= val.progress.total) {
-          clearInterval(interval.current);
+          clearInterval(interval);
           setStatus("stopped");
         }
         return {
@@ -55,9 +47,9 @@ export function useSync(
     }, 1000);
 
     return () => {
-      clearInterval(interval.current);
+      clearInterval(interval);
     };
-  }, [status, thisSync]);
+  }, [status]);
 
   return useMemo(
     () => thisSync.progress.completed / thisSync.progress.completed || 0,
