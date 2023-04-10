@@ -3,6 +3,7 @@ import "react-native-gesture-handler";
 import * as React from "react";
 import { registerRootComponent } from "expo";
 import { defineMessages } from "react-intl";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { IntlProvider } from "./contexts/IntlContext";
 import { PermissionsProvider } from "./contexts/PermissionsContext";
@@ -22,7 +23,9 @@ export default function App() {
     <PermissionsProvider>
       <IntlProvider>
         <SyncProvider>
-          <NavigationContainer />
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <NavigationContainer />
+          </GestureHandlerRootView>
         </SyncProvider>
       </IntlProvider>
     </PermissionsProvider>

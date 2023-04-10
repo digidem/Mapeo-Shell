@@ -12,5 +12,6 @@ export const colors = {
   DARK_GRAY: "#757575",
   LIGHT_BLUE: "#CCE0FF",
   MAPEO_BLUE: "#0066FF",
+  MAPEO_DARK_BLUE: "#19337F",
   DARK_BLUE: "#000033",
 } as const;
