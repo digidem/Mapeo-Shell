@@ -7,6 +7,7 @@ import { defineMessages } from "react-intl";
 import { IntlProvider } from "./contexts/IntlContext";
 import { PermissionsProvider } from "./contexts/PermissionsContext";
 import { NavigationContainer } from "./navigation/NavigationContainer";
+import { SyncProvider } from "./contexts/SyncContext";
 
 const m = defineMessages({
   firstMessage: {
@@ -20,7 +21,9 @@ export default function App() {
   return (
     <PermissionsProvider>
       <IntlProvider>
-        <NavigationContainer />
+        <SyncProvider>
+          <NavigationContainer />
+        </SyncProvider>
       </IntlProvider>
     </PermissionsProvider>
   );

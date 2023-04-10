@@ -9,6 +9,7 @@ import { Spacer } from "../../components/Spacer";
 import { Text, styles as textStyles } from "../../components/Text";
 import { colors, spacing } from "../../lib/styles";
 import { ViewMode } from ".";
+import { ProgressBar } from "../../components/ProgressBar";
 
 const m = defineMessages({
   searching: {
@@ -137,7 +138,7 @@ const deviceListStyles = StyleSheet.create({
 
 const DeviceList = () => {
   const { formatMessage: t } = useIntl();
-
+  const [shouldStart, setShouldStart] = React.useState(false);
   return (
     <View>
       <View style={deviceListStyles.headerRowContainer}>
@@ -151,6 +152,7 @@ const DeviceList = () => {
           </TouchableOpacity>
         </View>
         <Pressable
+          onPress={() => setShouldStart(true)}
           android_ripple={{ radius: 100 }}
           style={deviceListStyles.syncButton}
         >
@@ -175,6 +177,18 @@ const DeviceList = () => {
           {t(m.lastSynced)}
         </Text>
       </View>
+      {[1, 3, 2, 5, 262, 26, 22, 34, 27, 235, 98, 45].map((val) => (
+        <ProgressBar
+          key={val}
+          deviceId={val.toString()}
+          deviceType={val % 2 === 0 ? "desktop" : "mobile"}
+          deviceName={"Example"}
+          date="Feb 12, 2023"
+          syncGroup="local"
+          shouldStart={shouldStart}
+          style={{ marginTop: 10 }}
+        />
+      ))}
     </View>
   );
 };
