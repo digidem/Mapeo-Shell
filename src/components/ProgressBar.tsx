@@ -1,6 +1,7 @@
 import * as Progress from "react-native-progress";
 import { StyleSheet, View, Image, StyleProp, ViewStyle } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { useSync } from "../hooks/useSync";
 import { SyncGroup } from "../contexts/SyncContext";
 import { Text } from "./Text";
@@ -52,9 +53,17 @@ export const ProgressBar = ({
               {deviceName}
             </Text>
           </View>
-          <Text size="small" color={colors.DARK_GRAY}>
-            {date}
-          </Text>
+          {!shouldStart ? (
+            <Text size="small" color={colors.DARK_GRAY}>
+              {date}
+            </Text>
+          ) : (
+            <MaterialIcon
+              name={progress >= 1 ? "done" : "bolt"}
+              size={45}
+              color={colors.DARK_GRAY}
+            />
+          )}
         </View>
       </Progress.Bar>
     </TouchableOpacity>

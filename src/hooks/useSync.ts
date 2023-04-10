@@ -44,7 +44,7 @@ export function useSync(
           },
         };
       });
-    }, 500);
+    }, 500 + getRandomNumberMax30() * 10);
 
     return () => {
       clearInterval(interval);
