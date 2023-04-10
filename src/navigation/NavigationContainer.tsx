@@ -1,5 +1,8 @@
 import { NavigationContainer as NativeNavContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  NativeStackNavigationProp,
+  createNativeStackNavigator,
+} from "@react-navigation/native-stack";
 import { useIntl } from "react-intl";
 
 import { colors } from "../lib/styles";
@@ -31,7 +34,11 @@ export const NavigationContainer = () => {
         <Stack.Screen
           name="Sync"
           component={SyncScreen}
-          options={({ navigation }) => ({
+          options={({
+            navigation,
+          }: {
+            navigation: NativeStackNavigationProp<Screens>;
+          }) => ({
             presentation: "card",
             headerTitle: t(SyncScreen.navTitle),
             contentStyle: { backgroundColor: colors.WHITE },
@@ -42,7 +49,14 @@ export const NavigationContainer = () => {
                 goBack={navigation.goBack}
               />
             ),
-            headerRight: () => <CustomHeaderRight iconName="settings" />,
+            headerRight: () => (
+              <CustomHeaderRight
+                iconName="settings"
+                onPress={() => {
+                  navigation.navigate("Home");
+                }}
+              />
+            ),
             // This only hides the DEFAULT back button. We render a custom one in headerLeft, so the default one should always be hidden.
             // This **might** cause a problem for IOS
             // headerBackVisible: false,
