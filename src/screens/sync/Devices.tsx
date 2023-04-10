@@ -8,8 +8,9 @@ import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Spacer } from "../../components/Spacer";
 import { Text, styles as textStyles } from "../../components/Text";
 import { colors, spacing } from "../../lib/styles";
-import { ViewMode } from ".";
 import { ProgressBar } from "../../components/ProgressBar";
+import { SyncGroupBottomSheet } from "../../components/SyncGroupBottomSheet";
+import { BottomSheetRef } from "../../components/SyncGroupBottomSheet";
 
 const m = defineMessages({
   searching: {
@@ -47,7 +48,7 @@ const animatedEllipsisStyles = StyleSheet.create({
   },
 });
 
-const AnimatedEllipsis = () => {
+export const AnimatedEllipsis = () => {
   const dots = React.useRef([
     new Animated.Value(0),
     new Animated.Value(0),
@@ -136,66 +137,80 @@ const deviceListStyles = StyleSheet.create({
   },
 });
 
-const DeviceList = () => {
+export const DeviceList = ({ openSheet }: { openSheet: () => void }) => {
   const { formatMessage: t } = useIntl();
   const [shouldStart, setShouldStart] = React.useState(false);
+
   return (
-    <View>
-      <View style={deviceListStyles.headerRowContainer}>
-        <View style={deviceListStyles.headerTitleContainer}>
-          <Text size="medium" bold>
-            {t(m.localDevices)}
-          </Text>
-          <Spacer direction="horizontal" size={spacing.medium} />
-          <TouchableOpacity style={deviceListStyles.infoButton}>
-            <MaterialIcon name="help" size={14} color={colors.DARK_GRAY} />
-          </TouchableOpacity>
-        </View>
-        <Pressable
-          onPress={() => setShouldStart(true)}
-          android_ripple={{ radius: 100 }}
-          style={deviceListStyles.syncButton}
-        >
-          <View style={deviceListStyles.syncButtonContentContainer}>
-            <MaterialIcon
-              name="lightning-bolt"
-              size={20}
-              color={colors.WHITE}
-            />
-            <Spacer direction="horizontal" size={spacing.medium} />
-            <Text size="medium" color={colors.WHITE} bold>
-              {t(m.sync)}
+    <React.Fragment>
+      <View>
+        <View style={deviceListStyles.headerRowContainer}>
+          <View style={deviceListStyles.headerTitleContainer}>
+            <Text size="medium" bold>
+              {t(m.localDevices)}
             </Text>
+            <Spacer direction="horizontal" size={spacing.medium} />
+            <TouchableOpacity
+              onPress={openSheet}
+              style={deviceListStyles.infoButton}
+            >
+              <MaterialIcon name="help" size={14} color={colors.DARK_GRAY} />
+            </TouchableOpacity>
           </View>
-        </Pressable>
+          <Pressable
+            onPress={() => setShouldStart(true)}
+            android_ripple={{ radius: 100 }}
+            style={deviceListStyles.syncButton}
+          >
+            <View style={deviceListStyles.syncButtonContentContainer}>
+              <MaterialIcon
+                name="lightning-bolt"
+                size={20}
+                color={colors.WHITE}
+              />
+              <Spacer direction="horizontal" size={spacing.medium} />
+              <Text size="medium" color={colors.WHITE} bold>
+                {t(m.sync)}
+              </Text>
+            </View>
+          </Pressable>
+        </View>
+        <View style={deviceListStyles.listHeaderContainer}>
+          <Text size="small" color={colors.DARK_GRAY}>
+            {t(m.deviceName)}
+          </Text>
+          <Text size="small" color={colors.DARK_GRAY}>
+            {t(m.lastSynced)}
+          </Text>
+        </View>
+        {[1].map((val) => (
+          <ProgressBar
+            key={val}
+            deviceId={val.toString()}
+            deviceType={val % 2 === 0 ? "desktop" : "mobile"}
+            deviceName={"Example"}
+            date="Feb 12, 2023"
+            syncGroup="local"
+            shouldStart={shouldStart}
+            style={{ marginTop: 10 }}
+          />
+        ))}
       </View>
-      <View style={deviceListStyles.listHeaderContainer}>
-        <Text size="small" color={colors.DARK_GRAY}>
-          {t(m.deviceName)}
-        </Text>
-        <Text size="small" color={colors.DARK_GRAY}>
-          {t(m.lastSynced)}
-        </Text>
-      </View>
-      {[1, 3, 2, 5, 262, 26, 22, 34, 27, 235, 98, 45].map((val) => (
-        <ProgressBar
-          key={val}
-          deviceId={val.toString()}
-          deviceType={val % 2 === 0 ? "desktop" : "mobile"}
-          deviceName={"Example"}
-          date="Feb 12, 2023"
-          syncGroup="local"
-          shouldStart={shouldStart}
-          style={{ marginTop: 10 }}
-        />
-      ))}
-    </View>
+    </React.Fragment>
   );
 };
 
-export const Devices = ({ mode }: { mode: ViewMode }) => {
+export const Devices = ({ children }: { children: React.ReactNode }) => {
   const { formatMessage: t } = useIntl();
-  const [status, setStatus] = React.useState<"loading" | "idle">("loading");
+  const [status, setStatus] = React.useState<"loading" | "idle">("idle");
+
+  const ref = React.useRef<BottomSheetRef>(null);
+
+  function openRef() {
+    console.log("This is being pressed");
+    console.log(ref.current);
+    ref.current?.snapToIndex(1);
+  }
 
   useFocusEffect(
     React.useCallback(() => {
@@ -207,17 +222,19 @@ export const Devices = ({ mode }: { mode: ViewMode }) => {
   );
 
   return (
-    <View style={{ paddingVertical: spacing.large }}>
-      {status === "loading" ? (
-        <View>
-          <Text size="large" bold textAlign="center">
-            {t(m.searching)}
-            <AnimatedEllipsis />
-          </Text>
-        </View>
-      ) : mode === "list" ? (
-        <DeviceList />
-      ) : null}
-    </View>
+    <React.Fragment>
+      <View style={{ paddingVertical: spacing.large }}>
+        {status === "loading" ? (
+          <View>
+            <Text size="large" bold textAlign="center">
+              {t(m.searching)}
+              <AnimatedEllipsis />
+            </Text>
+          </View>
+        ) : (
+          children
+        )}
+      </View>
+    </React.Fragment>
   );
 };
