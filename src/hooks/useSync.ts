@@ -44,7 +44,7 @@ export function useSync(
           },
         };
       });
-    }, 1000);
+    }, 500);
 
     return () => {
       clearInterval(interval);
@@ -52,7 +52,7 @@ export function useSync(
   }, [status]);
 
   return useMemo(
-    () => thisSync.progress.completed / thisSync.progress.completed || 0,
+    () => thisSync.progress.completed / thisSync.progress.total || 0,
     [thisSync]
   );
 }
