@@ -44,7 +44,8 @@ export function useSync(
           },
         };
       });
-    }, 500 + getRandomNumberMax30() * 10);
+      // Randomly adding a number so they don't all update at the same rate
+    }, 500 + getRandomNumberMax30() * 5);
 
     return () => {
       clearInterval(interval);
