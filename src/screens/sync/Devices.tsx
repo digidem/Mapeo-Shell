@@ -9,11 +9,7 @@ import { Spacer } from "../../components/Spacer";
 import { Text, styles as textStyles } from "../../components/Text";
 import { colors, spacing } from "../../lib/styles";
 import { ProgressBar } from "../../components/ProgressBar";
-import {
-  SyncGroupBottomSheet,
-  TitleAndDescription,
-} from "../../components/SyncGroupBottomSheet";
-import { BottomSheetRef } from "../../components/SyncGroupBottomSheet";
+import { TitleAndDescription } from "../../components/SyncGroupBottomSheet";
 
 const m = defineMessages({
   searching: {
@@ -146,11 +142,9 @@ const deviceListStyles = StyleSheet.create({
 });
 
 export const DeviceList = ({
-  openSheet,
-  setModalContent,
+  setAndOpenModal,
 }: {
-  openSheet: () => void;
-  setModalContent: (content: TitleAndDescription) => void;
+  setAndOpenModal: (content: TitleAndDescription) => void;
 }) => {
   const { formatMessage: t } = useIntl();
   const [shouldStart, setShouldStart] = React.useState(false);
@@ -166,11 +160,10 @@ export const DeviceList = ({
             <Spacer direction="horizontal" size={spacing.medium} />
             <TouchableOpacity
               onPress={() => {
-                setModalContent({
+                setAndOpenModal({
                   title: m.localDevices.defaultMessage,
                   description: m.localDeviceDescription.defaultMessage,
                 });
-                openSheet();
               }}
               style={deviceListStyles.infoButton}
             >
@@ -224,14 +217,14 @@ export const Devices = ({ children }: { children: React.ReactNode }) => {
   const { formatMessage: t } = useIntl();
   const [status, setStatus] = React.useState<"loading" | "idle">("idle");
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     setStatus("loading");
-  //     setTimeout(() => {
-  //       setStatus("idle");
-  //     }, 3000);
-  //   }, [])
-  // );
+  useFocusEffect(
+    React.useCallback(() => {
+      setStatus("loading");
+      setTimeout(() => {
+        setStatus("idle");
+      }, 3000);
+    }, [])
+  );
 
   return (
     <React.Fragment>

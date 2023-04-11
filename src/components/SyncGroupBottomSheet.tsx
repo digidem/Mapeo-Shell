@@ -1,19 +1,9 @@
-import GorhomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
-import { forwardRef, useState } from "react";
+import { forwardRef } from "react";
 import { StyleSheet, View, Image } from "react-native";
-import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { Text } from "./Text";
-import { defineMessages } from "react-intl";
 import { Spacer } from "./Spacer";
-
-const m = defineMessages({
-  localDevices: {
-    id: "components.SyncGroupBottomSheet.localDevices",
-    defaultMessage: "Local Devices",
-  },
-});
-
-export type BottomSheetRef = BottomSheetMethods;
+import { BottomSheetModal } from "./BottomSheetModal";
+import { BottomSheetModal as SheetRef } from "@gorhom/bottom-sheet";
 
 export type TitleAndDescription = {
   title: string;
@@ -21,29 +11,12 @@ export type TitleAndDescription = {
 };
 
 export const SyncGroupBottomSheet = forwardRef<
-  BottomSheetRef,
+  SheetRef,
   { content: TitleAndDescription }
->(({ content }, ref) => {
-  const [snapPoints, setSnapPoints] = useState<(number | string)[]>([0, "40%"]);
-
+>(({ content }, sheetRef) => {
   return (
-    <GorhomSheet
-      ref={ref}
-      snapPoints={snapPoints}
-      backdropComponent={BottomSheetBackdrop}
-      enableContentPanningGesture={false}
-      enableHandlePanningGesture={false}
-      handleHeight={0}
-      handleComponent={() => null}
-      index={-1}
-    >
-      <View
-        onLayout={(e) => {
-          const { height } = e.nativeEvent.layout;
-          setSnapPoints([0, height]);
-        }}
-        style={styles.btmSheetContainer}
-      >
+    <BottomSheetModal onDismiss={() => {}} ref={sheetRef}>
+      <View style={styles.btmSheetContainer}>
         <Image
           style={{ height: 80, width: 80, resizeMode: "contain" }}
           source={require("../../assets/questionMark.png")}
@@ -56,7 +29,7 @@ export const SyncGroupBottomSheet = forwardRef<
         </Text>
         <Spacer size={20} direction="vertical" />
       </View>
-    </GorhomSheet>
+    </BottomSheetModal>
   );
 });
 

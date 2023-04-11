@@ -7,10 +7,10 @@ import { ScreenComponent } from "../../sharedTypes";
 import { DeviceList, Devices } from "./Devices";
 import { ProjectInfo } from "./ProjectInfo";
 import {
-  BottomSheetRef,
   SyncGroupBottomSheet,
   TitleAndDescription,
 } from "../../components/SyncGroupBottomSheet";
+import { useBottomSheetModal } from "../../components/BottomSheetModal";
 
 export type ViewMode = "list" | "bubbles";
 export type Role = "coordinator" | "participant";
@@ -33,14 +33,15 @@ const styles = StyleSheet.create({
 
 export const SyncScreen: ScreenComponent<"Sync"> = ({ route }) => {
   const [viewMode, setViewMode] = React.useState<ViewMode>("list");
-  const ref = React.useRef<BottomSheetRef>(null);
   const [modalContent, setModalContent] = React.useState<TitleAndDescription>({
     title: "",
     description: "",
   });
+  const { sheetRef, openSheet } = useBottomSheetModal({ openOnMount: false });
 
-  function openRef() {
-    ref.current?.snapTo(1);
+  function setAndOpenModal(titleAndDescription: TitleAndDescription) {
+    setModalContent(titleAndDescription);
+    openSheet();
   }
 
   return (
@@ -58,11 +59,11 @@ export const SyncScreen: ScreenComponent<"Sync"> = ({ route }) => {
         />
         <Devices>
           {viewMode === "list" ? (
-            <DeviceList setModalContent={setModalContent} openSheet={openRef} />
+            <DeviceList setAndOpenModal={setAndOpenModal} />
           ) : null}
         </Devices>
       </ScrollView>
-      <SyncGroupBottomSheet content={modalContent} ref={ref} />
+      <SyncGroupBottomSheet content={modalContent} ref={sheetRef} />
     </React.Fragment>
   );
 };
