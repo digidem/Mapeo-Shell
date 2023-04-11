@@ -3,6 +3,9 @@
     "description": "Used as a tester",
     "message": "This is a test"
   },
+  "components.SyncGroupBottomSheet.localDevices": {
+    "message": "Local Devices"
+  },
   "screen.Home.coordinatorButtonText": {
     "message": "Sync (as Coordinator)"
   },
@@ -32,6 +35,9 @@
   },
   "screen.sync.main.lastSynced": {
     "message": "Last Synced"
+  },
+  "screen.sync.main.localDeviceDescription": {
+    "message": "These devices are on your project and on the same wifi network as you."
   },
   "screen.sync.main.localDevices": {
     "message": "Local Devices"
