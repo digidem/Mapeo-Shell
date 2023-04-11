@@ -1,45 +1,64 @@
 import GorhomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
-import { forwardRef, useCallback, useMemo, useState } from "react";
-import { StyleSheet, View, useWindowDimensions } from "react-native";
+import { forwardRef, useState } from "react";
+import { StyleSheet, View, Image } from "react-native";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { Text } from "./Text";
+import { defineMessages } from "react-intl";
+import { Spacer } from "./Spacer";
 
-const MIN_SHEET_HEIGHT = 400;
+const m = defineMessages({
+  localDevices: {
+    id: "components.SyncGroupBottomSheet.localDevices",
+    defaultMessage: "Local Devices",
+  },
+});
 
 export type BottomSheetRef = BottomSheetMethods;
 
-export const SyncGroupBottomSheet = forwardRef<BottomSheetRef, {}>(
-  ({}, ref) => {
-    const [snapPoints, setSnapPoints] = useState<(number | string)[]>([
-      MIN_SHEET_HEIGHT,
-      "40%",
-    ]);
+export type TitleAndDescription = {
+  title: string;
+  description: string;
+};
 
-    return (
-      <GorhomSheet
-        ref={ref}
-        backdropComponent={BottomSheetBackdrop}
-        enablePanDownToClose={true}
-        handleComponent={() => null}
-        index={-1}
-        snapPoints={snapPoints}
+export const SyncGroupBottomSheet = forwardRef<
+  BottomSheetRef,
+  { content: TitleAndDescription }
+>(({ content }, ref) => {
+  const [snapPoints, setSnapPoints] = useState<(number | string)[]>([0, "40%"]);
+
+  return (
+    <GorhomSheet
+      ref={ref}
+      snapPoints={snapPoints}
+      backdropComponent={BottomSheetBackdrop}
+      enableContentPanningGesture={false}
+      enableHandlePanningGesture={false}
+      handleHeight={0}
+      handleComponent={() => null}
+      index={-1}
+    >
+      <View
+        onLayout={(e) => {
+          const { height } = e.nativeEvent.layout;
+          setSnapPoints([0, height]);
+        }}
+        style={styles.btmSheetContainer}
       >
-        <View
-          onLayout={(e) => {
-            const { height } = e.nativeEvent.layout;
-            //setSnapPoints([MIN_SHEET_HEIGHT, height]);
-          }}
-          style={styles.btmSheetContainer}
-        >
-          <Text size="medium">Hello</Text>
-          <Text size="small">
-            These devices are on your project and on the same wifi as you
-          </Text>
-        </View>
-      </GorhomSheet>
-    );
-  }
-);
+        <Image
+          style={{ height: 80, width: 80, resizeMode: "contain" }}
+          source={require("../../assets/questionMark.png")}
+        />
+        <Spacer size={20} direction="vertical" />
+        <Text size="medium">{content.title}</Text>
+        <Spacer size={20} direction="vertical" />
+        <Text textAlign="center" size="small">
+          {content.description}
+        </Text>
+        <Spacer size={20} direction="vertical" />
+      </View>
+    </GorhomSheet>
+  );
+});
 
 const styles = StyleSheet.create({
   btmSheetContainer: {

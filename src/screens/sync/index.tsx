@@ -9,6 +9,7 @@ import { ProjectInfo } from "./ProjectInfo";
 import {
   BottomSheetRef,
   SyncGroupBottomSheet,
+  TitleAndDescription,
 } from "../../components/SyncGroupBottomSheet";
 
 export type ViewMode = "list" | "bubbles";
@@ -33,9 +34,13 @@ const styles = StyleSheet.create({
 export const SyncScreen: ScreenComponent<"Sync"> = ({ route }) => {
   const [viewMode, setViewMode] = React.useState<ViewMode>("list");
   const ref = React.useRef<BottomSheetRef>(null);
+  const [modalContent, setModalContent] = React.useState<TitleAndDescription>({
+    title: "",
+    description: "",
+  });
 
   function openRef() {
-    ref.current?.snapToIndex(1);
+    ref.current?.snapTo(1);
   }
 
   return (
@@ -52,10 +57,12 @@ export const SyncScreen: ScreenComponent<"Sync"> = ({ route }) => {
           }}
         />
         <Devices>
-          {viewMode === "list" ? <DeviceList openSheet={openRef} /> : null}
+          {viewMode === "list" ? (
+            <DeviceList setModalContent={setModalContent} openSheet={openRef} />
+          ) : null}
         </Devices>
       </ScrollView>
-      <SyncGroupBottomSheet ref={ref} />
+      <SyncGroupBottomSheet content={modalContent} ref={ref} />
     </React.Fragment>
   );
 };

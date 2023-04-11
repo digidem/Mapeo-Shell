@@ -9,7 +9,10 @@ import { Spacer } from "../../components/Spacer";
 import { Text, styles as textStyles } from "../../components/Text";
 import { colors, spacing } from "../../lib/styles";
 import { ProgressBar } from "../../components/ProgressBar";
-import { SyncGroupBottomSheet } from "../../components/SyncGroupBottomSheet";
+import {
+  SyncGroupBottomSheet,
+  TitleAndDescription,
+} from "../../components/SyncGroupBottomSheet";
 import { BottomSheetRef } from "../../components/SyncGroupBottomSheet";
 
 const m = defineMessages({
@@ -20,6 +23,11 @@ const m = defineMessages({
   localDevices: {
     id: "screen.sync.main.localDevices",
     defaultMessage: "Local Devices",
+  },
+  localDeviceDescription: {
+    id: "screen.sync.main.localDeviceDescription",
+    defaultMessage:
+      "These devices are on your project and on the same wifi network as you.",
   },
   sync: {
     id: "screen.sync.main.sync",
@@ -137,7 +145,13 @@ const deviceListStyles = StyleSheet.create({
   },
 });
 
-export const DeviceList = ({ openSheet }: { openSheet: () => void }) => {
+export const DeviceList = ({
+  openSheet,
+  setModalContent,
+}: {
+  openSheet: () => void;
+  setModalContent: (content: TitleAndDescription) => void;
+}) => {
   const { formatMessage: t } = useIntl();
   const [shouldStart, setShouldStart] = React.useState(false);
 
@@ -151,7 +165,13 @@ export const DeviceList = ({ openSheet }: { openSheet: () => void }) => {
             </Text>
             <Spacer direction="horizontal" size={spacing.medium} />
             <TouchableOpacity
-              onPress={openSheet}
+              onPress={() => {
+                setModalContent({
+                  title: m.localDevices.defaultMessage,
+                  description: m.localDeviceDescription.defaultMessage,
+                });
+                openSheet();
+              }}
               style={deviceListStyles.infoButton}
             >
               <MaterialIcon name="help" size={14} color={colors.DARK_GRAY} />
@@ -203,14 +223,6 @@ export const DeviceList = ({ openSheet }: { openSheet: () => void }) => {
 export const Devices = ({ children }: { children: React.ReactNode }) => {
   const { formatMessage: t } = useIntl();
   const [status, setStatus] = React.useState<"loading" | "idle">("idle");
-
-  const ref = React.useRef<BottomSheetRef>(null);
-
-  function openRef() {
-    console.log("This is being pressed");
-    console.log(ref.current);
-    ref.current?.snapToIndex(1);
-  }
 
   // useFocusEffect(
   //   React.useCallback(() => {
