@@ -3,6 +3,18 @@
     "description": "Used as a tester",
     "message": "This is a test"
   },
+  "screen.Home.coordinatorButtonText": {
+    "message": "Sync (as Coordinator)"
+  },
+  "screen.Home.participantButtonText": {
+    "message": "Sync (as Participant)"
+  },
+  "screen.Home.subtitle": {
+    "message": "Sync"
+  },
+  "screen.Home.title": {
+    "message": "Mapeo Mobile Testing"
+  },
   "screen.sync.Devices.searching": {
     "message": "Searching for devices"
   },
