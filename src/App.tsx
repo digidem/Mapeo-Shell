@@ -9,6 +9,7 @@ import { IntlProvider } from "./contexts/IntlContext";
 import { PermissionsProvider } from "./contexts/PermissionsContext";
 import { NavigationContainer } from "./navigation/NavigationContainer";
 import { SyncProvider } from "./contexts/SyncContext";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 const m = defineMessages({
   firstMessage: {
@@ -24,7 +25,9 @@ export default function App() {
       <IntlProvider>
         <SyncProvider>
           <GestureHandlerRootView style={{ flex: 1 }}>
-            <NavigationContainer />
+            <BottomSheetModalProvider>
+              <NavigationContainer />
+            </BottomSheetModalProvider>
           </GestureHandlerRootView>
         </SyncProvider>
       </IntlProvider>
