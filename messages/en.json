@@ -3,9 +3,6 @@
     "description": "Used as a tester",
     "message": "This is a test"
   },
-  "components.SyncGroupBottomSheet.localDevices": {
-    "message": "Local Devices"
-  },
   "screen.Home.coordinatorButtonText": {
     "message": "Sync (as Coordinator)"
   },
