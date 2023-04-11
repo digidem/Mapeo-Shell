@@ -57,12 +57,11 @@ function usePreventBackAction(enable: boolean) {
 }
 
 interface Props extends React.PropsWithChildren<{}> {
-  onDismiss: () => void;
   disableBackdropPress?: boolean;
 }
 
 export const BottomSheetModal = React.forwardRef<RNBottomSheetModal, Props>(
-  ({ children, onDismiss, disableBackdropPress }, ref) => {
+  ({ children, disableBackdropPress }, ref) => {
     const [isOpen, setIsOpen] = React.useState(false);
 
     usePreventBackAction(isOpen);
@@ -89,7 +88,6 @@ export const BottomSheetModal = React.forwardRef<RNBottomSheetModal, Props>(
         enableContentPanningGesture={false}
         enableHandlePanningGesture={false}
         handleComponent={() => null}
-        onDismiss={onDismiss}
         onChange={(index) => {
           setIsOpen(index > -1);
         }}
