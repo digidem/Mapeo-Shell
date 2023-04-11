@@ -15,7 +15,7 @@ export const SyncGroupBottomSheet = forwardRef<
   { content: TitleAndDescription }
 >(({ content }, sheetRef) => {
   return (
-    <BottomSheetModal onDismiss={() => {}} ref={sheetRef}>
+    <BottomSheetModal ref={sheetRef}>
       <View style={styles.btmSheetContainer}>
         <Image
           style={{ height: 80, width: 80, resizeMode: "contain" }}
