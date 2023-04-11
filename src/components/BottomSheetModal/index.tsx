@@ -1,11 +1,13 @@
 import * as React from "react";
-import { BackHandler, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import {
   BottomSheetModal as RNBottomSheetModal,
   BottomSheetBackdrop,
   BottomSheetView,
   useBottomSheetDynamicSnapPoints,
 } from "@gorhom/bottom-sheet";
+
+import { useTypedNavigation } from "../../hooks/useTypedNavigation";
 
 const INITIAL_SNAP_POINTS = ["CONTENT_HEIGHT"];
 
@@ -38,36 +40,32 @@ export function useBottomSheetModal({ openOnMount }: { openOnMount: boolean }) {
   return { sheetRef, closeSheet, openSheet, isOpen };
 }
 
-function useBackPressHandler(onHardwareBackPress?: () => void | boolean) {
+function usePreventBackAction(enable: boolean) {
+  const navigation = useTypedNavigation();
+
   React.useEffect(() => {
-    const onBack = () => {
-      if (onHardwareBackPress) {
-        const backPress = onHardwareBackPress();
-        if (typeof backPress === "boolean") {
-          return backPress;
-        }
-      }
+    if (!enable) return;
 
-      // We don't allow the back press to navigate/dismiss this modal by default
-      return true;
+    const unsubscribe = navigation.addListener("beforeRemove", (event) => {
+      event.preventDefault();
+    });
+
+    return () => {
+      unsubscribe();
     };
-
-    BackHandler.addEventListener("hardwareBackPress", onBack);
-
-    return () => BackHandler.removeEventListener("hardwareBackPress", onBack);
-  }, [onHardwareBackPress]);
+  }, [enable, navigation]);
 }
 
 interface Props extends React.PropsWithChildren<{}> {
   onDismiss: () => void;
-  onHardwareBackPress?: () => void | boolean;
-  snapPoints?: (string | number)[];
   disableBackdropPress?: boolean;
 }
 
 export const BottomSheetModal = React.forwardRef<RNBottomSheetModal, Props>(
-  ({ children, onDismiss, onHardwareBackPress, disableBackdropPress }, ref) => {
-    useBackPressHandler(onHardwareBackPress);
+  ({ children, onDismiss, disableBackdropPress }, ref) => {
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    usePreventBackAction(isOpen);
 
     const {
       animatedHandleHeight,
@@ -92,6 +90,9 @@ export const BottomSheetModal = React.forwardRef<RNBottomSheetModal, Props>(
         enableHandlePanningGesture={false}
         handleComponent={() => null}
         onDismiss={onDismiss}
+        onChange={(index) => {
+          setIsOpen(index > -1);
+        }}
         snapPoints={animatedSnapPoints}
         handleHeight={animatedHandleHeight}
         contentHeight={animatedContentHeight}
