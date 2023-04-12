@@ -150,72 +150,70 @@ export const DeviceList = ({
   const [shouldStart, setShouldStart] = React.useState(false);
 
   return (
-    <React.Fragment>
-      <View>
-        <View style={deviceListStyles.headerRowContainer}>
-          <View style={deviceListStyles.headerTitleContainer}>
-            <Text size="medium" bold>
-              {t(m.localDevices)}
-            </Text>
-            <Spacer direction="horizontal" size={spacing.medium} />
-            <TouchableOpacity
-              onPress={() => {
-                setAndOpenModal({
-                  title: m.localDevices.defaultMessage,
-                  description: m.localDeviceDescription.defaultMessage,
-                });
-              }}
-              style={deviceListStyles.infoButton}
-            >
-              <MaterialIcon name="help" size={14} color={colors.DARK_GRAY} />
-            </TouchableOpacity>
-          </View>
-          <Pressable
-            onPress={() => setShouldStart(true)}
-            android_ripple={{ radius: 100 }}
-            style={deviceListStyles.syncButton}
+    <View>
+      <View style={deviceListStyles.headerRowContainer}>
+        <View style={deviceListStyles.headerTitleContainer}>
+          <Text size="medium" bold>
+            {t(m.localDevices)}
+          </Text>
+          <Spacer direction="horizontal" size={spacing.medium} />
+          <TouchableOpacity
+            onPress={() => {
+              setAndOpenModal({
+                title: m.localDevices.defaultMessage,
+                description: m.localDeviceDescription.defaultMessage,
+              });
+            }}
+            style={deviceListStyles.infoButton}
           >
-            <View style={deviceListStyles.syncButtonContentContainer}>
-              <MaterialIcon
-                name="lightning-bolt"
-                size={20}
-                color={colors.WHITE}
-              />
-              <Spacer direction="horizontal" size={spacing.medium} />
-              <Text size="medium" color={colors.WHITE} bold>
-                {t(m.sync)}
-              </Text>
-            </View>
-          </Pressable>
+            <MaterialIcon name="help" size={14} color={colors.DARK_GRAY} />
+          </TouchableOpacity>
         </View>
-        <View style={deviceListStyles.listHeaderContainer}>
-          <Text size="small" color={colors.DARK_GRAY}>
-            {t(m.deviceName)}
-          </Text>
-          <Text size="small" color={colors.DARK_GRAY}>
-            {t(m.lastSynced)}
-          </Text>
-        </View>
-        {[1].map((val) => (
-          <ProgressBar
-            key={val}
-            deviceId={val.toString()}
-            deviceType={val % 2 === 0 ? "desktop" : "mobile"}
-            deviceName={"Example"}
-            date="Feb 12, 2023"
-            syncGroup="local"
-            shouldStart={shouldStart}
-            style={{ marginTop: 10 }}
-          />
-        ))}
+        <Pressable
+          onPress={() => setShouldStart(true)}
+          android_ripple={{ radius: 100 }}
+          style={deviceListStyles.syncButton}
+        >
+          <View style={deviceListStyles.syncButtonContentContainer}>
+            <MaterialIcon
+              name="lightning-bolt"
+              size={20}
+              color={colors.WHITE}
+            />
+            <Spacer direction="horizontal" size={spacing.medium} />
+            <Text size="medium" color={colors.WHITE} bold>
+              {t(m.sync)}
+            </Text>
+          </View>
+        </Pressable>
       </View>
-    </React.Fragment>
+      <View style={deviceListStyles.listHeaderContainer}>
+        <Text size="small" color={colors.DARK_GRAY}>
+          {t(m.deviceName)}
+        </Text>
+        <Text size="small" color={colors.DARK_GRAY}>
+          {t(m.lastSynced)}
+        </Text>
+      </View>
+      {[1].map((val) => (
+        <ProgressBar
+          key={val}
+          deviceId={val.toString()}
+          deviceType={val % 2 === 0 ? "desktop" : "mobile"}
+          deviceName={"Example"}
+          date="Feb 12, 2023"
+          syncGroup="local"
+          shouldStart={shouldStart}
+          style={{ marginTop: 10 }}
+        />
+      ))}
+    </View>
   );
 };
 
 export const Devices = ({ children }: { children: React.ReactNode }) => {
   const { formatMessage: t } = useIntl();
-  const [status, setStatus] = React.useState<"loading" | "idle">("idle");
+  const [status, setStatus] = React.useState<"loading" | "idle">("loading");
 
   useFocusEffect(
     React.useCallback(() => {

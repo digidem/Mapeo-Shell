@@ -7,10 +7,13 @@ import { ScreenComponent } from "../../sharedTypes";
 import { DeviceList, Devices } from "./Devices";
 import { ProjectInfo } from "./ProjectInfo";
 import {
-  SyncGroupBottomSheet,
+  SyncGroupBottomSheetContent,
   TitleAndDescription,
 } from "../../components/SyncGroupBottomSheet";
-import { useBottomSheetModal } from "../../components/BottomSheetModal";
+import {
+  BottomSheetModal,
+  useBottomSheetModal,
+} from "../../components/BottomSheetModal";
 
 export type ViewMode = "list" | "bubbles";
 export type Role = "coordinator" | "participant";
@@ -63,7 +66,9 @@ export const SyncScreen: ScreenComponent<"Sync"> = ({ route }) => {
           ) : null}
         </Devices>
       </ScrollView>
-      <SyncGroupBottomSheet content={modalContent} ref={sheetRef} />
+      <BottomSheetModal ref={sheetRef}>
+        <SyncGroupBottomSheetContent content={modalContent} />
+      </BottomSheetModal>
     </React.Fragment>
   );
 };
