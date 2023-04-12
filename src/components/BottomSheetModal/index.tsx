@@ -8,6 +8,7 @@ import {
 } from "@gorhom/bottom-sheet";
 
 import { useTypedNavigation } from "../../hooks/useTypedNavigation";
+import { spacing } from "../../lib/styles";
 
 const INITIAL_SNAP_POINTS = ["CONTENT_HEIGHT"];
 
@@ -110,7 +111,10 @@ export const BottomSheetModal = React.forwardRef<RNBottomSheetModal, Props>(
 const styles = StyleSheet.create({
   bottomSheetView: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 30,
+    // Cannot use paddingVertical for some very strange reason
+    // or else bottom-sheet sizing will not be consistent
+    paddingTop: spacing.large * 1.5,
+    paddingBottom: spacing.large * 1.5,
+    paddingHorizontal: spacing.large,
   },
 });
