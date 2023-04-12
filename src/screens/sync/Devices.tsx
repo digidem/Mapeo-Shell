@@ -8,9 +8,15 @@ import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Spacer } from "../../components/Spacer";
 import { Text, styles as textStyles } from "../../components/Text";
 import { colors, spacing } from "../../lib/styles";
+import { Role, ViewMode } from ".";
 import { ProgressBar } from "../../components/ProgressBar";
-import { TitleAndDescription } from "../../components/SyncGroupBottomSheet";
+import { SyncGroupBottomSheetContent } from "../../components/SyncGroupBottomSheet";
 import { Button } from "../../components/Button";
+import {
+  BottomSheetModal,
+  useBottomSheetModal,
+} from "../../components/BottomSheetModal";
+import { DeviceInfo } from "./DeviceInfo";
 
 const m = defineMessages({
   searching: {
@@ -131,10 +137,12 @@ const deviceListStyles = StyleSheet.create({
   },
 });
 
-export const DeviceList = ({
-  setAndOpenModal,
+const DeviceList = ({
+  onDevicePress,
+  onInfoPress,
 }: {
-  setAndOpenModal: (content: TitleAndDescription) => void;
+  onDevicePress: () => void;
+  onInfoPress: () => void;
 }) => {
   const { formatMessage: t } = useIntl();
   const [shouldStart, setShouldStart] = React.useState(false);
@@ -148,13 +156,8 @@ export const DeviceList = ({
           </Text>
           <Spacer direction="horizontal" size={spacing.medium} />
           <TouchableOpacity
-            onPress={() => {
-              setAndOpenModal({
-                title: m.localDevices.defaultMessage,
-                description: m.localDeviceDescription.defaultMessage,
-              });
-            }}
             style={deviceListStyles.infoButton}
+            onPress={onInfoPress}
           >
             <MaterialIcon name="help" size={14} color={colors.DARK_GRAY} />
           </TouchableOpacity>
@@ -183,15 +186,24 @@ export const DeviceList = ({
           syncGroup="local"
           shouldStart={shouldStart}
           style={{ marginTop: 10 }}
+          onPress={onDevicePress}
         />
       ))}
     </View>
   );
 };
 
-export const Devices = ({ children }: { children: React.ReactNode }) => {
+export const Devices = ({ mode, role }: { mode: ViewMode; role: Role }) => {
   const { formatMessage: t } = useIntl();
   const [status, setStatus] = React.useState<"loading" | "idle">("loading");
+
+  const [modalMode, setModalMode] = React.useState<
+    { type: "info" } | { type: "device" } | null
+  >(null);
+
+  const { sheetRef, closeSheet, openSheet } = useBottomSheetModal({
+    openOnMount: false,
+  });
 
   useFocusEffect(
     React.useCallback(() => {
@@ -203,7 +215,7 @@ export const Devices = ({ children }: { children: React.ReactNode }) => {
   );
 
   return (
-    <React.Fragment>
+    <>
       <View style={{ paddingVertical: spacing.large }}>
         {status === "loading" ? (
           <View>
@@ -212,10 +224,42 @@ export const Devices = ({ children }: { children: React.ReactNode }) => {
               <AnimatedEllipsis />
             </Text>
           </View>
-        ) : (
-          children
-        )}
+        ) : mode === "list" ? (
+          <DeviceList
+            onInfoPress={() => {
+              setModalMode({ type: "info" });
+              openSheet();
+            }}
+            onDevicePress={() => {
+              setModalMode({ type: "device" });
+              openSheet();
+            }}
+          />
+        ) : null}
       </View>
-    </React.Fragment>
+      <BottomSheetModal
+        ref={sheetRef}
+        disableBackdropPress={modalMode?.type === "device"}
+      >
+        {!modalMode ? null : modalMode.type === "info" ? (
+          <SyncGroupBottomSheetContent
+            content={{
+              title: t(m.localDevices),
+              description: t(m.localDeviceDescription),
+            }}
+          />
+        ) : modalMode.type === "device" ? (
+          <DeviceInfo
+            onClose={() => closeSheet()}
+            deviceId="test"
+            deviceName="Andrew's phone"
+            lastSynced={Date.now()}
+            deviceType="mobile"
+            role={role}
+            remainingSyncItems={10}
+          />
+        ) : null}
+      </BottomSheetModal>
+    </>
   );
 };

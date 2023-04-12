@@ -41,5 +41,20 @@
   },
   "screen.sync.main.sync": {
     "message": "Sync"
+  },
+  "screens.sync.DeviceSyncInfo.close": {
+    "message": "Close"
+  },
+  "screens.sync.DeviceSyncInfo.itemToSync": {
+    "message": "1 item ready to sync"
+  },
+  "screens.sync.DeviceSyncInfo.itemsToSync": {
+    "message": "{count} items ready to sync"
+  },
+  "screens.sync.DeviceSyncInfo.lastSynced": {
+    "message": "Last synced"
+  },
+  "screens.sync.DeviceSyncInfo.removeDevice": {
+    "message": "Remove device"
   }
 }
