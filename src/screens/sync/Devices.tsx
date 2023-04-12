@@ -17,6 +17,8 @@ import {
   useBottomSheetModal,
 } from "../../components/BottomSheetModal";
 import { DeviceInfo } from "./DeviceInfo";
+import { generateData } from "../../lib/data";
+import { Peer } from "../../sharedTypes";
 
 const m = defineMessages({
   searching: {
@@ -138,10 +140,12 @@ const deviceListStyles = StyleSheet.create({
 });
 
 const DeviceList = ({
+  peers,
   onDevicePress,
   onInfoPress,
 }: {
-  onDevicePress: () => void;
+  peers: Peer[];
+  onDevicePress: (peer: Peer) => void;
   onInfoPress: () => void;
 }) => {
   const { formatMessage: t } = useIntl();
@@ -176,17 +180,21 @@ const DeviceList = ({
           {t(m.lastSynced)}
         </Text>
       </View>
-      {[1].map((val) => (
+      {peers.map((peer) => (
         <ProgressBar
-          key={val}
-          deviceId={val.toString()}
-          deviceType={val % 2 === 0 ? "desktop" : "mobile"}
-          deviceName={"Example"}
-          date="Feb 12, 2023"
+          key={peer.id}
+          deviceId={peer.deviceId}
+          deviceType={peer.deviceType}
+          deviceName={peer.name}
+          date={new Date(peer.lastSynced).toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}
           syncGroup="local"
           shouldStart={shouldStart}
           style={{ marginTop: 10 }}
-          onPress={onDevicePress}
+          onPress={() => onDevicePress(peer)}
         />
       ))}
     </View>
@@ -195,10 +203,12 @@ const DeviceList = ({
 
 export const Devices = ({ mode, role }: { mode: ViewMode; role: Role }) => {
   const { formatMessage: t } = useIntl();
+  const [peers] = React.useState(generateData(10));
+
   const [status, setStatus] = React.useState<"loading" | "idle">("loading");
 
   const [modalMode, setModalMode] = React.useState<
-    { type: "info" } | { type: "device" } | null
+    { type: "info" } | { type: "device"; data: Peer } | null
   >(null);
 
   const { sheetRef, closeSheet, openSheet } = useBottomSheetModal({
@@ -226,12 +236,13 @@ export const Devices = ({ mode, role }: { mode: ViewMode; role: Role }) => {
           </View>
         ) : mode === "list" ? (
           <DeviceList
+            peers={peers}
             onInfoPress={() => {
               setModalMode({ type: "info" });
               openSheet();
             }}
-            onDevicePress={() => {
-              setModalMode({ type: "device" });
+            onDevicePress={(peer: Peer) => {
+              setModalMode({ type: "device", data: peer });
               openSheet();
             }}
           />
@@ -251,12 +262,8 @@ export const Devices = ({ mode, role }: { mode: ViewMode; role: Role }) => {
         ) : modalMode.type === "device" ? (
           <DeviceInfo
             onClose={() => closeSheet()}
-            deviceId="test"
-            deviceName="Andrew's phone"
-            lastSynced={Date.now()}
-            deviceType="mobile"
             role={role}
-            remainingSyncItems={10}
+            peer={modalMode.data}
           />
         ) : null}
       </BottomSheetModal>

@@ -12,3 +12,14 @@ export type ScreenComponent<ScreenName extends keyof Screens> = React.FC<
     : {
         navTitle: MessageDescriptor;
       });
+
+export type Peer = {
+  id: number;
+  name: string;
+  deviceId: string;
+  deviceType: "desktop" | "mobile";
+  has: number;
+  wants: number;
+  lastSynced: number;
+  connectionType: "local" | "internet";
+};

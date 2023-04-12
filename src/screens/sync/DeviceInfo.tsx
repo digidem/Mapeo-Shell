@@ -6,6 +6,7 @@ import { defineMessages, useIntl } from "react-intl";
 import { Spacer } from "../../components/Spacer";
 import { colors, spacing } from "../../lib/styles";
 import { Button } from "../../components/Button";
+import { Peer } from "../../sharedTypes";
 
 const m = defineMessages({
   // Intl.PluralRules not supported by Hermes (https://github.com/facebook/hermes/blob/main/doc/IntlAPIs.md)
@@ -36,22 +37,15 @@ const m = defineMessages({
 interface Props {
   onClose: () => void;
   role: Role;
-  deviceId: string;
-  deviceName: string;
-  lastSynced: number;
-  remainingSyncItems: number;
-  deviceType: "mobile" | "desktop";
+  peer: Peer;
 }
 
-export const DeviceInfo = ({
-  onClose,
-  deviceName,
-  deviceType,
-  role,
-  remainingSyncItems,
-  lastSynced,
-}: Props) => {
+export const DeviceInfo = ({ onClose, peer, role }: Props) => {
   const { formatMessage: t } = useIntl();
+
+  const { deviceType, name, lastSynced, has, wants } = peer;
+
+  const remainingSyncItems = wants - has;
 
   return (
     <View style={styles.container}>
@@ -68,7 +62,7 @@ export const DeviceInfo = ({
             />
             <Spacer direction="horizontal" size={spacing.medium} />
             <Text size="small" bold numberOfLines={1}>
-              {deviceName}
+              {name}
             </Text>
           </View>
           <View style={styles.lastSyncedContainer}>
