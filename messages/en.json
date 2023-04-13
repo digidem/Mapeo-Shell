@@ -1,4 +1,25 @@
 {
+  "Components.DeviceInfoContents.downloading": {
+    "message": "Downloading"
+  },
+  "Components.DeviceInfoContents.downloads": {
+    "message": "Downloads"
+  },
+  "Components.DeviceInfoContents.media": {
+    "message": "media"
+  },
+  "Components.DeviceInfoContents.observations": {
+    "message": "observations"
+  },
+  "Components.DeviceInfoContents.syncing": {
+    "message": "Syncing"
+  },
+  "Components.DeviceInfoContents.uploading": {
+    "message": "Uploading"
+  },
+  "Components.DeviceInfoContents.uploads": {
+    "message": "Uploads"
+  },
   "app.firstMessage": {
     "description": "Used as a tester",
     "message": "This is a test"
