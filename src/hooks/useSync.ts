@@ -80,6 +80,6 @@ const useStatus = (deviceId: string, syncGroup: SyncGroup) => {
   return [status, setStatus] as const;
 };
 
-function getRandomNumberMax30() {
+export function getRandomNumberMax30() {
   return Math.floor(Math.random() * (30 - 1) + 1);
 }

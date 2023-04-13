@@ -16,8 +16,9 @@ import {
 } from "../../components/BottomSheetModal";
 import {
   DeviceInfo,
-  DeviceInfoContent,
-} from "../../components/DeviceInfoContent";
+  DeviceInfoSyncingContent,
+} from "../../components/DeviceInfoSyncingContent";
+import { SyncContext } from "../../contexts/SyncContext";
 
 export type ViewMode = "list" | "bubbles";
 export type Role = "coordinator" | "participant";
@@ -42,7 +43,7 @@ export const SyncScreen: ScreenComponent<"Sync"> = ({ route }) => {
   const [viewMode, setViewMode] = React.useState<ViewMode>("list");
   const { sheetRef, openSheet } = useBottomSheetModal({ openOnMount: false });
   const [modalContent, setModalContent] = React.useState<
-    "syncGroup" | "deviceInfo"
+    "syncGroup" | "deviceInfoSyncing" | "deviceInfo"
   >("syncGroup");
 
   const [syncGroupContent, setSyncGroupContent] =
@@ -57,6 +58,8 @@ export const SyncScreen: ScreenComponent<"Sync"> = ({ route }) => {
     deviceType: "mobile",
   });
 
+  const [allSyncs] = React.useContext(SyncContext);
+
   function setAndOpenSyncGroupModal(titleAndDescription: TitleAndDescription) {
     setSyncGroupContent(titleAndDescription);
     setModalContent("syncGroup");
@@ -64,9 +67,16 @@ export const SyncScreen: ScreenComponent<"Sync"> = ({ route }) => {
   }
 
   function setAndOpenDeviceInfoModal(deviceInfo: DeviceInfo) {
-    setModalContent("deviceInfo");
-    setDeviceInfoContent(deviceInfo);
-    openSheet();
+    const isSyncing = Object.values(allSyncs).some((val) => {
+      return val[deviceInfo.deviceId] && val[deviceInfo.deviceId] !== "idle";
+    });
+
+    if (isSyncing) {
+      setModalContent("deviceInfoSyncing");
+      setDeviceInfoContent(deviceInfo);
+      openSheet();
+      return;
+    }
   }
 
   return (
@@ -94,9 +104,9 @@ export const SyncScreen: ScreenComponent<"Sync"> = ({ route }) => {
       <BottomSheetModal ref={sheetRef}>
         {modalContent === "syncGroup" ? (
           <SyncGroupBottomSheetContent content={syncGroupContent} />
-        ) : (
-          <DeviceInfoContent content={deviceInfoContent} />
-        )}
+        ) : modalContent === "deviceInfoSyncing" ? (
+          <DeviceInfoSyncingContent content={deviceInfoContent} />
+        ) : null}
       </BottomSheetModal>
     </React.Fragment>
   );

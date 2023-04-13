@@ -8,7 +8,7 @@ import { Text } from "./Text";
 import { colors, spacing } from "../lib/styles";
 import { Spacer } from "./Spacer";
 import { DeviceType } from "../screens/sync/Devices";
-import { DeviceInfo } from "./DeviceInfoContent";
+import { DeviceInfo } from "./DeviceInfoSyncingContent";
 
 type ProgressBarProps = {
   deviceId: string;

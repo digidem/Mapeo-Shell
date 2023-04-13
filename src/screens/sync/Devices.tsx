@@ -10,7 +10,7 @@ import { Text, styles as textStyles } from "../../components/Text";
 import { colors, spacing } from "../../lib/styles";
 import { ProgressBar } from "../../components/ProgressBar";
 import { TitleAndDescription } from "../../components/SyncGroupBottomSheet";
-import { DeviceInfo } from "../../components/DeviceInfoContent";
+import { DeviceInfo } from "../../components/DeviceInfoSyncingContent";
 
 const m = defineMessages({
   searching: {
