@@ -7,15 +7,18 @@ import { SyncGroup } from "../contexts/SyncContext";
 import { Text } from "./Text";
 import { colors, spacing } from "../lib/styles";
 import { Spacer } from "./Spacer";
+import { DeviceType } from "../screens/sync/Devices";
+import { DeviceInfo } from "./DeviceInfoContent";
 
 type ProgressBarProps = {
   deviceId: string;
   deviceName: string;
-  deviceType: "desktop" | "mobile";
+  deviceType: DeviceType;
   date: string;
   syncGroup: SyncGroup;
   shouldStart: boolean;
   style?: StyleProp<ViewStyle>;
+  setDeviceModal: (content: DeviceInfo) => void;
 };
 
 export const ProgressBar = ({
@@ -26,6 +29,7 @@ export const ProgressBar = ({
   syncGroup,
   shouldStart,
   style,
+  setDeviceModal,
 }: ProgressBarProps) => {
   const progress = useSync(deviceId, syncGroup, shouldStart);
 
@@ -35,7 +39,12 @@ export const ProgressBar = ({
       : require("../../assets/mobile.png");
 
   return (
-    <TouchableOpacity style={style} onPress={() => {}}>
+    <TouchableOpacity
+      style={style}
+      onPress={() => {
+        setDeviceModal({ deviceId, deviceName, deviceType });
+      }}
+    >
       <Progress.Bar
         color="rgba(0, 102, 255, 0.1)"
         progress={progress}

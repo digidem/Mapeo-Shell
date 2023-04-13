@@ -10,6 +10,7 @@ import { Text, styles as textStyles } from "../../components/Text";
 import { colors, spacing } from "../../lib/styles";
 import { ProgressBar } from "../../components/ProgressBar";
 import { TitleAndDescription } from "../../components/SyncGroupBottomSheet";
+import { DeviceInfo } from "../../components/DeviceInfoContent";
 
 const m = defineMessages({
   searching: {
@@ -143,8 +144,10 @@ const deviceListStyles = StyleSheet.create({
 
 export const DeviceList = ({
   setAndOpenModal,
+  setDeviceModal,
 }: {
   setAndOpenModal: (content: TitleAndDescription) => void;
+  setDeviceModal: (content: DeviceInfo) => void;
 }) => {
   const { formatMessage: t } = useIntl();
   const [shouldStart, setShouldStart] = React.useState(false);
@@ -197,6 +200,7 @@ export const DeviceList = ({
       </View>
       {[1].map((val) => (
         <ProgressBar
+          setDeviceModal={setDeviceModal}
           key={val}
           deviceId={val.toString()}
           deviceType={val % 2 === 0 ? "desktop" : "mobile"}
@@ -211,18 +215,20 @@ export const DeviceList = ({
   );
 };
 
+export type DeviceType = "desktop" | "mobile";
+
 export const Devices = ({ children }: { children: React.ReactNode }) => {
   const { formatMessage: t } = useIntl();
-  const [status, setStatus] = React.useState<"loading" | "idle">("loading");
+  const [status, setStatus] = React.useState<"loading" | "idle">("idle");
 
-  useFocusEffect(
-    React.useCallback(() => {
-      setStatus("loading");
-      setTimeout(() => {
-        setStatus("idle");
-      }, 3000);
-    }, [])
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     setStatus("loading");
+  //     setTimeout(() => {
+  //       setStatus("idle");
+  //     }, 3000);
+  //   }, [])
+  // );
 
   return (
     <React.Fragment>

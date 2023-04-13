@@ -63,7 +63,10 @@ const useStatus = (deviceId: string, syncGroup: SyncGroup) => {
   const [allSyncs, setAllSyncs] = useContext(SyncContext);
 
   useEffect(() => {
-    if (!allSyncs[syncGroup][deviceId]) {
+    if (
+      !allSyncs[syncGroup][deviceId] ||
+      allSyncs[syncGroup][deviceId] !== status
+    ) {
       setAllSyncs((val) => ({
         ...val,
         [syncGroup]: {
@@ -74,26 +77,7 @@ const useStatus = (deviceId: string, syncGroup: SyncGroup) => {
     }
   }, [syncGroup, deviceId, status, allSyncs]);
 
-  const updateAllSyncsOnStatusUpdate = useCallback(
-    (syncStatus: SyncStatus) => {
-      setStatus(syncStatus);
-      setAllSyncs((val) => {
-        if (val[syncGroup][deviceId] && val[syncGroup][deviceId] === status) {
-          return val;
-        }
-        return {
-          ...val,
-          [syncGroup]: {
-            ...val[syncGroup],
-            [deviceId]: syncStatus,
-          },
-        };
-      });
-    },
-    [deviceId, syncGroup]
-  );
-
-  return [status, updateAllSyncsOnStatusUpdate] as const;
+  return [status, setStatus] as const;
 };
 
 function getRandomNumberMax30() {

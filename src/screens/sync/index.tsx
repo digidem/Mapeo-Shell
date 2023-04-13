@@ -14,6 +14,10 @@ import {
   BottomSheetModal,
   useBottomSheetModal,
 } from "../../components/BottomSheetModal";
+import {
+  DeviceInfo,
+  DeviceInfoContent,
+} from "../../components/DeviceInfoContent";
 
 export type ViewMode = "list" | "bubbles";
 export type Role = "coordinator" | "participant";
@@ -36,14 +40,32 @@ const styles = StyleSheet.create({
 
 export const SyncScreen: ScreenComponent<"Sync"> = ({ route }) => {
   const [viewMode, setViewMode] = React.useState<ViewMode>("list");
-  const [modalContent, setModalContent] = React.useState<TitleAndDescription>({
-    title: "",
-    description: "",
-  });
   const { sheetRef, openSheet } = useBottomSheetModal({ openOnMount: false });
+  const [modalContent, setModalContent] = React.useState<
+    "syncGroup" | "deviceInfo"
+  >("syncGroup");
 
-  function setAndOpenModal(titleAndDescription: TitleAndDescription) {
-    setModalContent(titleAndDescription);
+  const [syncGroupContent, setSyncGroupContent] =
+    React.useState<TitleAndDescription>({
+      title: "",
+      description: "",
+    });
+
+  const [deviceInfoContent, setDeviceInfoContent] = React.useState<DeviceInfo>({
+    deviceId: "",
+    deviceName: "",
+    deviceType: "mobile",
+  });
+
+  function setAndOpenSyncGroupModal(titleAndDescription: TitleAndDescription) {
+    setSyncGroupContent(titleAndDescription);
+    setModalContent("syncGroup");
+    openSheet();
+  }
+
+  function setAndOpenDeviceInfoModal(deviceInfo: DeviceInfo) {
+    setModalContent("deviceInfo");
+    setDeviceInfoContent(deviceInfo);
     openSheet();
   }
 
@@ -62,12 +84,19 @@ export const SyncScreen: ScreenComponent<"Sync"> = ({ route }) => {
         />
         <Devices>
           {viewMode === "list" ? (
-            <DeviceList setAndOpenModal={setAndOpenModal} />
+            <DeviceList
+              setDeviceModal={setAndOpenDeviceInfoModal}
+              setAndOpenModal={setAndOpenSyncGroupModal}
+            />
           ) : null}
         </Devices>
       </ScrollView>
       <BottomSheetModal ref={sheetRef}>
-        <SyncGroupBottomSheetContent content={modalContent} />
+        {modalContent === "syncGroup" ? (
+          <SyncGroupBottomSheetContent content={syncGroupContent} />
+        ) : (
+          <DeviceInfoContent content={deviceInfoContent} />
+        )}
       </BottomSheetModal>
     </React.Fragment>
   );
