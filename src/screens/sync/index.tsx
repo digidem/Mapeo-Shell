@@ -4,8 +4,16 @@ import { defineMessages } from "react-intl";
 
 import { colors, spacing } from "../../lib/styles";
 import { ScreenComponent } from "../../sharedTypes";
-import { Devices } from "./Devices";
+import { DeviceList, Devices } from "./Devices";
 import { ProjectInfo } from "./ProjectInfo";
+import {
+  SyncGroupBottomSheetContent,
+  TitleAndDescription,
+} from "../../components/SyncGroupBottomSheet";
+import {
+  BottomSheetModal,
+  useBottomSheetModal,
+} from "../../components/BottomSheetModal";
 
 export type ViewMode = "list" | "bubbles";
 export type Role = "coordinator" | "participant";
@@ -28,21 +36,40 @@ const styles = StyleSheet.create({
 
 export const SyncScreen: ScreenComponent<"Sync"> = ({ route }) => {
   const [viewMode, setViewMode] = React.useState<ViewMode>("list");
+  const [modalContent, setModalContent] = React.useState<TitleAndDescription>({
+    title: "",
+    description: "",
+  });
+  const { sheetRef, openSheet } = useBottomSheetModal({ openOnMount: false });
+
+  function setAndOpenModal(titleAndDescription: TitleAndDescription) {
+    setModalContent(titleAndDescription);
+    openSheet();
+  }
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.scrollContentContainer}
-    >
-      <ProjectInfo
-        name="Project Catapult"
-        viewMode={viewMode}
-        toggleViewMode={() => {
-          setViewMode((prev) => (prev === "list" ? "bubbles" : "list"));
-        }}
-      />
-      <Devices mode={viewMode} />
-    </ScrollView>
+    <React.Fragment>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.scrollContentContainer}
+      >
+        <ProjectInfo
+          name="Project Catapult"
+          viewMode={viewMode}
+          toggleViewMode={() => {
+            setViewMode((prev) => (prev === "list" ? "bubbles" : "list"));
+          }}
+        />
+        <Devices>
+          {viewMode === "list" ? (
+            <DeviceList setAndOpenModal={setAndOpenModal} />
+          ) : null}
+        </Devices>
+      </ScrollView>
+      <BottomSheetModal ref={sheetRef}>
+        <SyncGroupBottomSheetContent content={modalContent} />
+      </BottomSheetModal>
+    </React.Fragment>
   );
 };
 

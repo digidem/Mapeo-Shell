@@ -8,8 +8,8 @@ import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Spacer } from "../../components/Spacer";
 import { Text, styles as textStyles } from "../../components/Text";
 import { colors, spacing } from "../../lib/styles";
-import { ViewMode } from ".";
 import { ProgressBar } from "../../components/ProgressBar";
+import { TitleAndDescription } from "../../components/SyncGroupBottomSheet";
 
 const m = defineMessages({
   searching: {
@@ -19,6 +19,11 @@ const m = defineMessages({
   localDevices: {
     id: "screen.sync.main.localDevices",
     defaultMessage: "Local Devices",
+  },
+  localDeviceDescription: {
+    id: "screen.sync.main.localDeviceDescription",
+    defaultMessage:
+      "These devices are on your project and on the same wifi network as you.",
   },
   sync: {
     id: "screen.sync.main.sync",
@@ -136,9 +141,14 @@ const deviceListStyles = StyleSheet.create({
   },
 });
 
-const DeviceList = () => {
+export const DeviceList = ({
+  setAndOpenModal,
+}: {
+  setAndOpenModal: (content: TitleAndDescription) => void;
+}) => {
   const { formatMessage: t } = useIntl();
   const [shouldStart, setShouldStart] = React.useState(false);
+
   return (
     <View>
       <View style={deviceListStyles.headerRowContainer}>
@@ -147,7 +157,15 @@ const DeviceList = () => {
             {t(m.localDevices)}
           </Text>
           <Spacer direction="horizontal" size={spacing.medium} />
-          <TouchableOpacity style={deviceListStyles.infoButton}>
+          <TouchableOpacity
+            onPress={() => {
+              setAndOpenModal({
+                title: m.localDevices.defaultMessage,
+                description: m.localDeviceDescription.defaultMessage,
+              });
+            }}
+            style={deviceListStyles.infoButton}
+          >
             <MaterialIcon name="help" size={14} color={colors.DARK_GRAY} />
           </TouchableOpacity>
         </View>
@@ -177,7 +195,7 @@ const DeviceList = () => {
           {t(m.lastSynced)}
         </Text>
       </View>
-      {[1, 3, 2, 5, 262, 26, 22, 34, 27, 235, 98, 45].map((val) => (
+      {[1].map((val) => (
         <ProgressBar
           key={val}
           deviceId={val.toString()}
@@ -193,7 +211,7 @@ const DeviceList = () => {
   );
 };
 
-export const Devices = ({ mode }: { mode: ViewMode }) => {
+export const Devices = ({ children }: { children: React.ReactNode }) => {
   const { formatMessage: t } = useIntl();
   const [status, setStatus] = React.useState<"loading" | "idle">("loading");
 
@@ -207,17 +225,19 @@ export const Devices = ({ mode }: { mode: ViewMode }) => {
   );
 
   return (
-    <View style={{ paddingVertical: spacing.large }}>
-      {status === "loading" ? (
-        <View>
-          <Text size="large" bold textAlign="center">
-            {t(m.searching)}
-            <AnimatedEllipsis />
-          </Text>
-        </View>
-      ) : mode === "list" ? (
-        <DeviceList />
-      ) : null}
-    </View>
+    <React.Fragment>
+      <View style={{ paddingVertical: spacing.large }}>
+        {status === "loading" ? (
+          <View>
+            <Text size="large" bold textAlign="center">
+              {t(m.searching)}
+              <AnimatedEllipsis />
+            </Text>
+          </View>
+        ) : (
+          children
+        )}
+      </View>
+    </React.Fragment>
   );
 };

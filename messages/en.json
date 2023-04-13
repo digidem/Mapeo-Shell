@@ -33,6 +33,9 @@
   "screen.sync.main.lastSynced": {
     "message": "Last Synced"
   },
+  "screen.sync.main.localDeviceDescription": {
+    "message": "These devices are on your project and on the same wifi network as you."
+  },
   "screen.sync.main.localDevices": {
     "message": "Local Devices"
   },
