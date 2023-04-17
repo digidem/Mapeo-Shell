@@ -86,13 +86,13 @@ export const Button = ({
         {iconName && (
           <MaterialIcon
             name={iconName}
-            size={textStyles.large.fontSize}
+            size={textStyles.medium.fontSize}
             color={buttonVariant === "primary" ? colors.WHITE : accentColor}
             style={styles.icon}
           />
         )}
         <Text
-          size="medium"
+          size="smallMedium"
           bold
           color={buttonVariant === "primary" ? colors.WHITE : accentColor}
         >
