@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Animated, Pressable, View, StyleSheet } from "react-native";
+import { Animated, View, StyleSheet } from "react-native";
 import { defineMessages, useIntl } from "react-intl";
 import { useFocusEffect } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -10,6 +10,7 @@ import { Text, styles as textStyles } from "../../components/Text";
 import { colors, spacing } from "../../lib/styles";
 import { ProgressBar } from "../../components/ProgressBar";
 import { TitleAndDescription } from "../../components/SyncGroupBottomSheet";
+import { Button } from "../../components/Button";
 
 const m = defineMessages({
   searching: {
@@ -122,17 +123,6 @@ const deviceListStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  syncButton: {
-    backgroundColor: colors.MAPEO_BLUE,
-    borderRadius: 4,
-    padding: spacing.medium,
-    minWidth: 120,
-  },
-  syncButtonContentContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   listHeaderContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -169,23 +159,11 @@ export const DeviceList = ({
             <MaterialIcon name="help" size={14} color={colors.DARK_GRAY} />
           </TouchableOpacity>
         </View>
-        <Pressable
+        <Button
+          iconName="lightning-bolt"
           onPress={() => setShouldStart(true)}
-          android_ripple={{ radius: 100 }}
-          style={deviceListStyles.syncButton}
-        >
-          <View style={deviceListStyles.syncButtonContentContainer}>
-            <MaterialIcon
-              name="lightning-bolt"
-              size={20}
-              color={colors.WHITE}
-            />
-            <Spacer direction="horizontal" size={spacing.medium} />
-            <Text size="medium" color={colors.WHITE} bold>
-              {t(m.sync)}
-            </Text>
-          </View>
-        </Pressable>
+          text={t(m.sync)}
+        />
       </View>
       <View style={deviceListStyles.listHeaderContainer}>
         <Text size="small" color={colors.DARK_GRAY}>

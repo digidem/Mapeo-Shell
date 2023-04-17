@@ -3,12 +3,13 @@ import { StyleSheet, Text as RNText, TextProps, TextStyle } from "react-native";
 interface Props extends React.PropsWithChildren<Omit<TextProps, "style">> {
   bold?: boolean;
   color?: TextStyle["color"];
-  size: "small" | "medium" | "large";
+  size: "small" | "smallMedium" | "medium" | "large";
   textAlign?: TextStyle["textAlign"];
 }
 
 export const styles = StyleSheet.create({
   small: { fontSize: 14 },
+  smallMedium: { fontSize: 16 },
   medium: { fontSize: 20 },
   large: { fontSize: 24 },
   bold: { fontWeight: "500" },
