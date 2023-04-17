@@ -18,6 +18,24 @@
   "screen.sync.Devices.searching": {
     "message": "Searching for devices"
   },
+  "screen.sync.DevicesList.deviceName": {
+    "message": "Device Name"
+  },
+  "screen.sync.DevicesList.lastSynced": {
+    "message": "Last Synced"
+  },
+  "screen.sync.DevicesList.localDevices": {
+    "message": "Local Devices"
+  },
+  "screen.sync.DevicesList.sync": {
+    "message": "Sync"
+  },
+  "screen.sync.LocalDevicesInfo.localDeviceDescription": {
+    "message": "These devices are on your project and on the same wifi network as you."
+  },
+  "screen.sync.LocalDevicesInfo.localDevices": {
+    "message": "Local Devices"
+  },
   "screen.sync.ProjectInfo.connectedNoNetworkName": {
     "message": "Connected (no network name)"
   },
@@ -27,19 +45,28 @@
   "screen.sync.index.navTitle": {
     "message": "Synchronize"
   },
-  "screen.sync.main.deviceName": {
-    "message": "Device Name"
+  "screens.sync.DeviceBottomSheetContent.DeviceInfo.close": {
+    "message": "Close"
   },
-  "screen.sync.main.lastSynced": {
-    "message": "Last Synced"
+  "screens.sync.DeviceBottomSheetContent.DeviceInfo.itemToSync": {
+    "message": "1 item ready to sync"
   },
-  "screen.sync.main.localDeviceDescription": {
-    "message": "These devices are on your project and on the same wifi network as you."
+  "screens.sync.DeviceBottomSheetContent.DeviceInfo.itemsToSync": {
+    "message": "{count} items ready to sync"
   },
-  "screen.sync.main.localDevices": {
-    "message": "Local Devices"
+  "screens.sync.DeviceBottomSheetContent.DeviceInfo.lastSynced": {
+    "message": "Last synced"
   },
-  "screen.sync.main.sync": {
-    "message": "Sync"
+  "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.cancel": {
+    "message": "Cancel"
+  },
+  "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.removeConfirmaitionTitle": {
+    "message": "Are you sure you want to remove {name}?"
+  },
+  "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.removeConfirmationDescription": {
+    "message": "{name} will be unable to sync to the project and other devices will be unable to sync with them."
+  },
+  "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.removeDevice": {
+    "message": "Remove Device"
   }
 }
