@@ -5,11 +5,6 @@ import { Text } from "../../components/Text";
 import { Spacer } from "../../components/Spacer";
 import { BottomSheetContent } from "../../components/BottomSheetModal";
 
-export type TitleAndDescription = {
-  title: string;
-  description: string;
-};
-
 const m = defineMessages({
   localDevices: {
     id: "screen.sync.LocalDevicesInfo.localDevices",
