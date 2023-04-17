@@ -10,6 +10,8 @@ import {
 import { useTypedNavigation } from "../../hooks/useTypedNavigation";
 import { spacing } from "../../lib/styles";
 
+export { BottomSheetContent } from "./BottomSheetContent";
+
 const INITIAL_SNAP_POINTS = ["CONTENT_HEIGHT"];
 
 export function useBottomSheetModal({ openOnMount }: { openOnMount: boolean }) {

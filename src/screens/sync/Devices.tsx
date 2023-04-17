@@ -4,32 +4,23 @@ import { defineMessages, useIntl } from "react-intl";
 import { useFocusEffect } from "@react-navigation/native";
 
 import { Text } from "../../components/Text";
-import { SyncGroupBottomSheetContent } from "../../components/SyncGroupBottomSheet";
-import { spacing } from "../../lib/styles";
-import { Role, ViewMode } from ".";
 import {
   BottomSheetModal,
   useBottomSheetModal,
 } from "../../components/BottomSheetModal";
-import { DeviceInfo } from "./DeviceInfo";
+import { spacing } from "../../lib/styles";
+import { Role, ViewMode } from ".";
+import { DeviceBottomSheetContent } from "./DeviceBottomSheetContent";
 import { generateData } from "../../lib/data";
 import { Peer } from "../../sharedTypes";
-import { DevicesList } from "./DevicesList";
 import { AnimatedEllipsis } from "./AnimatedEllipsis";
+import { DevicesList } from "./DevicesList";
+import { LocalDevicesInfo } from "./LocalDevicesInfo";
 
 const m = defineMessages({
   searching: {
     id: "screen.sync.Devices.searching",
     defaultMessage: "Searching for devices",
-  },
-  localDevices: {
-    id: "screen.sync.Devices.localDevices",
-    defaultMessage: "Local Devices",
-  },
-  localDeviceDescription: {
-    id: "screen.sync.Devices.localDeviceDescription",
-    defaultMessage:
-      "These devices are on your project and on the same wifi network as you.",
   },
 });
 
@@ -85,14 +76,9 @@ export const Devices = ({ mode, role }: { mode: ViewMode; role: Role }) => {
         disableBackdropPress={modalMode?.type === "device"}
       >
         {!modalMode ? null : modalMode.type === "info" ? (
-          <SyncGroupBottomSheetContent
-            content={{
-              title: t(m.localDevices),
-              description: t(m.localDeviceDescription),
-            }}
-          />
+          <LocalDevicesInfo />
         ) : modalMode.type === "device" ? (
-          <DeviceInfo
+          <DeviceBottomSheetContent
             onClose={() => closeSheet()}
             role={role}
             peer={modalMode.data}
