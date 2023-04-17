@@ -45,19 +45,28 @@
   "screen.sync.index.navTitle": {
     "message": "Synchronize"
   },
-  "screens.sync.DeviceSyncInfo.close": {
+  "screens.sync.DeviceBottomSheetContent.DeviceInfo.close": {
     "message": "Close"
   },
-  "screens.sync.DeviceSyncInfo.itemToSync": {
+  "screens.sync.DeviceBottomSheetContent.DeviceInfo.itemToSync": {
     "message": "1 item ready to sync"
   },
-  "screens.sync.DeviceSyncInfo.itemsToSync": {
+  "screens.sync.DeviceBottomSheetContent.DeviceInfo.itemsToSync": {
     "message": "{count} items ready to sync"
   },
-  "screens.sync.DeviceSyncInfo.lastSynced": {
+  "screens.sync.DeviceBottomSheetContent.DeviceInfo.lastSynced": {
     "message": "Last synced"
   },
-  "screens.sync.DeviceSyncInfo.removeDevice": {
-    "message": "Remove device"
+  "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.cancel": {
+    "message": "Cancel"
+  },
+  "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.removeConfirmaitionTitle": {
+    "message": "Are you sure you want to remove {name}?"
+  },
+  "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.removeConfirmationDescription": {
+    "message": "{name} will be unable to sync to the project and other devices will be unable to sync with them."
+  },
+  "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.removeDevice": {
+    "message": "Remove Device"
   }
 }

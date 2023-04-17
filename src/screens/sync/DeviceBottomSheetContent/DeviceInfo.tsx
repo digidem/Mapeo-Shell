@@ -1,57 +1,45 @@
 import * as React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { Role } from ".";
-import { Text } from "../../components/Text";
 import { defineMessages, useIntl } from "react-intl";
-import { Spacer } from "../../components/Spacer";
-import { colors, spacing } from "../../lib/styles";
-import { Button } from "../../components/Button";
-import { Peer } from "../../sharedTypes";
-import { BottomSheetContent } from "../../components/BottomSheetModal";
+
+import { Spacer } from "../../../components/Spacer";
+import { Text } from "../../../components/Text";
+import { BottomSheetContent } from "../../../components/BottomSheetModal";
+import { Button } from "../../../components/Button";
+import { colors, spacing } from "../../../lib/styles";
+import { Peer } from "../../../sharedTypes";
+import { Role } from "..";
 
 const m = defineMessages({
   // Intl.PluralRules not supported by Hermes (https://github.com/facebook/hermes/blob/main/doc/IntlAPIs.md)
   // Easier to just do separate strings than using @formatjs polyfills for our case
   // (https://formatjs.io/docs/polyfills/intl-pluralrules/)
   itemToSync: {
-    id: "screens.sync.DeviceSyncInfo.itemToSync",
+    id: "screens.sync.DeviceBottomSheetContent.DeviceInfo.itemToSync",
     defaultMessage: "1 item ready to sync",
   },
   itemsToSync: {
-    id: "screens.sync.DeviceSyncInfo.itemsToSync",
+    id: "screens.sync.DeviceBottomSheetContent.DeviceInfo.itemsToSync",
     defaultMessage: "{count} items ready to sync",
   },
   lastSynced: {
-    id: "screens.sync.DeviceSyncInfo.lastSynced",
+    id: "screens.sync.DeviceBottomSheetContent.DeviceInfo.lastSynced",
     defaultMessage: "Last synced",
   },
-  removeDevice: {
-    id: "screens.sync.DeviceSyncInfo.removeDevice",
-    defaultMessage: "Remove device",
-  },
   close: {
-    id: "screens.sync.DeviceSyncInfo.close",
+    id: "screens.sync.DeviceBottomSheetContent.DeviceInfo.close",
     defaultMessage: "Close",
   },
 });
 
 interface Props {
-  onClose: () => void;
-  role: Role;
-  peer: Peer;
-}
-
-const InfoContent = ({
-  peer,
-  onClose,
-  onRemove,
-  role,
-}: {
   peer: Peer;
   onClose: () => void;
   onRemove: () => void;
   role: Role;
-}) => {
+}
+
+export const DeviceInfo = ({ peer, onClose, onRemove, role }: Props) => {
   const { formatMessage: t } = useIntl();
   const { deviceType, name, lastSynced, has, wants } = peer;
   const remainingSyncItems = wants - has;
@@ -72,8 +60,8 @@ const InfoContent = ({
             style={{ height: 80, width: 80, resizeMode: "contain" }}
             source={
               deviceType === "desktop"
-                ? require("../../../assets/desktop.png")
-                : require("../../../assets/mobile.png")
+                ? require("../../../../assets/desktop.png")
+                : require("../../../../assets/mobile.png")
             }
           />
           <Spacer direction="horizontal" size={spacing.medium} />
@@ -116,20 +104,6 @@ const InfoContent = ({
         />
       )}
     </BottomSheetContent>
-  );
-};
-
-export const DeviceBottomSheetContent = ({ onClose, peer, role }: Props) => {
-  const [mode, setMode] = React.useState<"info" | "remove">("info");
-  return mode === "info" ? (
-    <InfoContent
-      peer={peer}
-      role={role}
-      onClose={onClose}
-      onRemove={() => setMode("remove")}
-    />
-  ) : (
-    <BottomSheetContent></BottomSheetContent>
   );
 };
 
