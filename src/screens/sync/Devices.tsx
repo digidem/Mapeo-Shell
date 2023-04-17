@@ -219,16 +219,16 @@ export type DeviceType = "desktop" | "mobile";
 
 export const Devices = ({ children }: { children: React.ReactNode }) => {
   const { formatMessage: t } = useIntl();
-  const [status, setStatus] = React.useState<"loading" | "idle">("idle");
+  const [status, setStatus] = React.useState<"loading" | "idle">("loading");
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     setStatus("loading");
-  //     setTimeout(() => {
-  //       setStatus("idle");
-  //     }, 3000);
-  //   }, [])
-  // );
+  useFocusEffect(
+    React.useCallback(() => {
+      setStatus("loading");
+      setTimeout(() => {
+        setStatus("idle");
+      }, 3000);
+    }, [])
+  );
 
   return (
     <React.Fragment>
