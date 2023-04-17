@@ -26,7 +26,7 @@ const m = defineMessages({
 
 export const Devices = ({ mode, role }: { mode: ViewMode; role: Role }) => {
   const { formatMessage: t } = useIntl();
-  const [peers] = React.useState(generateData(10));
+  const [peers, setPeers] = React.useState(generateData(10));
 
   const [status, setStatus] = React.useState<"loading" | "idle">("loading");
 
@@ -80,6 +80,11 @@ export const Devices = ({ mode, role }: { mode: ViewMode; role: Role }) => {
         ) : modalMode.type === "device" ? (
           <DeviceBottomSheetContent
             onClose={() => closeSheet()}
+            onRemoveDevice={() => {
+              setPeers((prev) =>
+                prev.filter(({ id }) => modalMode.data.id !== id)
+              );
+            }}
             role={role}
             peer={modalMode.data}
           />

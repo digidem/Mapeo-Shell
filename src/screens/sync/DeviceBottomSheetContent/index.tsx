@@ -7,11 +7,17 @@ import { DeviceInfo } from "./DeviceInfo";
 
 interface Props {
   onClose: () => void;
+  onRemoveDevice: () => void;
   role: Role;
   peer: Peer;
 }
 
-export const DeviceBottomSheetContent = ({ onClose, peer, role }: Props) => {
+export const DeviceBottomSheetContent = ({
+  onClose,
+  onRemoveDevice,
+  peer,
+  role,
+}: Props) => {
   const [mode, setMode] = React.useState<"info" | "remove">("info");
   return mode === "info" ? (
     <DeviceInfo
@@ -23,7 +29,10 @@ export const DeviceBottomSheetContent = ({ onClose, peer, role }: Props) => {
   ) : (
     <RemoveDeviceConfirmation
       onCancel={onClose}
-      onConfirm={() => onClose()}
+      onConfirm={() => {
+        onRemoveDevice();
+        onClose();
+      }}
       peer={peer}
     />
   );
