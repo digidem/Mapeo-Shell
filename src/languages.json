@@ -99,6 +99,10 @@
     "nativeName": "Čeština",
     "englishName": "Czech"
   },
+  "copy": {
+    "nativeName": "copy",
+    "englishName": "copy"
+  },
   "cs-CZ": {
     "nativeName": "Čeština",
     "englishName": "Czech"

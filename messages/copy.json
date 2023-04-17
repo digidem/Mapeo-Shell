@@ -1,0 +1,66 @@
+{
+  "Components.DeviceInfoContents.downloading": {
+    "message": "Downloading"
+  },
+  "Components.DeviceInfoContents.downloads": {
+    "message": "Downloads"
+  },
+  "Components.DeviceInfoContents.media": {
+    "message": "media"
+  },
+  "Components.DeviceInfoContents.observations": {
+    "message": "observations"
+  },
+  "Components.DeviceInfoContents.syncing": {
+    "message": "Syncing"
+  },
+  "Components.DeviceInfoContents.uploading": {
+    "message": "Uploading"
+  },
+  "Components.DeviceInfoContents.uploads": {
+    "message": "Uploads"
+  },
+  "app.firstMessage": {
+    "description": "Used as a tester",
+    "message": "This is a test"
+  },
+  "screen.Home.coordinatorButtonText": {
+    "message": "Sync (as Coordinator)"
+  },
+  "screen.Home.participantButtonText": {
+    "message": "Sync (as Participant)"
+  },
+  "screen.Home.subtitle": {
+    "message": "Sync"
+  },
+  "screen.Home.title": {
+    "message": "Mapeo Mobile Testing"
+  },
+  "screen.sync.Devices.searching": {
+    "message": "Searching for devices"
+  },
+  "screen.sync.ProjectInfo.connectedNoNetworkName": {
+    "message": "Connected (no network name)"
+  },
+  "screen.sync.ProjectInfo.noConnection": {
+    "message": "No connection"
+  },
+  "screen.sync.index.navTitle": {
+    "message": "Synchronize"
+  },
+  "screen.sync.main.deviceName": {
+    "message": "Device Name"
+  },
+  "screen.sync.main.lastSynced": {
+    "message": "Last Synced"
+  },
+  "screen.sync.main.localDeviceDescription": {
+    "message": "These devices are on your project and on the same wifi network as you."
+  },
+  "screen.sync.main.localDevices": {
+    "message": "Local Devices"
+  },
+  "screen.sync.main.sync": {
+    "message": "Sync"
+  }
+}

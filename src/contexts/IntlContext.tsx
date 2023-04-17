@@ -49,12 +49,12 @@ type IntlSetContextType = Readonly<
   [string, Dispatch<SetStateAction<TranslatedLocales>>]
 >;
 
-const IntlSetContext = createContext<IntlSetContextType>(["en", () => {}]);
+const IntlSetContext = createContext<IntlSetContextType>(["copy", () => {}]);
 
 export const IntlProvider = ({ children }: { children: ReactNode }) => {
-  const [appLocale, setAppLocale] = useState<TranslatedLocales>("en");
+  const [appLocale, setAppLocale] = useState<TranslatedLocales>("copy");
 
-  const locale = appLocale || getSupportedLocale(appLocale) || "en";
+  const locale = appLocale || getSupportedLocale(appLocale) || "copy";
 
   const languageCode = locale.split("-")[0];
 
