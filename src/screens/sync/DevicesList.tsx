@@ -36,7 +36,7 @@ export const DevicesList = ({
   onInfoPress,
 }: {
   peers: Peer[];
-  onDevicePress: (peer: Peer) => void;
+  onDevicePress: (isNotIdle: boolean, peer: Peer) => void;
   onInfoPress: () => void;
 }) => {
   const { formatMessage: t } = useIntl();
@@ -71,18 +71,10 @@ export const DevicesList = ({
       {peers.map((peer) => (
         <ProgressBar
           key={peer.id}
-          deviceId={peer.deviceId}
-          deviceType={peer.deviceType}
-          deviceName={peer.name}
-          date={new Date(peer.lastSynced).toLocaleDateString(undefined, {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          })}
-          syncGroup="local"
+          peer={peer}
           shouldStart={shouldStart}
           style={{ marginTop: 10 }}
-          onPress={() => onDevicePress(peer)}
+          onPress={onDevicePress}
         />
       ))}
     </View>

@@ -1,5 +1,6 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { SyncGroup, SyncContext, SyncStatus } from "../contexts/SyncContext";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { SyncContext, SyncStatus } from "../contexts/SyncContext";
+import { ConnectionType } from "../sharedTypes";
 
 type Progress = {
   completed: number;
@@ -8,12 +9,12 @@ type Progress = {
 
 type ActiveSync = {
   progress: Progress;
-  syncGroup: SyncGroup;
+  syncGroup: ConnectionType;
 };
 
 export function useSync(
   deviceId: string,
-  syncGroup: SyncGroup,
+  syncGroup: ConnectionType,
   shouldStart: boolean
 ) {
   const [thisSync, setThisSync] = useState<ActiveSync>({
@@ -58,12 +59,15 @@ export function useSync(
   );
 }
 
-const useStatus = (deviceId: string, syncGroup: SyncGroup) => {
+const useStatus = (deviceId: string, syncGroup: ConnectionType) => {
   const [status, setStatus] = useState<SyncStatus>("idle");
   const [allSyncs, setAllSyncs] = useContext(SyncContext);
 
   useEffect(() => {
-    if (!allSyncs[syncGroup][deviceId]) {
+    if (
+      !allSyncs[syncGroup][deviceId] ||
+      allSyncs[syncGroup][deviceId] !== status
+    ) {
       setAllSyncs((val) => ({
         ...val,
         [syncGroup]: {
@@ -74,28 +78,9 @@ const useStatus = (deviceId: string, syncGroup: SyncGroup) => {
     }
   }, [syncGroup, deviceId, status, allSyncs]);
 
-  const updateAllSyncsOnStatusUpdate = useCallback(
-    (syncStatus: SyncStatus) => {
-      setStatus(syncStatus);
-      setAllSyncs((val) => {
-        if (val[syncGroup][deviceId] && val[syncGroup][deviceId] === status) {
-          return val;
-        }
-        return {
-          ...val,
-          [syncGroup]: {
-            ...val[syncGroup],
-            [deviceId]: syncStatus,
-          },
-        };
-      });
-    },
-    [deviceId, syncGroup]
-  );
-
-  return [status, updateAllSyncsOnStatusUpdate] as const;
+  return [status, setStatus] as const;
 };
 
-function getRandomNumberMax30() {
+export function getRandomNumberMax30() {
   return Math.floor(Math.random() * (30 - 1) + 1);
 }
