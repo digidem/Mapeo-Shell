@@ -15,6 +15,7 @@ type ProgressBarProps = {
   deviceName: string;
   deviceType: DeviceType;
   date: string;
+  onPress?: () => void;
   syncGroup: SyncGroup;
   shouldStart: boolean;
   style?: StyleProp<ViewStyle>;
@@ -26,6 +27,7 @@ export const ProgressBar = ({
   deviceName,
   date,
   deviceType,
+  onPress,
   syncGroup,
   shouldStart,
   style,
@@ -39,12 +41,7 @@ export const ProgressBar = ({
       : require("../../assets/mobile.png");
 
   return (
-    <TouchableOpacity
-      style={style}
-      onPress={() => {
-        setDeviceModal({ deviceId, deviceName, deviceType });
-      }}
-    >
+    <TouchableOpacity style={style} onPress={onPress}>
       <Progress.Bar
         color="rgba(0, 102, 255, 0.1)"
         progress={progress}

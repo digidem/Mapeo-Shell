@@ -1,203 +1,42 @@
 import * as React from "react";
-import { Animated, View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import { defineMessages, useIntl } from "react-intl";
 import { useFocusEffect } from "@react-navigation/native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { Spacer } from "../../components/Spacer";
-import { Text, styles as textStyles } from "../../components/Text";
-import { colors, spacing } from "../../lib/styles";
-import { ProgressBar } from "../../components/ProgressBar";
-import { TitleAndDescription } from "../../components/SyncGroupBottomSheet";
-import { DeviceInfo } from "../../components/DeviceInfoSyncingContent";
-import { Button } from "../../components/Button";
+import { Text } from "../../components/Text";
+import {
+  BottomSheetModal,
+  useBottomSheetModal,
+} from "../../components/BottomSheetModal";
+import { spacing } from "../../lib/styles";
+import { Role, ViewMode } from ".";
+import { DeviceBottomSheetContent } from "./DeviceBottomSheetContent";
+import { generateData } from "../../lib/data";
+import { Peer } from "../../sharedTypes";
+import { AnimatedEllipsis } from "./AnimatedEllipsis";
+import { DevicesList } from "./DevicesList";
+import { LocalDevicesInfo } from "./LocalDevicesInfo";
 
 const m = defineMessages({
   searching: {
     id: "screen.sync.Devices.searching",
     defaultMessage: "Searching for devices",
   },
-  localDevices: {
-    id: "screen.sync.main.localDevices",
-    defaultMessage: "Local Devices",
-  },
-  localDeviceDescription: {
-    id: "screen.sync.main.localDeviceDescription",
-    defaultMessage:
-      "These devices are on your project and on the same wifi network as you.",
-  },
-  sync: {
-    id: "screen.sync.main.sync",
-    defaultMessage: "Sync",
-  },
-  deviceName: {
-    id: "screen.sync.main.deviceName",
-    defaultMessage: "Device Name",
-  },
-  lastSynced: {
-    id: "screen.sync.main.lastSynced",
-    defaultMessage: "Last Synced",
-  },
 });
 
-const animatedEllipsisStyles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "baseline",
-  },
-  text: {
-    fontSize: textStyles.large.fontSize,
-    fontWeight: textStyles.bold.fontWeight,
-    // Hacky way of getting ellipsis to vertically align at bottom
-    marginBottom: -(textStyles.large.fontSize / 2),
-  },
-});
-
-const AnimatedEllipsis = () => {
-  const dots = React.useRef([
-    new Animated.Value(0),
-    new Animated.Value(0),
-    new Animated.Value(0),
-  ]).current;
-
-  React.useEffect(() => {
-    let mounted = true;
-
-    function animateDot(position: number) {
-      if (!mounted) return;
-
-      const targetDot = dots[position];
-      const nextDotPosition = (position + 1) % 3;
-
-      Animated.timing(targetDot, {
-        toValue: 1,
-        useNativeDriver: true,
-        duration: 350,
-      }).start(({ finished }) => {
-        if (finished && nextDotPosition === 0) {
-          dots.forEach((d) => {
-            d.setValue(0);
-          });
-        }
-        animateDot(nextDotPosition);
-      });
-    }
-
-    animateDot(0);
-
-    return () => {
-      mounted = false;
-      dots.forEach((d) => d.stopAnimation());
-    };
-  }, []);
-
-  return (
-    <View style={animatedEllipsisStyles.container}>
-      {dots.map((opacity, index) => (
-        <Animated.Text
-          key={index}
-          style={[animatedEllipsisStyles.text, { opacity }]}
-        >
-          .
-        </Animated.Text>
-      ))}
-    </View>
-  );
-};
-
-const deviceListStyles = StyleSheet.create({
-  headerRowContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: spacing.medium,
-  },
-  headerTitleContainer: { flexDirection: "row", alignItems: "center" },
-  infoButton: {
-    borderRadius: 10,
-    borderColor: colors.GRAY,
-    borderWidth: 1,
-    backgroundColor: colors.WHITE,
-    height: 20,
-    width: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  listHeaderContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: spacing.medium,
-  },
-});
-
-export const DeviceList = ({
-  setAndOpenModal,
-  setDeviceModal,
-}: {
-  setAndOpenModal: (content: TitleAndDescription) => void;
-  setDeviceModal: (content: DeviceInfo) => void;
-}) => {
+export const Devices = ({ mode, role }: { mode: ViewMode; role: Role }) => {
   const { formatMessage: t } = useIntl();
-  const [shouldStart, setShouldStart] = React.useState(false);
+  const [peers, setPeers] = React.useState(generateData(10));
 
-  return (
-    <View>
-      <View style={deviceListStyles.headerRowContainer}>
-        <View style={deviceListStyles.headerTitleContainer}>
-          <Text size="medium" bold>
-            {t(m.localDevices)}
-          </Text>
-          <Spacer direction="horizontal" size={spacing.medium} />
-          <TouchableOpacity
-            onPress={() => {
-              setAndOpenModal({
-                title: m.localDevices.defaultMessage,
-                description: m.localDeviceDescription.defaultMessage,
-              });
-            }}
-            style={deviceListStyles.infoButton}
-          >
-            <MaterialIcon name="help" size={14} color={colors.DARK_GRAY} />
-          </TouchableOpacity>
-        </View>
-        <Button
-          iconName="lightning-bolt"
-          onPress={() => setShouldStart(true)}
-          text={t(m.sync)}
-        />
-      </View>
-      <View style={deviceListStyles.listHeaderContainer}>
-        <Text size="small" color={colors.DARK_GRAY}>
-          {t(m.deviceName)}
-        </Text>
-        <Text size="small" color={colors.DARK_GRAY}>
-          {t(m.lastSynced)}
-        </Text>
-      </View>
-      {[1].map((val) => (
-        <ProgressBar
-          setDeviceModal={setDeviceModal}
-          key={val}
-          deviceId={val.toString()}
-          deviceType={val % 2 === 0 ? "desktop" : "mobile"}
-          deviceName={"Example"}
-          date="Feb 12, 2023"
-          syncGroup="local"
-          shouldStart={shouldStart}
-          style={{ marginTop: 10 }}
-        />
-      ))}
-    </View>
-  );
-};
-
-export type DeviceType = "desktop" | "mobile";
-
-export const Devices = ({ children }: { children: React.ReactNode }) => {
-  const { formatMessage: t } = useIntl();
   const [status, setStatus] = React.useState<"loading" | "idle">("loading");
+
+  const [modalMode, setModalMode] = React.useState<
+    { type: "info" } | { type: "device"; data: Peer } | null
+  >(null);
+
+  const { sheetRef, closeSheet, openSheet } = useBottomSheetModal({
+    openOnMount: false,
+  });
 
   useFocusEffect(
     React.useCallback(() => {
@@ -209,7 +48,7 @@ export const Devices = ({ children }: { children: React.ReactNode }) => {
   );
 
   return (
-    <React.Fragment>
+    <>
       <View style={{ paddingVertical: spacing.large }}>
         {status === "loading" ? (
           <View>
@@ -218,10 +57,39 @@ export const Devices = ({ children }: { children: React.ReactNode }) => {
               <AnimatedEllipsis />
             </Text>
           </View>
-        ) : (
-          children
-        )}
+        ) : mode === "list" ? (
+          <DevicesList
+            peers={peers}
+            onInfoPress={() => {
+              setModalMode({ type: "info" });
+              openSheet();
+            }}
+            onDevicePress={(peer: Peer) => {
+              setModalMode({ type: "device", data: peer });
+              openSheet();
+            }}
+          />
+        ) : null}
       </View>
-    </React.Fragment>
+      <BottomSheetModal
+        ref={sheetRef}
+        disableBackdropPress={modalMode?.type === "device"}
+      >
+        {!modalMode ? null : modalMode.type === "info" ? (
+          <LocalDevicesInfo />
+        ) : modalMode.type === "device" ? (
+          <DeviceBottomSheetContent
+            onClose={() => closeSheet()}
+            onRemoveDevice={() => {
+              setPeers((prev) =>
+                prev.filter(({ id }) => modalMode.data.id !== id)
+              );
+            }}
+            role={role}
+            peer={modalMode.data}
+          />
+        ) : null}
+      </BottomSheetModal>
+    </>
   );
 };
