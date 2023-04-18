@@ -3,37 +3,34 @@ import { StyleSheet, View, Image, StyleProp, ViewStyle } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { useSync } from "../hooks/useSync";
-import { SyncGroup } from "../contexts/SyncContext";
+import { SyncContext } from "../contexts/SyncContext";
 import { Text } from "./Text";
 import { colors, spacing } from "../lib/styles";
 import { Spacer } from "./Spacer";
-import { DeviceType } from "../screens/sync/Devices";
-import { DeviceInfo } from "./DeviceInfoSyncingContent";
+import { Peer } from "../sharedTypes";
+import { useContext } from "react";
 
 type ProgressBarProps = {
-  deviceId: string;
-  deviceName: string;
-  deviceType: DeviceType;
-  date: string;
-  onPress?: () => void;
-  syncGroup: SyncGroup;
+  peer: Peer;
+  onPress: (isNotIdle: boolean, peer: Peer) => void;
   shouldStart: boolean;
   style?: StyleProp<ViewStyle>;
-  setDeviceModal: (content: DeviceInfo) => void;
 };
 
 export const ProgressBar = ({
-  deviceId,
-  deviceName,
-  date,
-  deviceType,
+  peer,
   onPress,
-  syncGroup,
   shouldStart,
   style,
-  setDeviceModal,
 }: ProgressBarProps) => {
-  const progress = useSync(deviceId, syncGroup, shouldStart);
+  const { deviceId, deviceType, name, lastSynced, connectionType } = peer;
+  const progress = useSync(peer.deviceId, connectionType, shouldStart);
+
+  const [allSyncs] = useContext(SyncContext);
+
+  const isIdle = Object.values(allSyncs).some((val) => {
+    return val[deviceId] && val[deviceId] === "idle";
+  });
 
   const icon =
     deviceType === "desktop"
@@ -41,7 +38,7 @@ export const ProgressBar = ({
       : require("../../assets/mobile.png");
 
   return (
-    <TouchableOpacity style={style} onPress={onPress}>
+    <TouchableOpacity style={style} onPress={() => onPress(isIdle, peer)}>
       <Progress.Bar
         color="rgba(0, 102, 255, 0.1)"
         progress={progress}
@@ -56,12 +53,16 @@ export const ProgressBar = ({
             />
             <Spacer direction="horizontal" size={spacing.medium} />
             <Text size="small" bold>
-              {deviceName}
+              {name}
             </Text>
           </View>
           {!shouldStart ? (
             <Text size="small" color={colors.DARK_GRAY}>
-              {date}
+              {new Date(peer.lastSynced).toLocaleDateString(undefined, {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
             </Text>
           ) : (
             <MaterialIcon

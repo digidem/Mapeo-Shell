@@ -13,13 +13,22 @@ export type ScreenComponent<ScreenName extends keyof Screens> = React.FC<
         navTitle: MessageDescriptor;
       });
 
+export type DeviceType = "desktop" | "mobile";
+
+export type Observation = {
+  media: number;
+  observations: number;
+};
+
+export type ConnectionType = "local" | "internet";
+
 export type Peer = {
   id: number;
   name: string;
   deviceId: string;
-  deviceType: "desktop" | "mobile";
-  has: number;
-  wants: number;
+  deviceType: DeviceType;
+  has: Observation;
+  wants: Observation;
   lastSynced: number;
-  connectionType: "local" | "internet";
+  connectionType: ConnectionType;
 };

@@ -16,6 +16,7 @@ import { Peer } from "../../sharedTypes";
 import { AnimatedEllipsis } from "./AnimatedEllipsis";
 import { DevicesList } from "./DevicesList";
 import { LocalDevicesInfo } from "./LocalDevicesInfo";
+import { DeviceInfoSyncingContent } from "../../components/DeviceInfoSyncingContent";
 
 const m = defineMessages({
   searching: {
@@ -31,12 +32,23 @@ export const Devices = ({ mode, role }: { mode: ViewMode; role: Role }) => {
   const [status, setStatus] = React.useState<"loading" | "idle">("loading");
 
   const [modalMode, setModalMode] = React.useState<
-    { type: "info" } | { type: "device"; data: Peer } | null
+    { type: "info" } | { type: "device" | "deviceSyncing"; data: Peer } | null
   >(null);
 
   const { sheetRef, closeSheet, openSheet } = useBottomSheetModal({
     openOnMount: false,
   });
+
+  function handleDevicePress(syncIsIdle: boolean, peer: Peer) {
+    if (syncIsIdle) {
+      setModalMode({ type: "device", data: peer });
+      openSheet();
+      return;
+    }
+
+    setModalMode({ type: "deviceSyncing", data: peer });
+    openSheet();
+  }
 
   useFocusEffect(
     React.useCallback(() => {
@@ -64,10 +76,7 @@ export const Devices = ({ mode, role }: { mode: ViewMode; role: Role }) => {
               setModalMode({ type: "info" });
               openSheet();
             }}
-            onDevicePress={(peer: Peer) => {
-              setModalMode({ type: "device", data: peer });
-              openSheet();
-            }}
+            onDevicePress={handleDevicePress}
           />
         ) : null}
       </View>
@@ -88,6 +97,8 @@ export const Devices = ({ mode, role }: { mode: ViewMode; role: Role }) => {
             role={role}
             peer={modalMode.data}
           />
+        ) : modalMode.type === "deviceSyncing" ? (
+          <DeviceInfoSyncingContent peer={modalMode.data} />
         ) : null}
       </BottomSheetModal>
     </>

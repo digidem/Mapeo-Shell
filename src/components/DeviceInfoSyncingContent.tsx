@@ -5,10 +5,9 @@ import { defineMessages, useIntl } from "react-intl";
 
 import { Text } from "./Text";
 import { Spacer } from "./Spacer";
-import { DeviceType } from "../screens/sync/Devices";
 import { SyncContext } from "../contexts/SyncContext";
 import { colors } from "../lib/styles";
-import { getRandomNumberMax30 } from "../hooks/useSync";
+import { Observation, Peer } from "../sharedTypes";
 
 const m = defineMessages({
   syncing: {
@@ -41,27 +40,17 @@ const m = defineMessages({
   },
 });
 
-export type DeviceInfo = {
-  deviceType: DeviceType;
-  deviceName: string;
-  deviceId: string;
-};
-
-export const DeviceInfoSyncingContent = ({
-  content,
-}: {
-  content: DeviceInfo;
-}) => {
+export const DeviceInfoSyncingContent = ({ peer }: { peer: Peer }) => {
   const [allSyncs] = useContext(SyncContext);
 
   const isSyncing = Object.values(allSyncs).some((val) => {
-    return val[content.deviceId] && val[content.deviceId] === "active";
+    return val[peer.deviceId] && val[peer.deviceId] === "active";
   });
 
   const { formatMessage: t } = useIntl();
 
   const icon =
-    content.deviceType === "desktop"
+    peer.deviceType === "desktop"
       ? require("../../assets/desktop.png")
       : require("../../assets/mobile.png");
   return (
@@ -85,8 +74,8 @@ export const DeviceInfoSyncingContent = ({
           />
           <Spacer size={10} direction="horizontal" />
           <View>
-            <Text size="small">{content.deviceName}</Text>
-            <Text size="small">{content.deviceId}</Text>
+            <Text size="small">{peer.name}</Text>
+            <Text size="small">{peer.deviceId}</Text>
           </View>
         </View>
 
@@ -109,11 +98,13 @@ export const DeviceInfoSyncingContent = ({
       <View style={styles.bottomContainer}>
         <ColumnContainer
           title={t(isSyncing ? m.uploading : m.uploads)}
-          arrowDirection="up"
+          type="uploads"
+          observations={peer.has}
         />
         <ColumnContainer
           title={t(isSyncing ? m.downloading : m.downloads)}
-          arrowDirection="down"
+          type="downloads"
+          observations={peer.wants}
         />
       </View>
       <Spacer size={30} direction="vertical" />
@@ -123,14 +114,16 @@ export const DeviceInfoSyncingContent = ({
 
 const ColumnContainer = ({
   title,
-  arrowDirection,
+  type,
+  observations,
 }: {
   title: string;
-  arrowDirection: "up" | "down";
+  type: "uploads" | "downloads";
+  observations: Observation;
 }) => {
   const { formatMessage: t } = useIntl();
   const arrow =
-    arrowDirection === "up"
+    type === "uploads"
       ? require("../../assets/arrowUp.png")
       : require("../../assets/arrowDown.png");
   return (
@@ -140,10 +133,8 @@ const ColumnContainer = ({
       <View style={styles.numbersContainer}>
         <Image style={{ height: 30, resizeMode: "contain" }} source={arrow} />
         <View>
-          <Text size={"small"}>{`${getRandomNumberMax30()} ${t(
-            m.media
-          )}`}</Text>
-          <Text size={"small"}>{`${getRandomNumberMax30()} ${t(
+          <Text size={"small"}>{`${observations.media} ${t(m.media)}`}</Text>
+          <Text size={"small"}>{`${observations.observations} ${t(
             m.observations
           )}`}</Text>
         </View>

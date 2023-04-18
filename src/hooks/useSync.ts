@@ -1,5 +1,6 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { SyncGroup, SyncContext, SyncStatus } from "../contexts/SyncContext";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { SyncContext, SyncStatus } from "../contexts/SyncContext";
+import { ConnectionType } from "../sharedTypes";
 
 type Progress = {
   completed: number;
@@ -8,12 +9,12 @@ type Progress = {
 
 type ActiveSync = {
   progress: Progress;
-  syncGroup: SyncGroup;
+  syncGroup: ConnectionType;
 };
 
 export function useSync(
   deviceId: string,
-  syncGroup: SyncGroup,
+  syncGroup: ConnectionType,
   shouldStart: boolean
 ) {
   const [thisSync, setThisSync] = useState<ActiveSync>({
@@ -58,7 +59,7 @@ export function useSync(
   );
 }
 
-const useStatus = (deviceId: string, syncGroup: SyncGroup) => {
+const useStatus = (deviceId: string, syncGroup: ConnectionType) => {
   const [status, setStatus] = useState<SyncStatus>("idle");
   const [allSyncs, setAllSyncs] = useContext(SyncContext);
 

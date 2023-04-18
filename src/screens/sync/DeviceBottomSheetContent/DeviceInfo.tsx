@@ -42,7 +42,7 @@ interface Props {
 export const DeviceInfo = ({ peer, onClose, onRemove, role }: Props) => {
   const { formatMessage: t } = useIntl();
   const { deviceType, name, lastSynced, has, wants } = peer;
-  const remainingSyncItems = wants - has;
+  const remainingSyncItems = wants.observations - has.observations;
 
   return (
     <BottomSheetContent

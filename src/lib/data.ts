@@ -14,8 +14,14 @@ export function generateData(size: number): Peer[] {
   return Array(size)
     .fill(null)
     .map((_, index) => {
-      const wants = randomInteger(1, 100);
-      const has = randomInteger(0, wants);
+      const wants = {
+        observations: randomInteger(1, 100),
+        media: randomInteger(1, 100),
+      };
+      const has = {
+        observations: randomInteger(1, wants.observations),
+        media: randomInteger(1, 100),
+      };
       const lastSynced = randomTimestamp(
         new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
         new Date()
