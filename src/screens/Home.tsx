@@ -102,7 +102,7 @@ export const HomeScreen: ScreenComponent<"Home"> = ({ navigation }) => {
         leftText="1"
         rightText={t(m.coordinatorButtonText)}
         onPress={() => {
-          navigation.navigate("Sync", { role: "coordinator" });
+          navigation.navigate("LanguageSelector", { role: "coordinator" });
         }}
       />
       <Spacer direction="vertical" size={spacing.large * 2} />
@@ -110,7 +110,7 @@ export const HomeScreen: ScreenComponent<"Home"> = ({ navigation }) => {
         leftText="2"
         rightText={t(m.participantButtonText)}
         onPress={() => {
-          navigation.navigate("Sync", { role: "participant" });
+          navigation.navigate("LanguageSelector", { role: "participant" });
         }}
       />
     </View>

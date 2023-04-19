@@ -10,9 +10,9 @@ import { IntlProvider as ReactIntlProvider } from "react-intl";
 import messages from "../../translations/messages.json";
 import languages from "../languages.json";
 
-type TranslatedLocales = keyof typeof messages;
+export type TranslatedLocales = keyof typeof messages;
 type SupportedLanguageLocales = keyof typeof languages;
-interface LanguageName {
+export interface LanguageName {
   /** IETF BCP 47 langauge tag with region code. */
   locale: SupportedLanguageLocales;
   /** Localized name for language */
@@ -23,7 +23,9 @@ interface LanguageName {
 
 const translatedLocales = Object.keys(messages) as Array<TranslatedLocales>;
 
-export const supportedLanguages: LanguageName[] = translatedLocales
+export const supportedLanguages: (Omit<LanguageName, "locale"> & {
+  locale: TranslatedLocales;
+})[] = translatedLocales
   .filter((locale) => {
     const hasAtLeastOneTranslatedString =
       Object.keys(messages[locale]).length > 0;
@@ -49,7 +51,10 @@ type IntlSetContextType = Readonly<
   [string, Dispatch<SetStateAction<TranslatedLocales>>]
 >;
 
-const IntlSetContext = createContext<IntlSetContextType>(["en", () => {}]);
+export const IntlSetContext = createContext<IntlSetContextType>([
+  "en",
+  () => {},
+]);
 
 export const IntlProvider = ({ children }: { children: ReactNode }) => {
   const [appLocale, setAppLocale] = useState<TranslatedLocales>("en");
