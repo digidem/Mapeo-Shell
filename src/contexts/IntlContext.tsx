@@ -10,9 +10,9 @@ import { IntlProvider as ReactIntlProvider } from "react-intl";
 import messages from "../../translations/messages.json";
 import languages from "../languages.json";
 
-export type TranslatedLocales = keyof typeof messages;
+type TranslatedLocales = keyof typeof messages;
 type SupportedLanguageLocales = keyof typeof languages;
-export interface LanguageName {
+interface LanguageName {
   /** IETF BCP 47 langauge tag with region code. */
   locale: SupportedLanguageLocales;
   /** Localized name for language */
@@ -21,11 +21,13 @@ export interface LanguageName {
   englishName: string;
 }
 
+export type SupportedLanguageName = Omit<LanguageName, "locale"> & {
+  locale: TranslatedLocales;
+};
+
 const translatedLocales = Object.keys(messages) as Array<TranslatedLocales>;
 
-export const supportedLanguages: (Omit<LanguageName, "locale"> & {
-  locale: TranslatedLocales;
-})[] = translatedLocales
+export const supportedLanguages: SupportedLanguageName[] = translatedLocales
   .filter((locale) => {
     const hasAtLeastOneTranslatedString =
       Object.keys(messages[locale]).length > 0;
@@ -73,8 +75,6 @@ export const IntlProvider = ({ children }: { children: ReactNode }) => {
     () => [locale, setAppLocale] as const,
     [locale, setAppLocale]
   );
-
-  console.log(translatedLocales);
 
   return (
     <ReactIntlProvider

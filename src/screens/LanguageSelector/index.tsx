@@ -5,6 +5,7 @@ import { defineMessages } from "react-intl";
 import { supportedLanguages } from "../../contexts/IntlContext";
 import { SelectOne } from "./SelectOne";
 import { ScreenComponent } from "../../sharedTypes";
+import { colors } from "../../lib/styles";
 
 const m = defineMessages({
   title: {
@@ -19,7 +20,7 @@ export const LanguageSelector: ScreenComponent<"LanguageSelector"> = ({
 }) => {
   const { role } = route.params;
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: colors.WHITE }}>
       {supportedLanguages.map((lang) => (
         <SelectOne key={lang.locale} role={role} value={lang} />
       ))}
