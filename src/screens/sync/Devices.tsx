@@ -11,12 +11,13 @@ import {
 import { spacing } from "../../lib/styles";
 import { Role, ViewMode } from ".";
 import { DeviceBottomSheetContent } from "./DeviceBottomSheetContent";
-import { generateData } from "../../lib/data";
+import { PeerList } from "../../lib/data";
 import { Peer } from "../../sharedTypes";
 import { AnimatedEllipsis } from "./AnimatedEllipsis";
 import { DevicesList } from "./DevicesList";
 import { LocalDevicesInfo } from "./LocalDevicesInfo";
 import { DeviceInfoSyncingContent } from "../../components/DeviceInfoSyncingContent";
+import { BubbleSync } from "./BubbleSync";
 
 const m = defineMessages({
   searching: {
@@ -27,7 +28,7 @@ const m = defineMessages({
 
 export const Devices = ({ mode, role }: { mode: ViewMode; role: Role }) => {
   const { formatMessage: t } = useIntl();
-  const [peers, setPeers] = React.useState(generateData(10));
+  const [peers, setPeers] = React.useState(PeerList);
 
   const [status, setStatus] = React.useState<"loading" | "idle">("loading");
 
@@ -69,16 +70,20 @@ export const Devices = ({ mode, role }: { mode: ViewMode; role: Role }) => {
               <AnimatedEllipsis />
             </Text>
           </View>
-        ) : mode === "list" ? (
-          <DevicesList
-            peers={peers}
-            onInfoPress={() => {
-              setModalMode({ type: "info" });
-              openSheet();
-            }}
-            onDevicePress={handleDevicePress}
-          />
-        ) : null}
+        ) : (
+          <React.Fragment>
+            <DevicesList
+              peers={peers}
+              onInfoPress={() => {
+                setModalMode({ type: "info" });
+                openSheet();
+              }}
+              onDevicePress={handleDevicePress}
+              show={mode === "list"}
+            />
+            <BubbleSync show={mode === "bubbles"} />
+          </React.Fragment>
+        )}
       </View>
       <BottomSheetModal
         ref={sheetRef}

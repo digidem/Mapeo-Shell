@@ -1,45 +1,97 @@
 import { Peer } from "../sharedTypes";
 
-function randomTimestamp(start: Date, end: Date) {
-  return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime())
-  ).getTime();
+function createHasAndWants() {
+  const wants = {
+    observations: randomInteger(1, 100),
+    media: randomInteger(1, 100),
+  };
+  const has = {
+    observations: randomInteger(1, wants.observations),
+    media: randomInteger(1, 100),
+  };
+
+  return { has, wants };
 }
 
 function randomInteger(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function generateData(size: number): Peer[] {
-  return Array(size)
-    .fill(null)
-    .map((_, index) => {
-      const wants = {
-        observations: randomInteger(1, 100),
-        media: randomInteger(1, 100),
-      };
-      const has = {
-        observations: randomInteger(1, wants.observations),
-        media: randomInteger(1, 100),
-      };
-      const lastSynced = randomTimestamp(
-        new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-        new Date()
-      );
-      const deviceType = Math.random() > 0.6 ? "desktop" : "mobile";
-
-      return {
-        id: index,
-        name: `Peer ${index + 1}`,
-        deviceType,
-        deviceId:
-          deviceType === "desktop"
-            ? `Desktop ${index + 1}`
-            : `Mobile ${index + 1}`,
-        has,
-        wants,
-        lastSynced,
-        connectionType: "local",
-      };
-    });
+function createTimestamp() {
+  return randomTimestamp(
+    new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+    new Date()
+  );
 }
+
+function randomTimestamp(start: Date, end: Date) {
+  return new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+  ).getTime();
+}
+
+export const PeerList: Peer[] = [
+  {
+    ...createHasAndWants(),
+    id: 1,
+    name: "HP Laptop 17",
+    deviceId: "Hp17",
+    deviceType: "desktop",
+    lastSynced: createTimestamp(),
+    connectionType: "local",
+  },
+  {
+    ...createHasAndWants(),
+    id: 2,
+    name: "Julienne",
+    deviceId: "2",
+    deviceType: "mobile",
+    lastSynced: createTimestamp(),
+    connectionType: "local",
+  },
+  {
+    ...createHasAndWants(),
+    id: 3,
+    name: "Mapeo Cloud",
+    deviceId: "3",
+    deviceType: "mobile",
+    lastSynced: createTimestamp(),
+    connectionType: "local",
+  },
+  {
+    ...createHasAndWants(),
+    id: 4,
+    name: "Tom",
+    deviceId: "4",
+    deviceType: "mobile",
+    lastSynced: createTimestamp(),
+    connectionType: "local",
+  },
+  {
+    ...createHasAndWants(),
+    id: 5,
+    name: "Mar",
+    deviceId: "5",
+    deviceType: "mobile",
+    lastSynced: createTimestamp(),
+    connectionType: "local",
+  },
+  {
+    ...createHasAndWants(),
+    id: 6,
+    name: "Margo",
+    deviceId: "6",
+    deviceType: "mobile",
+    lastSynced: createTimestamp(),
+    connectionType: "local",
+  },
+  {
+    ...createHasAndWants(),
+    id: 7,
+    name: "Ed",
+    deviceId: "7",
+    deviceType: "mobile",
+    lastSynced: createTimestamp(),
+    connectionType: "local",
+  },
+];
