@@ -11,7 +11,7 @@ import {
 import { spacing } from "../../lib/styles";
 import { Role, ViewMode } from ".";
 import { DeviceBottomSheetContent } from "./DeviceBottomSheetContent";
-import { generateData } from "../../lib/data";
+import { PeerList } from "../../lib/data";
 import { Peer } from "../../sharedTypes";
 import { AnimatedEllipsis } from "./AnimatedEllipsis";
 import { DevicesList } from "./DevicesList";
@@ -28,7 +28,7 @@ const m = defineMessages({
 
 export const Devices = ({ mode, role }: { mode: ViewMode; role: Role }) => {
   const { formatMessage: t } = useIntl();
-  const [peers, setPeers] = React.useState(generateData(10));
+  const [peers, setPeers] = React.useState(PeerList);
 
   const [status, setStatus] = React.useState<"loading" | "idle">("loading");
 
