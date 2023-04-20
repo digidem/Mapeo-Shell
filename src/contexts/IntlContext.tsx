@@ -21,9 +21,13 @@ interface LanguageName {
   englishName: string;
 }
 
+export type SupportedLanguageName = Omit<LanguageName, "locale"> & {
+  locale: TranslatedLocales;
+};
+
 const translatedLocales = Object.keys(messages) as Array<TranslatedLocales>;
 
-export const supportedLanguages: LanguageName[] = translatedLocales
+export const supportedLanguages: SupportedLanguageName[] = translatedLocales
   .filter((locale) => {
     const hasAtLeastOneTranslatedString =
       Object.keys(messages[locale]).length > 0;
@@ -49,7 +53,10 @@ type IntlSetContextType = Readonly<
   [string, Dispatch<SetStateAction<TranslatedLocales>>]
 >;
 
-const IntlSetContext = createContext<IntlSetContextType>(["en", () => {}]);
+export const IntlSetContext = createContext<IntlSetContextType>([
+  "en",
+  () => {},
+]);
 
 export const IntlProvider = ({ children }: { children: ReactNode }) => {
   const [appLocale, setAppLocale] = useState<TranslatedLocales>("en");
@@ -68,8 +75,6 @@ export const IntlProvider = ({ children }: { children: ReactNode }) => {
     () => [locale, setAppLocale] as const,
     [locale, setAppLocale]
   );
-
-  console.log(translatedLocales);
 
   return (
     <ReactIntlProvider

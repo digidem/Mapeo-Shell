@@ -66,6 +66,10 @@
   "screen.sync.index.navTitle": {
     "message": "Synchronize"
   },
+  "screens.LanguageSettings.title": {
+    "description": "Title language settings screen",
+    "message": "Language"
+  },
   "screens.sync.DeviceBottomSheetContent.DeviceInfo.close": {
     "message": "Close"
   },

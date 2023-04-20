@@ -10,16 +10,19 @@ import { CustomHeaderLeft } from "../components/CustomHeaderLeft";
 import { CustomHeaderRight } from "../components/CustomHeaderRight";
 import { Role, SyncScreen } from "../screens/sync";
 import { HomeScreen } from "../screens/Home";
+import { LanguageSelector } from "../screens/LanguageSelector";
 
 export type Screens = {
   Home: undefined;
   Sync: { role: Role };
+  LanguageSelector: { role: Role };
 };
 
 const Stack = createNativeStackNavigator<Screens>();
 
 export const NavigationContainer = () => {
   const { formatMessage: t } = useIntl();
+
   return (
     <NativeNavContainer>
       <Stack.Navigator>
@@ -30,6 +33,11 @@ export const NavigationContainer = () => {
             headerShown: false,
             contentStyle: { backgroundColor: colors.MAPEO_DARK_BLUE },
           }}
+        />
+        <Stack.Screen
+          name="LanguageSelector"
+          component={LanguageSelector}
+          options={{ headerTitle: t(LanguageSelector.navTitle) }}
         />
         <Stack.Screen
           name="Sync"
