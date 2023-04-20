@@ -2,11 +2,11 @@ import { useContext } from "react";
 import { Image, Dimensions } from "react-native";
 import { SyncContext } from "../../contexts/SyncContext";
 
+const width = Dimensions.get("window").width;
+const height = Math.round((width * 620) / 371);
+
 export const BubbleSync = ({ show }: { show: boolean }) => {
   const [allSyncs] = useContext(SyncContext);
-
-  const width = Dimensions.get("window").width;
-  const height = Math.round((width * 620) / 371);
 
   const activeSyncs =
     Object.values(allSyncs.local).some((val) => val !== "idle") ||
