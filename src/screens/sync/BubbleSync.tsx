@@ -1,15 +1,29 @@
 import { useContext } from "react";
-import { ScrollView } from "react-native";
+import { Image, Dimensions } from "react-native";
 import { SyncContext } from "../../contexts/SyncContext";
 
-export const BubbleSync = () => {
-  const [syncs] = useContext(SyncContext);
+export const BubbleSync = ({ show }: { show: boolean }) => {
+  const [allSyncs] = useContext(SyncContext);
 
-  const activeSyncs = Object.entries(syncs.local).some(
-    ([keys, val]) => val === "active"
+  const width = Dimensions.get("window").width;
+  const height = Math.round((width * 620) / 371);
+
+  const activeSyncs =
+    Object.values(allSyncs.local).some((val) => val !== "idle") ||
+    Object.values(allSyncs.internet).some((val) => val !== "idle");
+
+  const bubbleImage = activeSyncs
+    ? require("../../../assets/bubblesSyncing.png")
+    : require("../../../assets/bubblesNotSyncing.png");
+
+  return (
+    <Image
+      resizeMode="contain"
+      style={[
+        { width: undefined, height: height },
+        show ? undefined : { display: "none" },
+      ]}
+      source={bubbleImage}
+    />
   );
-
-  const bubbleImage = require("../../../assets/bubblesSyncing.png");
-
-  return <ScrollView></ScrollView>;
 };

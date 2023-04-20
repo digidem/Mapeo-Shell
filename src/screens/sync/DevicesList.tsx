@@ -34,16 +34,18 @@ export const DevicesList = ({
   peers,
   onDevicePress,
   onInfoPress,
+  show,
 }: {
   peers: Peer[];
   onDevicePress: (isNotIdle: boolean, peer: Peer) => void;
   onInfoPress: () => void;
+  show: boolean;
 }) => {
   const { formatMessage: t } = useIntl();
   const [shouldStart, setShouldStart] = React.useState(false);
 
   return (
-    <View>
+    <View style={show ? undefined : { display: "none" }}>
       <View style={styles.headerRowContainer}>
         <View style={styles.headerTitleContainer}>
           <Text size="medium" bold>

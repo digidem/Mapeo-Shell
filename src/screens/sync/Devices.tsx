@@ -17,6 +17,7 @@ import { AnimatedEllipsis } from "./AnimatedEllipsis";
 import { DevicesList } from "./DevicesList";
 import { LocalDevicesInfo } from "./LocalDevicesInfo";
 import { DeviceInfoSyncingContent } from "../../components/DeviceInfoSyncingContent";
+import { BubbleSync } from "./BubbleSync";
 
 const m = defineMessages({
   searching: {
@@ -69,16 +70,20 @@ export const Devices = ({ mode, role }: { mode: ViewMode; role: Role }) => {
               <AnimatedEllipsis />
             </Text>
           </View>
-        ) : mode === "list" ? (
-          <DevicesList
-            peers={peers}
-            onInfoPress={() => {
-              setModalMode({ type: "info" });
-              openSheet();
-            }}
-            onDevicePress={handleDevicePress}
-          />
-        ) : null}
+        ) : (
+          <React.Fragment>
+            <DevicesList
+              peers={peers}
+              onInfoPress={() => {
+                setModalMode({ type: "info" });
+                openSheet();
+              }}
+              onDevicePress={handleDevicePress}
+              show={mode === "list"}
+            />
+            <BubbleSync show={mode === "bubbles"} />
+          </React.Fragment>
+        )}
       </View>
       <BottomSheetModal
         ref={sheetRef}
