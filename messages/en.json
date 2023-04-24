@@ -46,16 +46,16 @@
     "message": "Last Synced"
   },
   "screen.sync.DevicesList.localDevices": {
-    "message": "Local Devices"
+    "message": "Devices Found"
   },
   "screen.sync.DevicesList.sync": {
     "message": "Sync"
   },
   "screen.sync.LocalDevicesInfo.localDeviceDescription": {
-    "message": "These devices are on your project and on the same wifi network as you."
+    "message": "These devices are in your project and are on the same wifi network as you."
   },
   "screen.sync.LocalDevicesInfo.localDevices": {
-    "message": "Local Devices"
+    "message": "Devices Found"
   },
   "screen.sync.ProjectInfo.connectedNoNetworkName": {
     "message": "Connected (no network name)"
@@ -89,7 +89,10 @@
     "message": "Are you sure you want to remove {name}?"
   },
   "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.removeConfirmationDescription": {
-    "message": "{name} will be unable to sync to the project and other devices will be unable to sync with them."
+    "message": "{name} will no longer be to sync with any other devices in this project. The project data they have syncronized prior to this removal will stay on their device."
+  },
+  "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.removeConfirmationDescription2": {
+    "message": "In order to prevent their continued access to project syncronization, please make sure to syncronize with other device to share this change in project access permissions."
   },
   "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.removeDevice": {
     "message": "Remove Device"

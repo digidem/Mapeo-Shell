@@ -25,7 +25,12 @@ const m = defineMessages({
   removeConfirmationDescription: {
     id: "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.removeConfirmationDescription",
     defaultMessage:
-      "{name} will be unable to sync to the project and other devices will be unable to sync with them.",
+      "{name} will no longer be to sync with any other devices in this project. The project data they have syncronized prior to this removal will stay on their device.",
+  },
+  removeConfirmationDescription2: {
+    id: "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.removeConfirmationDescription2",
+    defaultMessage:
+      "In order to prevent their continued access to project syncronization, please make sure to syncronize with other device to share this change in project access permissions.",
   },
 });
 
@@ -62,10 +67,13 @@ export const RemoveDeviceConfirmation = ({
           {t(m.removeConfirmationTitle, { name: peer.name || peer.deviceId })}
         </Text>
         <Spacer size={spacing.large} direction="vertical" />
-        <Text size="medium" textAlign="center">
+        <Text size="small" textAlign="center">
           {t(m.removeConfirmationDescription, {
             name: `${peer.name} (${peer.deviceId})`,
           })}
+        </Text>
+        <Text size="small" textAlign="center">
+          {t(m.removeConfirmationDescription2)}
         </Text>
       </View>
     </BottomSheetContent>

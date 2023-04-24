@@ -8,12 +8,12 @@ import { BottomSheetContent } from "../../components/BottomSheetModal";
 const m = defineMessages({
   localDevices: {
     id: "screen.sync.LocalDevicesInfo.localDevices",
-    defaultMessage: "Local Devices",
+    defaultMessage: "Devices Found",
   },
   localDeviceDescription: {
     id: "screen.sync.LocalDevicesInfo.localDeviceDescription",
     defaultMessage:
-      "These devices are on your project and on the same wifi network as you.",
+      "These devices are in your project and are on the same wifi network as you.",
   },
 });
 

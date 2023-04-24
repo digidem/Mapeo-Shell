@@ -14,7 +14,7 @@ import { Peer } from "../../sharedTypes";
 const m = defineMessages({
   localDevices: {
     id: "screen.sync.DevicesList.localDevices",
-    defaultMessage: "Local Devices",
+    defaultMessage: "Devices Found",
   },
   sync: {
     id: "screen.sync.DevicesList.sync",
