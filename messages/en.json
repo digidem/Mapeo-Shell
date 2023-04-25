@@ -85,6 +85,9 @@
   "screens.sync.DeviceBottomSheetContent.DeviceInfo.lastSynced": {
     "message": "Last synced"
   },
+  "screens.sync.DeviceBottomSheetContent.DeviceInfo.removeDevice": {
+    "message": "Remove Device"
+  },
   "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.cancel": {
     "message": "Cancel"
   },
