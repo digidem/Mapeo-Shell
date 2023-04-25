@@ -30,6 +30,10 @@ const m = defineMessages({
     id: "screens.sync.DeviceBottomSheetContent.DeviceInfo.close",
     defaultMessage: "Close",
   },
+  removeDevice: {
+    id: "screens.sync.DeviceBottomSheetContent.DeviceInfo.removeDevice",
+    defaultMessage: "Remove Device",
+  },
 });
 
 interface Props {
@@ -98,7 +102,7 @@ export const DeviceInfo = ({ peer, onClose, onRemove, role }: Props) => {
           asText
           type="destructive"
           variant="secondary"
-          text="Remove device"
+          text={t(m.removeDevice)}
           iconName="trash-can-outline"
           onPress={onRemove}
         />
