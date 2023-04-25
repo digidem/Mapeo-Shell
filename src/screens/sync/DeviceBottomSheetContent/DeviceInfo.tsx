@@ -121,13 +121,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    maxWidth: "100%",
   },
   nameAndIcon: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "flex-start",
   },
   lastSyncedContainer: {
+    flexGrow: 1,
+    flex: 1,
     alignItems: "flex-end",
   },
 });

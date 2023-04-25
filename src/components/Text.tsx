@@ -5,6 +5,7 @@ interface Props extends React.PropsWithChildren<Omit<TextProps, "style">> {
   color?: TextStyle["color"];
   size: "small" | "smallMedium" | "medium" | "large";
   textAlign?: TextStyle["textAlign"];
+  style?: TextStyle;
 }
 
 export const styles = StyleSheet.create({
@@ -21,12 +22,14 @@ export const Text = ({
   color,
   size,
   textAlign,
+  style,
   ...rnTextProps
 }: Props) => {
   return (
     <RNText
       {...rnTextProps}
       style={[
+        style,
         styles[size],
         {
           textAlign,

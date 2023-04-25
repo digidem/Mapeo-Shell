@@ -63,10 +63,20 @@ export const DevicesList = ({
         />
       </View>
       <View style={styles.listHeaderContainer}>
-        <Text size="small" color={colors.DARK_GRAY}>
+        <Text
+          style={{ maxWidth: "40%" }}
+          textAlign="center"
+          size="small"
+          color={colors.DARK_GRAY}
+        >
           {t(m.deviceName)}
         </Text>
-        <Text size="small" color={colors.DARK_GRAY}>
+        <Text
+          style={{ maxWidth: "40%" }}
+          textAlign="center"
+          size="small"
+          color={colors.DARK_GRAY}
+        >
           {t(m.lastSynced)}
         </Text>
       </View>
