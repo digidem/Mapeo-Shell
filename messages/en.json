@@ -63,6 +63,9 @@
   "screen.sync.ProjectInfo.noConnection": {
     "message": "No connection"
   },
+  "screen.sync.ProjectInfo.project": {
+    "message": "Project {name}"
+  },
   "screen.sync.index.navTitle": {
     "message": "Synchronize"
   },
