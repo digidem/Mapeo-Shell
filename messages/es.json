@@ -1,0 +1,100 @@
+{
+  "Components.DeviceInfoContents.downloading": {
+    "message": "Descargando"
+  },
+  "Components.DeviceInfoContents.downloads": {
+    "message": "Descargas"
+  },
+  "Components.DeviceInfoContents.media": {
+    "message": "media"
+  },
+  "Components.DeviceInfoContents.observations": {
+    "message": "observaciones"
+  },
+  "Components.DeviceInfoContents.syncing": {
+    "message": "Sincronizando"
+  },
+  "Components.DeviceInfoContents.uploading": {
+    "message": "Cargando"
+  },
+  "Components.DeviceInfoContents.uploads": {
+    "message": "Cargas"
+  },
+  "app.firstMessage": {
+    "description": "Used as a tester",
+    "message": "Esto es una prueba"
+  },
+  "screen.Home.coordinatorButtonText": {
+    "message": "Sincronización (Como Coordinador)"
+  },
+  "screen.Home.participantButtonText": {
+    "message": "Sincronización (Como Participante)"
+  },
+  "screen.Home.subtitle": {
+    "message": "Sincronización"
+  },
+  "screen.Home.title": {
+    "message": "Mapeo Mobile Test"
+  },
+  "screen.sync.Devices.searching": {
+    "message": "Buscando dispositivos"
+  },
+  "screen.sync.DevicesList.deviceName": {
+    "message": "Nombre del dispositivo"
+  },
+  "screen.sync.DevicesList.lastSynced": {
+    "message": "Última sincronización"
+  },
+  "screen.sync.DevicesList.localDevices": {
+    "message": "Dispositivos encontrados"
+  },
+  "screen.sync.DevicesList.sync": {
+    "message": "Sincronización"
+  },
+  "screen.sync.LocalDevicesInfo.localDeviceDescription": {
+    "message": "Estos dispositivos están en tu proyecto y están en la misma red wifi que tú."
+  },
+  "screen.sync.LocalDevicesInfo.localDevices": {
+    "message": "Dispositivos encontrados"
+  },
+  "screen.sync.ProjectInfo.connectedNoNetworkName": {
+    "message": "Conectado (sin nombre de red)"
+  },
+  "screen.sync.ProjectInfo.noConnection": {
+    "message": "Sin conexión"
+  },
+  "screen.sync.index.navTitle": {
+    "message": "Sincronizar"
+  },
+  "screens.LanguageSettings.title": {
+    "description": "Title language settings screen",
+    "message": "Idioma"
+  },
+  "screens.sync.DeviceBottomSheetContent.DeviceInfo.close": {
+    "message": "Cerrar"
+  },
+  "screens.sync.DeviceBottomSheetContent.DeviceInfo.itemToSync": {
+    "message": "1 elemento listo para sincronizar"
+  },
+  "screens.sync.DeviceBottomSheetContent.DeviceInfo.itemsToSync": {
+    "message": "{count} elementos listos para sincronizar"
+  },
+  "screens.sync.DeviceBottomSheetContent.DeviceInfo.lastSynced": {
+    "message": "Última sincronización"
+  },
+  "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.cancel": {
+    "message": "Cancelar"
+  },
+  "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.removeConfirmaitionTitle": {
+    "message": "¿Estás seguro de que quieres eliminar {name}?"
+  },
+  "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.removeConfirmationDescription": {
+    "message": "{name} ya no se sincronizará con ningún otro dispositivo en este proyecto. Los datos del proyecto que han sincronizado antes de este borrado permanecerán en su dispositivo."
+  },
+  "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.removeConfirmationDescription2": {
+    "message": "Con el fin de evitar su acceso continuo a la sincronización de proyectos, por favor asegúrate de sincronizar con otro dispositivo para compartir este cambio en los permisos de acceso al proyecto."
+  },
+  "screens.sync.DeviceBottomSheetContent.RemoveDeviceConfirmation.removeDevice": {
+    "message": "Quitar dispositivo"
+  }
+}
