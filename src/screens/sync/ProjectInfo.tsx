@@ -19,6 +19,10 @@ const m = defineMessages({
     id: "screen.sync.ProjectInfo.connectedNoNetworkName",
     defaultMessage: "Connected (no network name)",
   },
+  project: {
+    id: "screen.sync.ProjectInfo.project",
+    defaultMessage: "Project {name}",
+  },
 });
 
 const WifiIcon = ({ active }: { active?: boolean }) => {
@@ -187,7 +191,7 @@ export const ProjectInfo = ({
           />
         </View>
         <Text size="medium" bold>
-          {name}
+          {t(m.project, { name })}
         </Text>
       </View>
     </View>

@@ -35,7 +35,7 @@ export const SyncScreen: ScreenComponent<"Sync"> = ({ route }) => {
       contentContainerStyle={styles.scrollContentContainer}
     >
       <ProjectInfo
-        name="Project Catapult"
+        name="Catapult"
         viewMode={viewMode}
         toggleViewMode={() => {
           setViewMode((prev) => (prev === "list" ? "bubbles" : "list"));

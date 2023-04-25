@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: spacing.medium,
+    maxWidth: "55%",
   },
   headerTitleContainer: { flexDirection: "row", alignItems: "center" },
   infoButton: {
