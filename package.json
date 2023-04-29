@@ -9,7 +9,8 @@
     "web": "expo start --web",
     "prepare": "husky install",
     "extract-messages": "formatjs extract 'src/**/*.{ts,tsx}' --format crowdin --out-file ./messages/en.json",
-    "build:translations": "node ./scripts/compile.js "
+    "build:translations": "node ./scripts/compile.js ",
+    "eas-build-post-install": "npm run build:translations"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.4.5",

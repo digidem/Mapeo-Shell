@@ -2,6 +2,7 @@
   "expo": {
     "name": "mapeo-mobile-shell",
     "slug": "mapeo-mobile-shell",
+    "owner": "digidem",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,10 +23,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.digidem.mapeomobileshell"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0f73ebce-abb8-4a67-9aa8-80792439f642"
+      }
     }
   }
 }
