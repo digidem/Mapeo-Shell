@@ -99,9 +99,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: spacing.medium,
+  },
+  headerTitleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     maxWidth: "55%",
   },
-  headerTitleContainer: { flexDirection: "row", alignItems: "center" },
   infoButton: {
     borderRadius: 10,
     borderColor: colors.GRAY,

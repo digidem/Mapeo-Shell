@@ -8,7 +8,7 @@ import { Text } from "./Text";
 import { colors, spacing } from "../lib/styles";
 import { Spacer } from "./Spacer";
 import { Peer } from "../sharedTypes";
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 
 type ProgressBarProps = {
   peer: Peer;
@@ -25,8 +25,27 @@ export const ProgressBar = ({
 }: ProgressBarProps) => {
   const { deviceId, deviceType, name, lastSynced, connectionType } = peer;
   const progress = useSync(peer.deviceId, connectionType, shouldStart);
-
+  const [dateAfterSync, setDateAfterSync] = useState(false);
+  const timeout = useRef<NodeJS.Timer>();
   const [allSyncs] = useContext(SyncContext);
+
+  const completed = progress >= 1;
+
+  const showDate = !shouldStart || dateAfterSync;
+
+  if (completed && !dateAfterSync && !timeout.current) {
+    timeout.current = setTimeout(() => {
+      setDateAfterSync(true);
+    }, 2000);
+  }
+
+  const dateToDisplay = (
+    completed ? new Date() : new Date(lastSynced)
+  ).toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 
   const isIdle = Object.values(allSyncs).some((val) => {
     return val[deviceId] && val[deviceId] === "idle";
@@ -56,17 +75,13 @@ export const ProgressBar = ({
               {name}
             </Text>
           </View>
-          {!shouldStart ? (
+          {showDate ? (
             <Text size="small" color={colors.DARK_GRAY}>
-              {new Date(peer.lastSynced).toLocaleDateString(undefined, {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              })}
+              {dateToDisplay}
             </Text>
           ) : (
             <MaterialIcon
-              name={progress >= 1 ? "done" : "bolt"}
+              name={completed ? "done" : "bolt"}
               size={45}
               color={colors.DARK_GRAY}
             />
