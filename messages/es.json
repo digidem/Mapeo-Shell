@@ -20,10 +20,6 @@
   "Components.DeviceInfoContents.uploads": {
     "message": "Cargas"
   },
-  "app.firstMessage": {
-    "description": "Used as a tester",
-    "message": "Esto es una prueba"
-  },
   "screen.Home.coordinatorButtonText": {
     "message": "Sincronización (Como Coordinador)"
   },
